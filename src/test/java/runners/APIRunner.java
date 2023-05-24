@@ -16,7 +16,7 @@ import org.junit.runner.RunWith;
         features = "src/test/resources/features",
         glue = {"stepDefinitions", "hooks"},
 
-        tags = "@pom",
+        tags = "@US20",
         dryRun = true
 )
 public class APIRunner {
