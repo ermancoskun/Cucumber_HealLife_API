@@ -47,20 +47,19 @@ public class APIStepDefinition {
     @Then("Gecerli bilgiler ve dogru id {int} ile giris yapmak icin query parametreleri set eder")
     public void gecerliBilgilerVeDogruIdIleGirisYapmakIcinQueryParametreleriSetEder(int id) {
 
-        JSONObject reqBodyJson = new JSONObject();
-        reqBodyJson.put("id","1");
+
 
 
     }
 
     @Then("GET request gonderir")
     public void getRequestGonderir() {
-
+        JSONObject reqBodyJson = new JSONObject();
+        reqBodyJson.put("id",1);
         response = given()
                     .spec(HooksAPI.spec)
                     .headers("Authorization", "Bearer " + HooksAPI.token)
-                    .header("Accept","application/json")
-                    .contentType("application/json")
+                    .contentType(ContentType.JSON)
                 .when()
                      .body(reqBodyJson.toString())
                      .get(fullPath);
