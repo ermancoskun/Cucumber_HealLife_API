@@ -15,3 +15,10 @@ Feature: API Tests
     Then .....Gecersiz giris
     And GET request gönderildiginde dönen status code'un 403 oldugu ve response message bilgisinin "Failed"
 
+    Scenario: As an administrator, I should be able to access the relevant expenditure data by entering the id over the API connection .
+
+      Given Api user sets "api/getExpenseHeadById" path parameters.
+      Then  Api user sends a GET body with a correct data.
+
+
+
