@@ -5,7 +5,10 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 
 import io.restassured.http.ContentType;
+
+import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
+
 import io.restassured.response.Response;
 import org.hamcrest.Matchers;
 import org.json.JSONObject;
@@ -18,9 +21,7 @@ import utilities.API_Utils;
 import static io.restassured.RestAssured.given;
 import static org.junit.Assert.assertEquals;
 
-import java.util.List;
 
-import static io.restassured.RestAssured.given;
 
 public class APIStepDefinition {
     SoftAssert softAssert= new SoftAssert();
@@ -59,6 +60,36 @@ public class APIStepDefinition {
 
         System.out.println("fullPath = " + fullPath);
     }
+
+
+
+
+    @Given("Api user sets {string} path parameters.")
+    public void apiUserSetsPathParameters(String rawPaths) {
+
+        // HooksAPI.spec.pathParams("pp0","api","pp1","opdList");
+
+        // api/opdList
+        String[] paths=rawPaths.split("/"); // [ "api","register"]
+
+        StringBuilder tempPath=new StringBuilder("{");
+
+        for (int i = 0; i <paths.length ; i++) {
+            String key="pp"+ i; //pp0 pp1 pp2
+            String value=paths[i].trim(); //solunda sagında bosluk varsa silmek icibn trim kulandık
+            HooksAPI.spec.pathParam(key,value);
+            tempPath.append(key +"}/{");
+            System.out.println("value = " + value);
+        }
+
+        tempPath.deleteCharAt(tempPath.lastIndexOf("{"));
+        tempPath.deleteCharAt(tempPath.lastIndexOf("/"));
+
+        fullPath=tempPath.toString();
+    }
+
+
+
 
     @Then("Gecerli bilgiler ve dogru id {int} ile giris yapmak icin query parametreleri set eder")
     public void gecerliBilgilerVeDogruIdIleGirisYapmakIcinQueryParametreleriSetEder(int id) {
@@ -178,11 +209,17 @@ public class APIStepDefinition {
         response= given()
                 .spec(HooksAPI.spec)
                 .header("Authorization","Bearer "+HooksAPI.token)
+
                 .contentType(ContentType.JSON)
                 .when()
                 .get(fullPath);
 
+
+        // response.prettyPrint();
+
     }
+
+
     @Given("Verifies that the blood group record created with the API has been created")
     public void verifies_that_the_blood_group_record_created_with_the_api_has_been_created() {
 
@@ -207,4 +244,32 @@ public class APIStepDefinition {
         reqBodyJson.put("id",id);
     }
 
+
+    @Then("Api user sends a GET body with a correct data.")
+    public void apiUserSendsAGETBodyWithACorrectData() {
+        reqBodyJson = new JSONObject();
+        reqBodyJson.put("id","5");
+        response = given()
+                .spec(HooksAPI.spec)
+                .headers("Authorization", "Bearer " + HooksAPI.token)
+                .header("Accept","application/json")
+                .contentType("application/json")
+                .when()
+                .body(reqBodyJson.toString())
+                .get(fullPath);
+        response.prettyPrint();
+
+    }
+
+
+    @Then("Api user confirms that the returned status code is {int}")
+    public void apiUserConfirmsThatTheReturnedStatusCodeIs(int statusCode) {
+        assertEquals(statusCode,response.getStatusCode());
+    }
+
+    @Then("Api user verifies that the response message information is {string}")
+    public void apiUserVerifiesThatTheResponseMessageInformationIs(String expectedStr) {
+        JsonPath resJP = response.jsonPath();
+        assertEquals(expectedStr,resJP.getString("message"));
+    }
 }
