@@ -49,14 +49,16 @@ public class API_Utils {
         return response;
     }
 
-    public static Response deleteRequest(String token, String endpoint){
+    public static Response deleteRequest(String endpoint,JSONObject reqBodyJson){
         Response response = given().headers(
                 "Authorization",
-                "Bearer " + token,
+                "Bearer " + HooksAPI.token,
                 "Content-Type",
                 ContentType.JSON,
                 "Accept",
-                ContentType.JSON).when().delete(endpoint);
+                ContentType.JSON).when().
+                body(reqBodyJson).
+                delete(endpoint);
         response.prettyPrint();
         return  response;
     }
@@ -95,6 +97,55 @@ public class API_Utils {
 
      response.prettyPrint();
         return  response;
+    }
+
+    public static JSONObject createABody(int id){
+        JSONObject jsonObject=new JSONObject();
+        jsonObject.put("id",id);
+        return jsonObject;
+    }
+    public static JSONObject createABody(String name, String is_blood_group, Boolean w){
+        JSONObject jsonObject=new JSONObject();
+        jsonObject.put("name",name);
+        jsonObject.put("is_blood_group",is_blood_group);
+        return jsonObject;
+    }
+    public static JSONObject createABody(String visitors_purpose,String description){
+        JSONObject jsonObject=new JSONObject();
+        jsonObject.put("visitors_purpose",visitors_purpose);
+        jsonObject.put("description",description);
+        return jsonObject;
+    }
+    public static JSONObject createABody(String name, String description, int finding_category_id ){
+        JSONObject jsonObject=new JSONObject();
+        jsonObject.put("name",name);
+        jsonObject.put("description",description);
+        jsonObject.put("finding_category_id",finding_category_id);
+        return jsonObject;
+    }
+    public static JSONObject createABody(int id ,String name, String is_blood_group ){
+        JSONObject jsonObject=new JSONObject();
+        jsonObject.put("id",id);
+        jsonObject.put("name",name);
+        jsonObject.put("is_blood_group",is_blood_group);
+        return jsonObject;
+    }
+    public static JSONObject createABody(int id ,String name, String is_blood_group,String created_at ){
+        JSONObject jsonObject=new JSONObject();
+        jsonObject.put("id",id);
+        jsonObject.put("name",name);
+        jsonObject.put("is_blood_group",is_blood_group);
+        jsonObject.put("created_at",created_at);
+        return jsonObject;
+    }
+    public static JSONObject createABody(int id ,String  exp_category, String description,String is_active,String is_deleted ){
+        JSONObject jsonObject=new JSONObject();
+        jsonObject.put("id",id);
+        jsonObject.put(" exp_category", exp_category);
+        jsonObject.put("description",description);
+        jsonObject.put("is_active",is_active);
+        jsonObject.put("is_deleted",is_deleted);
+        return jsonObject;
     }
 
 }
