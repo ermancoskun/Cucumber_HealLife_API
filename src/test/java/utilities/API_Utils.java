@@ -16,12 +16,12 @@ public class API_Utils {
     public static RequestSpecification spec;
     public static String generateToken() {
 
-        spec = new RequestSpecBuilder().setBaseUri(URI.create("https://xyz.com/api/login")).build();
+        spec = new RequestSpecBuilder().setBaseUri(URI.create(ConfigReader.getProperty("base_url"))).build();
         RequestSpecification requestSpec = spec;
 
         Map<String, Object> expectedData = new HashMap<>();
-        expectedData.put("email", "test@test.com");
-        expectedData.put("password", "123123123");
+        expectedData.put("email", ConfigReader.getProperty("email"));
+        expectedData.put("password", ConfigReader.getProperty("password"));
 
         Response response = given().spec(requestSpec).contentType(ContentType.JSON).
                 body(expectedData).when().post();
