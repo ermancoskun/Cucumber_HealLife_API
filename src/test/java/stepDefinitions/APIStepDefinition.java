@@ -272,49 +272,12 @@ public class APIStepDefinition {
         response.prettyPrint();
     }
 
-    @Then("Api user sends a GET body with an uncorrect data.")
-    public void apiUserSendsAGETBodyWithAnUncorrectData() {
 
-        response = given()
-                .spec(HooksAPI.spec)
-                .headers("Authorization", "Bearer " + HooksAPI.token)
-                .header("Accept","application/json")
-                .contentType("application/json")
-                .when()
-                .body(reqBodyJson.toString())
-                .get(fullPath);
-        response.prettyPrint();
 
-    }
-
-    @Then("Api user creates an INVALID request body in ExpenseHead.")
-    public void apiUserCreatesAnINVALIDRequestBodyInExpenseHead() {
-        reqBodyJson = new JSONObject();
-        reqBodyJson.put("id","125");
-    }
 
     
 
-    @Then("Api user saves the response body of the Get method.")
-    public void apiUserSavesTheResponseBodyOfTheGetMethod() {
 
-        response= given()
-                .spec(HooksAPI.spec)
-                .header("Authorization","Bearer "+HooksAPI.token)
-                .contentType(ContentType.JSON)
-                .when()
-                .get(fullPath);
-    }
-
-    @Then("Api user verifies in the response body with id {string}, exp_category {string},description {string} , is_active {string}, is_deleted {string}, created_at {string}  in ExpenseHead.")
-    public void apiUserVerifiesInTheResponseBodyWithIdExp_categoryDescriptionIs_activeIs_deletedCreated_atInExpenseHead(String id, String exp_category, String description, String is_active , String is_deleted, String created_at) {
-        JsonPath resJp = response.jsonPath();
-        assertEquals(id, resJp.get("details.id"));
-        assertEquals(exp_category, resJp.get("details.exp_category") );
-        assertEquals(description, resJp.get("details.description") );
-        assertEquals(is_active, resJp.get("details.is_active"));
-        assertEquals(is_deleted, resJp.get("details.is_deleted"));
-    }
 
 
 
