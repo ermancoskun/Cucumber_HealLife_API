@@ -1,6 +1,7 @@
 package stepDefinitions;
 
 import hooks.HooksAPI;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 
@@ -26,10 +27,10 @@ public class APIStepDefinition {
     SoftAssert softAssert= new SoftAssert();
     public static String fullPath;
     public static Pojo_RegisterCustomer reqBody;
-    static JSONObject reqBodyJson;
-    static JSONObject expBodyJson;
-    static Response response;
-    static String addId;
+    public static JSONObject reqBodyJson;
+    public static JSONObject expBodyJson;
+    public static Response response;
+    public static String addId;
 
     int basariliStatusCode=200;
 
@@ -60,18 +61,14 @@ public class APIStepDefinition {
         System.out.println("fullPath = " + fullPath);
     }
 
-    @Then("Gecerli bilgiler ve dogru id {int} ile giris yapmak icin query parametreleri set eder")
+    @Then("Gecerli bilgiler ve id {int} ile giris yapmak icin query parametreleri set eder")
     public void gecerliBilgilerVeDogruIdIleGirisYapmakIcinQueryParametreleriSetEder(int id) {
-
-
-
-
+        reqBodyJson = new JSONObject();
+        reqBodyJson.put("id",id);
     }
 
     @Then("GET request gonderir")
     public void getRequestGonderir() {
-        JSONObject reqBodyJson = new JSONObject();
-        reqBodyJson.put("id",1);
         response = given()
                     .spec(HooksAPI.spec)
                     .headers("Authorization", "Bearer " + HooksAPI.token)
@@ -84,7 +81,7 @@ public class APIStepDefinition {
 
     @Then("Donen status kodunun {int} oldugunu dogrular")
     public void donenStatusKodununOldugunuDogrular(int statusCode) {
-        assertEquals(statusCode,response.getStatusCode());
+        assertEquals("Wrong status code",statusCode,response.getStatusCode());
     }
 
     @Then("Response message bilgisinin {string} oldugunu dogrular")
