@@ -15,3 +15,4 @@ Feature: API Tests
     Then .....Gecersiz giris
     And GET request gönderildiginde dönen status code'un 403 oldugu ve response message bilgisinin "Failed"
 
+
