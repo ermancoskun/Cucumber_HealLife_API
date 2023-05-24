@@ -1,10 +1,9 @@
 package stepDefinitions;
 
 import hooks.HooksAPI;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
-
-import io.restassured.http.ContentType;
 
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
@@ -27,10 +26,10 @@ public class APIStepDefinition {
     SoftAssert softAssert= new SoftAssert();
     public static String fullPath;
     public static Pojo_RegisterCustomer reqBody;
-    static JSONObject reqBodyJson;
-    static JSONObject expBodyJson;
-    static Response response;
-    static String addId;
+    public static JSONObject reqBodyJson;
+    public static JSONObject expBodyJson;
+    public static Response response;
+    public static String addId;
 
     int basariliStatusCode=200;
 
@@ -61,9 +60,6 @@ public class APIStepDefinition {
         System.out.println("fullPath = " + fullPath);
     }
 
-
-
-
     @Given("Api user sets {string} path parameters.")
     public void apiUserSetsPathParameters(String rawPaths) {
 
@@ -72,7 +68,7 @@ public class APIStepDefinition {
         // api/opdList
         String[] paths=rawPaths.split("/"); // [ "api","register"]
 
-        StringBuilder tempPath=new StringBuilder("{");
+        StringBuilder tempPath=new StringBuilder("/{");
 
         for (int i = 0; i <paths.length ; i++) {
             String key="pp"+ i; //pp0 pp1 pp2
@@ -87,82 +83,6 @@ public class APIStepDefinition {
 
         fullPath=tempPath.toString();
     }
-
-
-
-
-    @Then("Gecerli bilgiler ve dogru id {int} ile giris yapmak icin query parametreleri set eder")
-    public void gecerliBilgilerVeDogruIdIleGirisYapmakIcinQueryParametreleriSetEder(int id) {
-
-        JSONObject reqBodyJson = new JSONObject();
-        reqBodyJson.put("id","1");
-
-
-    }
-
-    @Then("GET request gonderir")
-    public void getRequestGonderir() {
-
-        response = given()
-                    .spec(HooksAPI.spec)
-                    .headers("Authorization", "Bearer " + HooksAPI.token)
-                    .header("Accept","application/json")
-                    .contentType("application/json")
-                .when()
-                     .body(reqBodyJson.toString())
-                     .get(fullPath);
-        response.prettyPrint();
-    }
-
-    @Then("Donen status kodunun {int} oldugunu dogrular")
-    public void donenStatusKodununOldugunuDogrular(int statusCode) {
-        assertEquals(statusCode,response.getStatusCode());
-    }
-
-    @Then("Response message bilgisinin {string} oldugunu dogrular")
-    public void responseMessageBilgisininOldugunuDogrular(String expextedStr) {
-        JsonPath resJP = response.jsonPath();
-        assertEquals(expextedStr,resJP.getString("message"));
-
-    }
-
-    @Given("exp data")
-    public void exp_data() {
-
-        /*
-             {
-             "status": 200,
-             "message": "Success",
-             "Token_remaining_time": 353,
-             "details": {
-             "id": "1",
-             "category": "Fever",
-             "created_at": "2021-10-25 02:02:48"
-                }
-              }
-         */
-
-        JSONObject details=new JSONObject();
-        details.put("id","1");
-        details.put("category","Fever");
-        details.put("created_at","2021-10-25 02:02:48");
-
-        expBodyJson=new JSONObject();
-        expBodyJson.put("status",200);
-        expBodyJson.put("message","Success");
-        expBodyJson.put("Token_remaining_time",353);
-        expBodyJson.put("details",details);
-
-    }
-
-
-
-
-
-
-
-
-
 
 
     @Given("Creates a request body with the name {string}, isBloodGroup {string} parameters to create Blood Group Data")
@@ -188,7 +108,7 @@ public class APIStepDefinition {
     }
     @Given("Verifies that the status code value is {int} in the returned response body.")
     public void verifies_that_the_status_code_value_is_in_the_returned_response_body(int statusCode) {
-        softAssert.assertEquals(response.getStatusCode(),statusCode,"Status code value is NOT 200");
+        softAssert.assertEquals(response.getStatusCode(),statusCode,"Status code value is NOT "+statusCode);
     }
     @Given("Verifies that the message value is {string} in the returned response body.")
     public void verifies_that_the_message_value_is_in_the_returned_response_body(String message) {
@@ -199,8 +119,7 @@ public class APIStepDefinition {
 
     @Given("Creates an INVALID request body")
     public void creates_an_invalid_request_body() {
-        reqBodyJson=new JSONObject();
-        reqBodyJson.put("ID","name");
+      reqBodyJson=API_Utils.createABody(99);
 
     }
 
@@ -239,38 +158,118 @@ public class APIStepDefinition {
     }
 
     @Given("Creates a request body with id {string} parameter to get finding category data")
-    public void creates_a_request_body_with_id_parameter_to_get_finding_category_data(String id) {
-        reqBodyJson=new JSONObject();
-        reqBodyJson.put("id",id);
+    public void creates_a_request_body_with_id_parameter_to_get_finding_category_data(int id) {
+        reqBodyJson=API_Utils.createABody(id);
     }
 
 
-    @Then("Api user sends a GET body with a correct data.")
-    public void apiUserSendsAGETBodyWithACorrectData() {
-        reqBodyJson = new JSONObject();
-        reqBodyJson.put("id","5");
-        response = given()
+
+
+    @And("Sets query parameters as id {int} with valid Authorization")
+    public void setsQueryParametersAsIdWithValidAuthorization(int id) {
+
+    }
+
+    @And("Sends GET request with Body")
+    public void sendsGETRequestWithBody() {
+        response = API_Utils.getRequestWithBody(fullPath,reqBodyJson);
+    }
+
+    @Then("Verifies that the returned status code is {int}")
+    public void verifiesThatTheReturnedStatusCodeIs(int statusCode) {
+        softAssert.assertEquals(response.getStatusCode(),statusCode,"Status code value is NOT "+statusCode);
+    }
+
+    @Then("Verifies that the response message is {string}")
+    public void verifiesThatTheResponseMessageIs(String message) {
+        JsonPath respJS= response.jsonPath();
+        softAssert.assertEquals(respJS.getString("message"),message,"Returned message is not true");
+    }
+
+    @And("Sets query parameters as id {int} with invalid Authorization")
+    public void setsQueryParametersAsIdWithInvalidAuthorization(int arg0) {
+
+    }
+
+    @And("Sets query parameters as id {int}")
+    public void setsQueryParametersAsId(int id) {
+       API_Utils.createABody(id);
+
+    }
+
+    @And("Sends GET request with Body and valid Authorization")
+    public void sendsGETRequestWithBodyAndValidAuthorization() {
+        response = API_Utils.getRequestWithBody(fullPath,reqBodyJson);
+    }
+
+    @And("Sends GET request with Body with invalid Authorization")
+    public void sendsGETRequestWithBodyWithInvalidAuthorization() {
+        String invalidToken=HooksAPI.token+"invalid";
+        Response response= given()
                 .spec(HooksAPI.spec)
-                .headers("Authorization", "Bearer " + HooksAPI.token)
-                .header("Accept","application/json")
-                .contentType("application/json")
+                .headers("Authorization", "Bearer " + invalidToken)
+                .contentType(ContentType.JSON)
                 .when()
                 .body(reqBodyJson.toString())
                 .get(fullPath);
         response.prettyPrint();
-
+    }
+    @Given("Sends POST request with Body and valid Authorization")
+    public void sends_post_request_with_body_and_valid_authorization() {
+        API_Utils.postRequest(fullPath,reqBodyJson);
     }
 
-
-    @Then("Api user confirms that the returned status code is {int}")
-    public void apiUserConfirmsThatTheReturnedStatusCodeIs(int statusCode) {
-        assertEquals(statusCode,response.getStatusCode());
+    @And("Sends POST request with Body and invalid Authorization")
+    public void sendsPOSTRequestWithBodyAndInvalidAuthorization() {
+        String invalidToken=HooksAPI.token+"invalid";
+        Response response=given().headers("Authorization",
+                        "Bearer " + invalidToken,
+                        "Content-Type",
+                        ContentType.JSON,
+                        "Accept",
+                        ContentType.JSON).spec(HooksAPI.spec).contentType(ContentType.JSON)
+                .when().body(reqBodyJson.toString())
+                .post(fullPath);
+        response.prettyPrint();
     }
 
-    @Then("Api user verifies that the response message information is {string}")
-    public void apiUserVerifiesThatTheResponseMessageInformationIs(String expectedStr) {
-        JsonPath resJP = response.jsonPath();
-        assertEquals(expectedStr,resJP.getString("message"));
+    @And("Sends PATCH request with Body and valid Authorization")
+    public void sendsPATCHRequestWithBodyAndValidAuthorization() {
+        API_Utils.patchRequest(fullPath,reqBodyJson);
+    }
+
+    @And("Sends PATCH request with Body and invalid Authorization")
+    public void sendsPATCHRequestWithBodyAndInvalidAuthorization() {
+        String invalidToken=HooksAPI.token+"invalid";
+        Response response=given().headers("Authorization",
+                        "Bearer " + invalidToken,
+                        "Content-Type",
+                        ContentType.JSON,
+                        "Accept",
+                        ContentType.JSON).spec(HooksAPI.spec).contentType(ContentType.JSON)
+                .when().body(reqBodyJson.toString())
+                .patch(fullPath);
+        response.prettyPrint();
+    }
+
+    @And("Sends DELETE request with Body and valid Authorization")
+    public void sendsDELETERequestWithBodyAndValidAuthorization() {
+      API_Utils.deleteRequest(fullPath,reqBodyJson);
+    }
+
+    @And("Sends DELETE request with Body and invalid Authorization")
+    public void sendsDELETERequestWithBodyAndInvalidAuthorization() {
+        String invalidToken=HooksAPI.token+"invalid";
+        Response response=given().headers("Authorization",
+                        "Bearer " + invalidToken,
+                        "Content-Type",
+                        ContentType.JSON,
+                        "Accept",
+                        ContentType.JSON).spec(HooksAPI.spec).contentType(ContentType.JSON)
+                .when().body(reqBodyJson.toString())
+                .body(reqBodyJson)
+                .delete(fullPath);
+        response.prettyPrint();
     }
 
     @Then("Api user sends a GET body with an uncorrect data.")
