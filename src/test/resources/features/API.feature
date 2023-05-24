@@ -1,18 +1,17 @@
+@API
 Feature: API Tests
 
-  Scenario: API_US20 Bir yönetici olarak API baglantisi üzerinden Staff List'e erisebilmeliyim.
+  Scenario: API_US35 Bir yönetici olarak API baglantisi üzerinden id girerek ilgili finding verisine erisebilmeliyim.
 
-    Given Api kullanicisi "api/opdList" path parametreleri set eder
-    Then Exp data hazırlar
-    Then .....Gecerli giris
-    And GET request gönderildiginde dönen status code'un 200 oldugu ve response message bilgisinin "Success"
+    Given Api kullanicisi "api/getFindingById" path parametreleri set eder
+    And Gecerli bilgiler ve dogru id 1 ile giris yapmak icin query parametreleri set eder
+    And GET request gonderir
+    Then Donen status kodunun 403 oldugunu dogrular
+    Then Response message bilgisinin "Success" oldugunu dogrular
 
 
-  Scenario:  API_US20 Bir yönetici olarak API baglantisi üzerinden Staff List'e erisebilmeliyim.
 
-    Given Kullanıcı path params hazırlar
-    Then Exp data hazırlar
-    Then .....Gecersiz giris
-    And GET request gönderildiginde dönen status code'un 403 oldugu ve response message bilgisinin "Failed"
+
+
 
 
