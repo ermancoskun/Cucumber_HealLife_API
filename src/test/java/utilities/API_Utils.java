@@ -148,4 +148,15 @@ public class API_Utils {
         return jsonObject;
     }
 
+    public static JSONObject createABody(int id ,String  exp_category, String description,String is_active,String is_deleted,String created_at ){
+        JSONObject jsonObject=new JSONObject();
+        jsonObject.put("id",id);
+        jsonObject.put(" exp_category", exp_category);
+        jsonObject.put("description",description);
+        jsonObject.put("is_active",is_active);
+        jsonObject.put("is_deleted",is_deleted);
+        jsonObject.put("created_at",created_at);
+        return jsonObject;
+    }
+
 }
