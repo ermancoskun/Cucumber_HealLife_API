@@ -55,7 +55,7 @@ public class API_Utils {
                 .headers("Authorization", "Bearer " + HooksAPI.token)
                 .contentType(ContentType.JSON)
                 .when()
-                .get(fullPath);
+                .get(endpoint);
         response.prettyPrint();
         return response;
     }

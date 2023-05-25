@@ -10,6 +10,7 @@ import io.restassured.path.json.JsonPath;
 
 import io.restassured.response.Response;
 import org.hamcrest.Matchers;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Assert;
 import org.testng.asserts.SoftAssert;
@@ -32,6 +33,7 @@ public class APIStepDefinition {
     public static String addId;
 
     int basariliStatusCode=200;
+    String message;
 
 
     @Given("Api kullanicisi {string} path parametreleri set eder")
@@ -161,10 +163,6 @@ public class APIStepDefinition {
     }
 
 
-
-
-
-
     @Then("Verifies that the returned status code is {int}")
     public void verifiesThatTheReturnedStatusCodeIs(int statusCode) {
             softAssert.assertEquals(response.getStatusCode(),statusCode,"Status code value is NOT "+statusCode);
@@ -262,7 +260,7 @@ public class APIStepDefinition {
 
 
 
-    
+
 
 
 
@@ -299,7 +297,7 @@ public class APIStepDefinition {
     }
 
     @Then("Verifies in the response body with id {string}, name {string},description {string} , finding_category_id {string}, created_at {string}, category {string}  in ExpenseHead.")
-    public void verifiesInTheResponseBodyWithIdNameDescriptionFinding_category_idCreated_atCategoryInExpenseHead(String id, String name, String description, String finding_category_id, String created_at, String category) {
+    public void resverifiesInTheResponseBodyWithIdNameDescriptionFinding_category_idCreated_atCategoryInExpenseHead(String id, String name, String description, String finding_category_id, String created_at, String category) {
         JsonPath respJp=response.jsonPath();
         assertEquals(id,respJp.getString("details.id"));
         assertEquals(name,respJp.getString("details.name"));
@@ -311,6 +309,65 @@ public class APIStepDefinition {
     @And("Sends GET request with valid Authorization")
     public void sendsGETRequestWithValidAuthorization() {
         response=API_Utils.getRequest(fullPath);
+    }
+
+    @And("Creates an expected body with id {int}, is visitors_ purpose  {string}, description {string}, created_at {string}")
+    public void createsAnExpectedBodyWithIdIsVisitors_PurposeDescriptionCreated_at(int id, String visitors_purpose, String description, String creat_at) {
+        JSONObject data1 = new JSONObject();
+        data1.put("id", "19");
+        data1.put("visitors_purpose", "feridun bey");
+        data1.put("description", "bayram 123 111");
+        data1.put("created_at", "2023-04-12 08:34:56");
+
+        JSONObject data2 = new JSONObject();
+        data2.put("status", 200);
+        data2.put("message", "Success");
+        data2.put("Token_remaining_time", 871);
+
+        JSONArray jsonArray = new JSONArray();
+        jsonArray.put(data1);
+
+        JSONObject finalData = new JSONObject();
+        finalData.put("lists", jsonArray);
+        finalData.put("otherData", data2);
+
+        System.out.println(finalData.toString());
+    }
+
+
+    @And("Verifies in the response body with id {string}, is visitors_ purpose  {string}, description {string}, created_at {string}  must be verified .")
+    public void verifiesInTheResponseBodyWithIdIsVisitors_PurposeDescriptionCreated_atMustBeVerified(String id, String visitors_purpose, String description, String created_at) {
+        JsonPath resJp = response.jsonPath();
+        assertEquals(id, resJp.get("lists[6].id"));
+        assertEquals(visitors_purpose, resJp.get("lists[6].visitors_purpose"));
+        assertEquals(description, resJp.get("lists[6].description"));
+        assertEquals(created_at, resJp.get("lists[6].created_at"));
+    }
+
+
+    @And("Sends GET request valid Authorization")
+    public void sendsGETRequestValidAuthorization() {
+          response=API_Utils.getRequest(fullPath);
+    }
+
+
+
+    @And("Sends GET request invalid Authorization")
+    public void sendsGETRequestInvalidAuthorization() {
+        String invalidToken = HooksAPI.token + "invalid";
+             response = given()
+                    .spec(HooksAPI.spec)
+                    .headers("Authorization", "Bearer " + invalidToken)
+                    .contentType(ContentType.JSON)
+                    .when()
+                    .get(fullPath);
+            response.prettyPrint();
+    }
+
+    @Then("Verifies that the returned status codee is {int}")
+    public void verifiesThatTheReturnedStatusCodeeIs(int arg0) {
+        Assert.assertTrue(message.contains("403"));
+
     }
 }
 

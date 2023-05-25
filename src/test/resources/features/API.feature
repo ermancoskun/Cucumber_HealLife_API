@@ -7,6 +7,7 @@ Feature: API Tests
   # Status code testleri icin "Verifies that the returned status code is 200"
   # Response daki message testi icin "Verifies that the response message is "Success"
   # Body oluşturulacak ise API_Utils'deki createABody() metoduna parametre girilerek olusturulur
+  # ******STEPLERIMIZDE ASAGIDAKI GHERKIN IFADELERI KULLANALIM***************************************************
   #      And Sends GET request with Body and valid Authorization
   #      And Sends GET request with Body with invalid Authorization
   #      And Sends POST request with Body and valid Authorization
@@ -15,6 +16,8 @@ Feature: API Tests
   #      And Sends PATCH request with Body and invalid Authorization
   #      And Sends DELETE request with Body and valid Authorization
   #      And Sends DELETE request with Body and invalid Authorization
+  #      And Sends GET request valid Authorization
+  #      And Sends GET request invalid Authorization
 
   Scenario: [API_US35_TC01]-(1A) As an administrator, I should be able to access the relevant finding data by entering the id over the API connection .
 
@@ -82,7 +85,8 @@ Feature: API Tests
     Then Creates an expected body with id 5, exp_category "Power Generator Fuel Charge",description "They can utilise a variety of fuel options including natural gas, LPG and diesel." ,is_active "yes", is_deleted "no", created_at "2021-10-29 01:35:42"  in ExpenseHead.
     And Sends GET request with Body and valid Authorization
     And Verifies in the response body with id "5", exp_category "Power Generator Fuel Charge",description "They can utilise a variety of fuel options including natural gas, LPG and diesel." , is_active "yes", is_deleted "no", created_at "2021-10-29 01:35:42"  in ExpenseHead.
-  @API
+
+
   Scenario: [API_US14_TC01]-(1A)  As an administrator, I should be able to access the
   blood group list with valid authorization registered in the system via API connection.
 
@@ -90,6 +94,32 @@ Feature: API Tests
     And Sends GET request with valid Authorization
     Then Verifies that the returned status code is 200
     Then Verifies that the response message is "Success"
+
+
+  Scenario: [API_US04]-(TC01_A) Visitor via API connection as an administrator purpose List I should be able to reach .
+    Given Api user sets "api/visitorsPurposeList" path parameters.
+    And Sends GET request valid Authorization
+    Then Verifies that the returned status code is 200
+    Then Verifies that the response message is "Success"
+
+  Scenario: [API_US04]-(TC01_B) As an administrator, I should be able to access the relevant expenditure data by entering the id over the API connection .
+
+    Given Api user sets "api/visitorsPurposeList" path parameters.
+    And  Sends GET request invalid Authorization
+    Then Verifies that the returned status codee is 403
+    Then Verifies that the response message is "Forbidden"
+  @API
+  Scenario: [API_US04]-(TC01_C)
+    Given Api user sets "api/visitorsPurposeList" path parameters.
+    And Sends GET request valid Authorization
+    And Verifies in the response body with id "19", is visitors_ purpose  "feridun bey", description "bayram 123 111", created_at "2023-04-12 08:34:56"  must be verified .
+
+  Scenario: [API_US04]-(TC01_D)
+
+    Given Api user sets "api/visitorsPurposeList" path parameters.
+    And Creates an expected body with id 29, is visitors_ purpose  "special work", description "special word details"", created_at ""2023-05-18 17:00:26"
+    And Sends GET request valid Authorization
+    And Verifies in the response body with id "29", is visitors_ purpose  "special work", description "special word details"", created_at ""2023-05-18 17:00:26""  must be verified .
 
 
 
