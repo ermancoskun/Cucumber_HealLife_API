@@ -36,7 +36,8 @@ public class API_Utils {
     }
 
 
-    public static Response getRequest(String arg) {
+    public static Response getRequest(String fullPath) {
+
        Response response = given().headers("Authorization", "Bearer " + HooksAPI.token)
                 .contentType(ContentType.JSON)
                 .when()
