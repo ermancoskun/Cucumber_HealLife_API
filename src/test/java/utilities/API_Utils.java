@@ -104,6 +104,11 @@ public class API_Utils {
         jsonObject.put("id",id);
         return jsonObject;
     }
+    public static JSONObject createABody(String id){
+        JSONObject jsonObject=new JSONObject();
+        jsonObject.put("id",id);
+        return jsonObject;
+    }
     public static JSONObject createABody(String name, String is_blood_group, Boolean w){
         JSONObject jsonObject=new JSONObject();
         jsonObject.put("name",name);

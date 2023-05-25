@@ -1,4 +1,4 @@
-@API
+
 Feature: API Tests
   #Scenario: isimlendirme notasyonu [API_US35_TC01]-(1A) pozitif negatif senaryolar icin 1A ve 1B yazılabilir
   # Hepimiz path parametrelerini "Api user sets "endpointler" path parameters." yazarak baslayalim
@@ -15,23 +15,46 @@ Feature: API Tests
   #      And Sends PATCH request with Body and invalid Authorization
   #      And Sends DELETE request with Body and valid Authorization
   #      And Sends DELETE request with Body and invalid Authorization
+  @API
+  Scenario: [API_US35_TC01]-(1A) As an administrator, I should be able to access the relevant finding data by entering the id over the API connection .
 
-  Scenario: [API_US35_TC01]-(1A) Bir yönetici olarak API baglantisi üzerinden id girerek ilgili finding verisine erisebilmeliyim.
-
-      Given Api user sets "api/staffList" path parameters.
+      Given Api user sets "api/getFindingById" path parameters.
       And Sets query parameters as id 1
       And Sends GET request with Body and valid Authorization
       Then Verifies that the returned status code is 200
       Then Verifies that the response message is "Success"
 
-  Scenario: [API_US35_TC01]-(1B) Bir yönetici olarak API baglantisi üzerinden id girerek ilgili finding verisine erisebilmeliyim.
+  Scenario: [API_US35_TC01]-(1B) As an administrator, I should not be able to access the relevant finding data by entering the id over the API connection .
 
-    Given Api user sets "api/staffList" path parameters.
+    Given Api user sets "api/getFindingById" path parameters.
     And Sets query parameters as id 1
     And Sends GET request with Body with invalid Authorization
     Then Verifies that the returned status code is 403
     Then Verifies that the response message is "failed"
 
+  Scenario: [API_US35_TC01]-(1C) As an administrator, I should not be able to access the relevant finding data by entering the id over the API connection .
+
+    Given Api user sets "api/getFindingById" path parameters.
+    And Sets query parameters as id 9999999
+    And Sends GET request with Body and valid Authorization
+    Then Verifies that the returned status code is 403
+    Then Verifies that the response message is "failed"
+
+  Scenario: [API_US35_TC01]-(1D) As an administrator, I should not be able to access the relevant finding data by entering the id over the API connection .
+
+    Given Api user sets "api/getFindingById" path parameters.
+    And Sets query parameters as id 9999999
+    And Sends GET request with Body with invalid Authorization
+    Then Verifies that the returned status code is 403
+    Then Verifies that the response message is "failed"
+
+  Scenario: [API_US35_TC01]-(2) As an administrator, I should be able to access the relevant finding data by entering the id over the API connection .
+
+    Given Api user sets "api/getFindingById" path parameters.
+    And Sets query parameters as id 1
+    And Sends GET request with Body and valid Authorization
+    Then Verifies that the returned status code is 200
+    Then Verifies that the response message is "Success"
 
 
 
