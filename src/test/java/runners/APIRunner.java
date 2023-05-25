@@ -3,6 +3,7 @@ import io.cucumber.junit.Cucumber;
 import io.cucumber.junit.CucumberOptions;
 import org.junit.runner.RunWith;
 
+
 @RunWith(Cucumber.class)
 @CucumberOptions(
         plugin = {
@@ -12,10 +13,11 @@ import org.junit.runner.RunWith;
                 "junit:target/xml-report/cucumber.xml",
                 "rerun:target/failedRerun.txt"
         },
-        features = "src/test/resources/features/api",
-        glue = {"stepDefinitions/api", "hooks/api"},
-        tags = "@api",
-        dryRun = false
+        features = "src/test/resources/features",
+        glue = {"stepDefinitions", "hooks"},
+
+        tags = "@US20",
+        dryRun = true
 )
 public class APIRunner {
 }
