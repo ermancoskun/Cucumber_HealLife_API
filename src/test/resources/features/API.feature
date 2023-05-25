@@ -33,7 +33,12 @@ Feature: API Tests
     Then Verifies that the response message is "failed"
 
 
+
+
+    Scenario: As an administrator, I should be able to access the relevant expenditure data by entering the id over the API connection .
+
     Scenario: [API_US20]-(TC01_A) As an administrator, I should be able to access the relevant expenditure data by entering the id over the API connection .
+
 
       Given Api user sets "api/getExpenseHeadById" path parameters.
       Then Sets query parameters as id 5
