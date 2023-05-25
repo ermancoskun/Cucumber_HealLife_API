@@ -318,5 +318,16 @@ public class APIStepDefinition {
         assertEquals(is_deleted, resJp.get("details.is_deleted"));
         assertEquals(created_at, resJp.get("details.created_at"));
     }
+
+    @Then("Verifies in the response body with id {string}, name {string},description {string} , finding_category_id {string}, created_at {string}, category {string}  in ExpenseHead.")
+    public void verifiesInTheResponseBodyWithIdNameDescriptionFinding_category_idCreated_atCategoryInExpenseHead(String id, String name, String description, String finding_category_id, String created_at, String category) {
+        JsonPath resJp=response.jsonPath();
+        assertEquals(id,resJp.get("details.id"));
+        assertEquals(name,resJp.get("details.name"));
+        assertEquals(description,resJp.get("details.description"));
+        assertEquals(finding_category_id,resJp.get("details.finding_category_id"));
+        assertEquals(created_at,resJp.get("details.created_at"));
+        assertEquals(category,resJp.get("details.category"));
+    }
 }
 
