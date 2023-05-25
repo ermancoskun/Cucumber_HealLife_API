@@ -36,15 +36,11 @@ public class API_Utils {
     }
 
 
-    public static Response getRequest(String endpoint) {
-
-        Response response = given().headers(
-                "Authorization",
-                "Bearer " + HooksAPI.token,
-                "Content-Type",
-                ContentType.JSON,
-                "Accept",
-                ContentType.JSON).when().get(endpoint);
+    public static Response getRequest(String arg) {
+       Response response = given().headers("Authorization", "Bearer " + HooksAPI.token)
+                .contentType(ContentType.JSON)
+                .when()
+                .get(fullPath);
         response.prettyPrint();
         return response;
     }
