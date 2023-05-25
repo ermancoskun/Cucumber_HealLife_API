@@ -1,4 +1,4 @@
-@API
+
 Feature: API Tests
   #Scenario: isimlendirme notasyonu [API_US35_TC01]-(1A) pozitif negatif senaryolar icin 1A ve 1B yazılabilir
   # Hepimiz path parametrelerini "Api user sets "endpointler" path parameters." yazarak baslayalim
@@ -15,7 +15,7 @@ Feature: API Tests
   #      And Sends PATCH request with Body and invalid Authorization
   #      And Sends DELETE request with Body and valid Authorization
   #      And Sends DELETE request with Body and invalid Authorization
-
+  @API
   Scenario: [API_US35_TC01]-(1A) Bir yönetici olarak API baglantisi üzerinden id girerek ilgili finding verisine erisebilmeliyim.
 
       Given Api user sets "api/staffList" path parameters.

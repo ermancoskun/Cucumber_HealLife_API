@@ -162,19 +162,6 @@ public class APIStepDefinition {
         reqBodyJson=API_Utils.createABody(id);
     }
 
-
-
-
-    @And("Sets query parameters as id {int} with valid Authorization")
-    public void setsQueryParametersAsIdWithValidAuthorization(int id) {
-
-    }
-
-    @And("Sends GET request with Body")
-    public void sendsGETRequestWithBody() {
-        response = API_Utils.getRequestWithBody(fullPath,reqBodyJson);
-    }
-
     @Then("Verifies that the returned status code is {int}")
     public void verifiesThatTheReturnedStatusCodeIs(int statusCode) {
         softAssert.assertEquals(response.getStatusCode(),statusCode,"Status code value is NOT "+statusCode);
@@ -184,11 +171,6 @@ public class APIStepDefinition {
     public void verifiesThatTheResponseMessageIs(String message) {
         JsonPath respJS= response.jsonPath();
         softAssert.assertEquals(respJS.getString("message"),message,"Returned message is not true");
-    }
-
-    @And("Sets query parameters as id {int} with invalid Authorization")
-    public void setsQueryParametersAsIdWithInvalidAuthorization(int arg0) {
-
     }
 
     @And("Sets query parameters as id {int}")
@@ -217,69 +199,8 @@ public class APIStepDefinition {
     @Given("Sends POST request with Body and valid Authorization")
     public void sends_post_request_with_body_and_valid_authorization() {
         API_Utils.postRequest(fullPath,reqBodyJson);
+
     }
-
-    @And("Sends POST request with Body and invalid Authorization")
-    public void sendsPOSTRequestWithBodyAndInvalidAuthorization() {
-        String invalidToken=HooksAPI.token+"invalid";
-        Response response=given().headers("Authorization",
-                        "Bearer " + invalidToken,
-                        "Content-Type",
-                        ContentType.JSON,
-                        "Accept",
-                        ContentType.JSON).spec(HooksAPI.spec).contentType(ContentType.JSON)
-                .when().body(reqBodyJson.toString())
-                .post(fullPath);
-        response.prettyPrint();
-    }
-
-    @And("Sends PATCH request with Body and valid Authorization")
-    public void sendsPATCHRequestWithBodyAndValidAuthorization() {
-        API_Utils.patchRequest(fullPath,reqBodyJson);
-    }
-
-    @And("Sends PATCH request with Body and invalid Authorization")
-    public void sendsPATCHRequestWithBodyAndInvalidAuthorization() {
-        String invalidToken=HooksAPI.token+"invalid";
-        Response response=given().headers("Authorization",
-                        "Bearer " + invalidToken,
-                        "Content-Type",
-                        ContentType.JSON,
-                        "Accept",
-                        ContentType.JSON).spec(HooksAPI.spec).contentType(ContentType.JSON)
-                .when().body(reqBodyJson.toString())
-                .patch(fullPath);
-        response.prettyPrint();
-    }
-
-    @And("Sends DELETE request with Body and valid Authorization")
-    public void sendsDELETERequestWithBodyAndValidAuthorization() {
-      API_Utils.deleteRequest(fullPath,reqBodyJson);
-    }
-
-    @And("Sends DELETE request with Body and invalid Authorization")
-    public void sendsDELETERequestWithBodyAndInvalidAuthorization() {
-        String invalidToken=HooksAPI.token+"invalid";
-        Response response=given().headers("Authorization",
-                        "Bearer " + invalidToken,
-                        "Content-Type",
-                        ContentType.JSON,
-                        "Accept",
-                        ContentType.JSON).spec(HooksAPI.spec).contentType(ContentType.JSON)
-                .when().body(reqBodyJson.toString())
-                .body(reqBodyJson)
-                .delete(fullPath);
-        response.prettyPrint();
-    }
-
-
-
-
-    
-
-
-
-
 
     @Then("Creates an expected body with id {int}, exp_category {string},description {string} ,is_active {string}, is_deleted {string}, created_at {string}  in ExpenseHead.")
     public void createsAnExpectedBodyWithIdExp_categoryDescriptionIs_activeIs_deletedCreated_atInExpenseHead(int id, String exp_category, String description, String is_active, String is_deleted, String created_at) {
