@@ -391,5 +391,17 @@ public class APIStepDefinition {
         Assert.assertTrue(message.contains("403"));
 
     }
+
+    @Given("Get query is generated with valid information")
+    public void getQueryIsGeneratedWithValidInformation() {
+
+        response= given()
+                .spec(HooksAPI.spec)
+                .header("Authorization","Bearer "+HooksAPI.token)
+                .contentType(ContentType.JSON)
+                .when()
+                .get(fullPath);
+
+    }
 }
 

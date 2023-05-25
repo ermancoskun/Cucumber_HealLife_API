@@ -108,7 +108,17 @@ Feature: API Tests
     And Sends GET request valid Authorization
     And Verifies in the response body with id "29", is visitors_ purpose  "special work", description "special word details"", created_at ""2023-05-18 17:00:26""  must be verified .
 
+  Scenario: [API_US29->TC01] /api/getFindingCategory to your endpoint valid a GET request with authorization information status when sent the code is 200 and the response the message information is " Success " should be verified .
 
+    Then Api kullanicisi "api/getFindingCategory" path parametreleri set eder
+    Given Get query is generated with valid information
+    And Verifies that the returned status code is 200
+    And Verifies that the response message is "Success"
 
+  Scenario: [API_US29->TC02] /api/getFindingCategory to your endpoint invalid A GET Request with authorization information status when sent that the code is 403 and the response the message information is " failed " must be verified
+
+    Given Api kullanicisi "api/getFindingCategory" path parametreleri set eder
+    Then Sends GET request invalid Authorization
+    Then Verifies that the returned status codee is 403
 
 
