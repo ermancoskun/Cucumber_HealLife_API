@@ -312,27 +312,28 @@ public class APIStepDefinition {
     }
 
     @And("Creates an expected body with id {int}, is visitors_ purpose  {string}, description {string}, created_at {string}")
-    public void createsAnExpectedBodyWithIdIsVisitors_PurposeDescriptionCreated_at(int id, String visitors_purpose, String description, String creat_at) {
-        JSONObject data1 = new JSONObject();
-        data1.put("id", "19");
-        data1.put("visitors_purpose", "feridun bey");
-        data1.put("description", "bayram 123 111");
-        data1.put("created_at", "2023-04-12 08:34:56");
+    public void createsAnExpectedBodyWithIdIsVisitors_PurposeDescriptionCreated_at ( int id, String
+        visitors_purpose, String description, String creat_at){
+            JSONObject data1 = new JSONObject();
+            data1.put("id", "19");
+            data1.put("visitors_purpose", "feridun bey");
+            data1.put("description", "bayram 123 111");
+            data1.put("created_at", "2023-04-12 08:34:56");
 
-        JSONObject data2 = new JSONObject();
-        data2.put("status", 200);
-        data2.put("message", "Success");
-        data2.put("Token_remaining_time", 871);
+            JSONObject data2 = new JSONObject();
+            data2.put("status", 200);
+            data2.put("message", "Success");
+            data2.put("Token_remaining_time", 871);
 
-        JSONArray jsonArray = new JSONArray();
-        jsonArray.put(data1);
+            JSONArray jsonArray = new JSONArray();
+            jsonArray.put(data1);
 
-        JSONObject finalData = new JSONObject();
-        finalData.put("lists", jsonArray);
-        finalData.put("otherData", data2);
+            JSONObject finalData = new JSONObject();
+            finalData.put("lists", jsonArray);
+            finalData.put("otherData", data2);
 
-        System.out.println(finalData.toString());
-    }
+            System.out.println(finalData.toString());
+        }
 
 
     @And("Verifies in the response body with id {string}, is visitors_ purpose  {string}, description {string}, created_at {string}  must be verified .")
@@ -367,6 +368,44 @@ public class APIStepDefinition {
     @Then("Verifies that the returned status codee is {int}")
     public void verifiesThatTheReturnedStatusCodeeIs(int arg0) {
         Assert.assertTrue(message.contains("403"));
+
+
+    }
+
+    @And("Sends GET request with invalid Authorization")
+    public void sendsGETRequestWithInvalidAuthorization() {
+        String invalidToken=HooksAPI.token+"invalid";
+         response = given().spec(HooksAPI.spec).
+                headers("Authorization", "Bearer " + invalidToken)
+                .contentType(ContentType.JSON)
+                .when()
+                .get(fullPath);
+        response.prettyPrint();
+
+
+    }
+
+    @Then("Verifies in the response body with id {string}, name {string}, is_blood_group {string}, created_at {string}")
+    public void verifiesInTheResponseBodyWithIdNameIs_blood_groupCreated_at(String id, String name, String is_blood_group, String created_at) {
+        JsonPath respJp = response.jsonPath();
+        assertEquals(id,respJp.get("lists.[2].id"));
+        assertEquals(name,respJp.get("lists.[2].name"));
+        assertEquals(is_blood_group,respJp.get("lists.[2].is_blood_group"));
+        assertEquals(created_at,respJp.get("lists.[2].created_at"));
+
+
+
+    }
+
+    @Given("Get query is generated with valid information")
+    public void getQueryIsGeneratedWithValidInformation() {
+
+        response= given()
+                .spec(HooksAPI.spec)
+                .header("Authorization","Bearer "+HooksAPI.token)
+                .contentType(ContentType.JSON)
+                .when()
+                .get(fullPath);
 
     }
 }
