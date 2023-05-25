@@ -63,8 +63,6 @@ public class APIStepDefinition {
     @Given("Api user sets {string} path parameters.")
     public void apiUserSetsPathParameters(String rawPaths) {
 
-        // HooksAPI.spec.pathParams("pp0","api","pp1","opdList");
-
         // api/opdList
         String[] paths=rawPaths.split("/"); // [ "api","register"]
 
@@ -182,13 +180,13 @@ public class APIStepDefinition {
 
     @And("Sets query parameters as id {int}")
     public void setsQueryParametersAsId(int id) {
-      reqBodyJson= API_Utils.createABody(id);
+      reqBodyJson=API_Utils.createABody(id);
 
     }
 
     @And("Sends GET request with Body and valid Authorization")
     public void sendsGETRequestWithBodyAndValidAuthorization() {
-        response = API_Utils.getRequestWithBody(fullPath,reqBodyJson);
+        response=API_Utils.getRequestWithBody(fullPath,reqBodyJson);
     }
 
     @And("Sends GET request with Body with invalid Authorization")
@@ -302,13 +300,17 @@ public class APIStepDefinition {
 
     @Then("Verifies in the response body with id {string}, name {string},description {string} , finding_category_id {string}, created_at {string}, category {string}  in ExpenseHead.")
     public void verifiesInTheResponseBodyWithIdNameDescriptionFinding_category_idCreated_atCategoryInExpenseHead(String id, String name, String description, String finding_category_id, String created_at, String category) {
-        JsonPath resJp=response.jsonPath();
-        assertEquals(id,resJp.get("details.id"));
-        assertEquals(name,resJp.get("details.name"));
-        assertEquals(description,resJp.get("details.description"));
-        assertEquals(finding_category_id,resJp.get("details.finding_category_id"));
-        assertEquals(created_at,resJp.get("details.created_at"));
-        assertEquals(category,resJp.get("details.category"));
+        JsonPath respJp=response.jsonPath();
+        assertEquals(id,respJp.getString("details.id"));
+        assertEquals(name,respJp.getString("details.name"));
+        assertEquals(description,respJp.getString("details.description"));
+        assertEquals(finding_category_id,respJp.getString("details.finding_category_id"));
+        assertEquals(created_at,respJp.getString("details.created_at"));
+        assertEquals(category,respJp.getString("details.category"));
+    }
+    @And("Sends GET request with valid Authorization")
+    public void sendsGETRequestWithValidAuthorization() {
+        response=API_Utils.getRequest(fullPath);
     }
 }
 
