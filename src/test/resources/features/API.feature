@@ -82,6 +82,7 @@ Feature: API Tests
     And Sends GET request with Body and valid Authorization
     And Verifies in the response body with id "5", exp_category "Power Generator Fuel Charge",description "They can utilise a variety of fuel options including natural gas, LPG and diesel." , is_active "yes", is_deleted "no", created_at "2021-10-29 01:35:42"  in ExpenseHead.
 
+
 @said
   Scenario: [API_US14_TC01]-(1A)  As an administrator, I should be able to access the
   blood group list with valid authorization registered in the system via API connection.
@@ -96,16 +97,15 @@ Feature: API Tests
   invalid authorization registered in the system via API connection.
 
     Given Api user sets "api/getBloodGroup" path parameters.
-    And  Sends GET request with Body with invalid Authorization
+    And  Sends GET request with invalid Authorization
     Then Verifies that the returned status code is 403
     Then Verifies that the response message is "failed"
 
   @US14
   Scenario: [API_US14]-(TC01_C)  As an administrator, I should be able to verify the
   content of blood group list registered in the system via API connection.
-
     Given Api user sets "api/getBloodGroup" path parameters.
-    And Sends GET request with Body and valid Authorization
+    And Sends GET request with valid Authorization
     Then Verifies in the response body with id "3", name "AB-", is_blood_group "1", created_at "2021-10-25 02:32:41"
 
   Scenario: [API_US14]-(TC01_D)  As an administrator, I should be able to verify
@@ -126,6 +126,33 @@ Feature: API Tests
       | id | name | is_blood_group | created_at          |
       | 3  | AB-  | 1              | 2021-10-25 02:32:41 |
       | 8  | O+   | 1              | 2021-10-25 02:33:28 |
+
+
+  Scenario: [API_US04]-(TC01_A) Visitor via API connection as an administrator purpose List I should be able to reach .
+    Given Api user sets "api/visitorsPurposeList" path parameters.
+    And Sends GET request valid Authorization
+    Then Verifies that the returned status code is 200
+    Then Verifies that the response message is "Success"
+
+  Scenario: [API_US04]-(TC01_B) As an administrator, I should be able to access the relevant expenditure data by entering the id over the API connection .
+
+    Given Api user sets "api/visitorsPurposeList" path parameters.
+    And  Sends GET request invalid Authorization
+    Then Verifies that the returned status codee is 403
+    Then Verifies that the response message is "Forbidden"
+
+  Scenario: [API_US04]-(TC01_C)
+    Given Api user sets "api/visitorsPurposeList" path parameters.
+    And Sends GET request valid Authorization
+    And Verifies in the response body with id "19", is visitors_ purpose  " feridun bey", description "bayram 123 111", created_at "2023-04-12 08:34:56"  must be verified .
+
+  Scenario: [API_US04]-(TC01_D)
+
+    Given Api user sets "api/visitorsPurposeList" path parameters.
+    And Creates an expected body with id 29, is visitors_ purpose  "special work", description "special word details"", created_at ""2023-05-18 17:00:26"
+    And Sends GET request valid Authorization
+    And Verifies in the response body with id "29", is visitors_ purpose  "special work", description "special word details"", created_at ""2023-05-18 17:00:26""  must be verified .
+
 
 
 
