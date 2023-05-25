@@ -1,6 +1,6 @@
 Feature: US_16
 
-
+@pom
   Scenario: 1 Bir yönetici olarak API baglantisi üzerinden yeni bir kan grubu olusturabilmek istiyorum.
             /api/addBloodGroup endpoint'ine gecerli authorization bilgileri ve
             dogru datalar (name,is_blood_group) iceren bir POST body gönderildiginde
@@ -9,6 +9,7 @@ Feature: US_16
     * Api kullanicisi "api/addBloodGroup" path parametreleri set eder
     * Creates a request body with the name "Jane Doe", isBloodGroup "A Rh +" parameters to create Blood Group Data
     * Saves the response body of the POST method.
+    * Sends POST request with Body and valid Authorization
     * Verifies that the status code value is 200 in the returned response body.
     * Verifies that the message value is "Success" in the returned response body.
 

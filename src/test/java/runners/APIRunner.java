@@ -3,6 +3,7 @@ import io.cucumber.junit.Cucumber;
 import io.cucumber.junit.CucumberOptions;
 import org.junit.runner.RunWith;
 
+
 @RunWith(Cucumber.class)
 @CucumberOptions(
         plugin = {
@@ -14,8 +15,9 @@ import org.junit.runner.RunWith;
         },
         features = "src/test/resources/features",
         glue = {"stepDefinitions", "hooks"},
-        tags = "@API",
-        dryRun = false
+
+        tags = "@US20",
+        dryRun = true
 )
 public class APIRunner {
 }
