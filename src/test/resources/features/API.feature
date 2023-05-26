@@ -84,7 +84,7 @@ Feature: API Tests
   Scenario: [API_US20]-(TC01_C) As an administrator, I should be able to access the relevant expenditure data by entering the id over the API connection .
 
     Given Api user sets "api/getExpenseHeadById" path parameters.
-    Then Creates an expected body with id 5, exp_category "Power Generator Fuel Charge",description "They can utilise a variety of fuel options including natural gas, LPG and diesel." ,is_active "yes", is_deleted "no", created_at "2021-10-29 01:35:42"  in ExpenseHead.
+    Then Creates an expected body with id "5", exp_category "Power Generator Fuel Charge",description "They can utilise a variety of fuel options including natural gas, LPG and diesel." ,is_active "yes", is_deleted "no", created_at "2021-10-29 01:35:42"  in ExpenseHead.
     And Sends GET request with Body and valid Authorization
     And Verifies in the response body with id "5", exp_category "Power Generator Fuel Charge",description "They can utilise a variety of fuel options including natural gas, LPG and diesel." , is_active "yes", is_deleted "no", created_at "2021-10-29 01:35:42"  in ExpenseHead.
   @API
@@ -96,7 +96,24 @@ Feature: API Tests
     Then Verifies that the returned status code is 200
     Then Verifies that the response message is "Success"
 
-    Scenario: [API_US15_TC01]-(1A) As an administrator, I should be able to access the relevant blood data by entering the id over the API connection .
+  Scenario: [API_US34]-(1A) As an administrator I should be able to access the find list via the API link
+
+    Given Api user sets "api/getFinding" path parameters.
+    Then Sets query parameters as id 12
+    And  Sends GET request with Body and valid Authorization
+    Then Verifies that the returned status code is 200
+    Then Verifies that the response message is "Success"
+
+  Scenario: [API_US34]-(1B) As an administrator I should not be able to access the find list via the API link
+
+    Given Api user sets "api/getFinding" path parameters.
+    And Sets query parameters as id 12
+    And  Sends GET request with invalid Authorization
+    Then Verifies that the returned status code is 403
+    Then Verifies that the response message is "failed"
+
+
+  Scenario: [API_US15_TC01]-(1A) As an administrator, I should be able to access the relevant blood data by entering the id over the API connection .
       Given Api user sets "/api/getBloodGroupById" path parameters.
       Then Sets query parameters as id 1
       And Sends GET request with Body and valid Authorization
@@ -107,11 +124,48 @@ Feature: API Tests
   Scenario: [API_US15_TC01]-(1B)As an administrator, I should be able to access the relevant blood data by entering the id over the API connection .
     Given Api user sets "api/getBloodGroupById" path parameters.
     And Sets query parameters as id 123456
-    And Sends GET request with Body with invalid Authorization
-    Then Verifies that the returned status code is 403
-    Then Verifies that the response message is "failed"
+
+
+
+  Scenario: [API_US34]-(1C) As an administrator I should be able to access the find list via the API link
+
+    Given Api user sets "api/getFinding" path parameters.
+    #Then Creates an expected body with id "12", name "Refractive Errors.", description "A refractive error is a very common eye disorder. It occurs when the eye cannot clearly focus the images from the outside world. The result of refractive errors is blurred vision, which is sometimes so severe that it causes visual impairment", finding_category_id : "6", created_at : "2021-10-25 02:20:29", category : "Eye Diseases" in ExpenseHead.
+    And Request body is:
+    """
+    {
+            "id": "12",
+            "name": "Refractive Errors.",
+            "description": "A refractive error is a very common eye disorder. It occurs when the eye cannot clearly focus the images from the outside world. The result of refractive errors is blurred vision, which is sometimes so severe that it causes visual impairment",
+            "finding_category_id": "6",
+            "created_at": "2021-10-25 02:20:29",
+            "category": "Eye Diseases"
+        }
+    """
+    And Sends GET request with Body and valid Authorization
+      #And Verify that the datas are contained in the response body as "details.","id,name,description,finding_category_id,created_at,category","12,Refractive Errors.,A refractive error is a very common eye disorder. It occurs when the eye cannot clearly focus the images from the outside world. The result of refractive errors is blurred vision, which is sometimes so severe that it causes visual impairment,6,2021-10-25 02:20:29,Eye Diseases"
+    And Verifies in the response body with id "12", name "Refractive Errors.", description "A refractive error is a very common eye disorder. It occurs when the eye cannot clearly focus the images from the outside world. The result of refractive errors is blurred vision, which is sometimes so severe that it causes visual impairment", finding_category_id : "6", created_at : "2021-10-25 02:20:29", category : "Eye Diseases" in ExpenseHead.
+
+  @Nesy
+  Scenario: [API_US34]-(1D) As an administrator I should be able to access the find list via the API link
+
+    Given Api user sets "api/getFinding" path parameters.
+    Then Creates an expected body with id "7", name "Rosacea", description "Rosacea (roe-ZAY-she-uh) is a common skin condition that causes blushing or flushing and visible blood vessels in your face. It may also produce small, pus-filled bumps. These signs and symptoms may flare up for weeks to months and then go away for a while.", finding_category_id : "3", created_at : "2023-05-26 09:36:06", category : "" .
+    And Sends GET request with Body and valid Authorization
+    And Verifies in the response body with id "7", name "Rosacea", description "Rosacea (roe-ZAY-she-uh) is a common skin condition that causes blushing or flushing and visible blood vessels in your face. It may also produce small, pus-filled bumps. These signs and symptoms may flare up for weeks to months and then go away for a while.", finding_category_id : "3", created_at : "2023-05-26 09:36:06", category : "" in Finding
+
+
+  Scenario: [API_US06]-(1A) A new visitor via API link as an administrator purpose registration I want to be able to create .
+
+      Given Api user sets "api/visitorsPurposeAdd" path parameters.
+
+      #{
+      #    "visitors_purpose":"special work",
+      #    "description":"special word details"
+      #}'
 
   @US15
+
   Scenario: [API_US15_TC01]-(2)As an administrator, I should be able to access the relevant blood data by entering the id over the API connection .
     Given Api user sets "api/getBloodGroupById" path parameters.
     Then Sets query parameters as id 1
@@ -143,6 +197,12 @@ Feature: API Tests
 
   Scenario: [API_US07_TC01]-(3) Link as an administrator registered to the system via visitor I should be able to update the purpose information .
     Given Api user sets "/api/visitorsPurposeUpdate" path parameters.
+
+    And  Creates a request body with id {string} parameter to get finding category data
+
+
+
+
     And Creates request body as name "Jane Doe", isBloodGroup "A Rh +"
     And Sends POST request with Body and valid Authorization
     And Save addid number
@@ -152,6 +212,7 @@ Feature: API Tests
 
 
 @said
+
   Scenario: [API_US14_TC01]-(1A)  As an administrator, I should be able to access the
   blood group list with valid authorization registered in the system via API connection.
 
@@ -161,7 +222,7 @@ Feature: API Tests
     Then Verifies that the response message is "Success"
 
 
-
+  @said
   Scenario:[API_US14_TC01]-(1B)  As an administrator, I should be able to access the blood group list with
   invalid authorization registered in the system via API connection.
 
