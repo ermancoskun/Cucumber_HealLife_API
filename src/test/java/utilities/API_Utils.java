@@ -1,12 +1,14 @@
 package utilities;
 
 import hooks.HooksAPI;
+import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.json.JSONObject;
+import org.junit.Assert;
 
 import java.net.URI;
 import java.util.HashMap;
@@ -17,6 +19,9 @@ import static stepDefinitions.APIStepDefinition.fullPath;
 import static stepDefinitions.APIStepDefinition.reqBodyJson;
 
 public class API_Utils {
+
+    private static Response response;
+    private static String addId;
     public static RequestSpecification spec;
     public static String generateToken() {
 
@@ -35,32 +40,26 @@ public class API_Utils {
 
     }
 
-
-    public static Response getRequest(String endpoint) {
-
-        Response response = given().headers(
-                "Authorization",
-                "Bearer " + HooksAPI.token,
-                "Content-Type",
-                ContentType.JSON,
-                "Accept",
-                ContentType.JSON).when().get(endpoint);
+    public static Response deleteRequest(String endpoint,JSONObject reqBodyJson){
+        Response response= given()
+                .spec(HooksAPI.spec)
+                .headers("Authorization", "Bearer " + HooksAPI.token)
+                .contentType(ContentType.JSON)
+                .when()
+                .body(reqBodyJson.toString())
+                .delete(endpoint);
         response.prettyPrint();
         return response;
     }
-
-    public static Response deleteRequest(String endpoint,JSONObject reqBodyJson){
-        Response response = given().headers(
-                "Authorization",
-                "Bearer " + HooksAPI.token,
-                "Content-Type",
-                ContentType.JSON,
-                "Accept",
-                ContentType.JSON).when().
-                body(reqBodyJson).
-                delete(endpoint);
+    public static Response getRequest(String endpoint) {
+        Response response = given()
+                .spec(HooksAPI.spec)
+                .headers("Authorization", "Bearer " + HooksAPI.token)
+                .contentType(ContentType.JSON)
+                .when()
+                .get(endpoint);
         response.prettyPrint();
-        return  response;
+        return response;
     }
     public static Response getRequestWithBody(String endpoint, JSONObject reqBodyJson){
         Response response= given()
@@ -73,30 +72,27 @@ public class API_Utils {
         response.prettyPrint();
         return response;
     }
-    public static  Response postRequest(String endPoint, JSONObject reqBodyJson){
-
-        Response response=given().headers("Authorization",
-                        "Bearer " + HooksAPI.token,
-                        "Content-Type",
-                        ContentType.JSON,
-                        "Accept",
-                        ContentType.JSON).spec(HooksAPI.spec).contentType(ContentType.JSON)
-                .when().body(reqBodyJson.toString())
-                .post(endPoint);
+    public static  Response postRequest(String endpoint, JSONObject reqBodyJson){
+        Response response= given()
+                .spec(HooksAPI.spec)
+                .headers("Authorization", "Bearer " + HooksAPI.token)
+                .contentType(ContentType.JSON)
+                .when()
+                .body(reqBodyJson.toString())
+                .post(endpoint);
         response.prettyPrint();
         return response;
     }
     public  static  Response patchRequest(String endPoint,JSONObject reqBody){
-     Response response=given().headers("Authorization",
-                        "Bearer " + HooksAPI.token,
-                        "Content-Type",
-                        ContentType.JSON,
-                        "Accept",
-                        ContentType.JSON).spec(HooksAPI.spec).contentType(ContentType.JSON)
-                .when().body(reqBody.toString()).patch(endPoint);
-
-     response.prettyPrint();
-        return  response;
+        Response response= given()
+                .spec(HooksAPI.spec)
+                .headers("Authorization", "Bearer " + HooksAPI.token)
+                .contentType(ContentType.JSON)
+                .when()
+                .body(reqBody.toString())
+                .patch(endPoint);
+        response.prettyPrint();
+        return response;
     }
 
     public static JSONObject createABody(int id){
@@ -162,6 +158,36 @@ public class API_Utils {
         jsonObject.put("is_deleted",is_deleted);
         jsonObject.put("created_at",created_at);
         return jsonObject;
+    }
+
+    public static Response addNewRecord(String body,String endPoint){
+
+        response = RestAssured.given().spec(HooksAPI.spec).header("Authorization","Bearer "+HooksAPI.token)
+                .contentType(ContentType.JSON)
+                .when().body(body)
+                .post(endPoint);
+
+        JsonPath path = response.jsonPath();
+
+        addId = path.getString("addId");
+
+        return response;
+    }
+
+    public static Response deleteRecord(String endPoint){
+
+        JSONObject object = new JSONObject();
+        object.put("id",addId);
+
+        response = RestAssured.given().spec(HooksAPI.spec).header("Authorization","Bearer "+HooksAPI.token)
+                .contentType(ContentType.JSON)
+                .when().body(object.toString())
+                .delete(endPoint);
+
+
+        Assert.assertEquals(200,response.getStatusCode());
+
+        return response;
     }
 
 }
