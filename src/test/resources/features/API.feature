@@ -235,4 +235,85 @@ Feature: API Tests
 
 
 
+  @US16 @US16A
+  Scenario: [API_US16_TC01]-(1A)
+            /api/addBloodGroup to your endpoint valid Status returned
+            when sending a POST body containing authorization information
+            and correct data ( name,is _blood_group ) that the code is 200
+            and the message information in the response body is " Success " must be verified
+
+    * Api user sets "api/addBloodGroup" path parameters.
+    * Creates request body as name "Jane Doe", isBloodGroup "A Rh +"
+    * Sends POST request with Body and valid Authorization
+    * Verifies that the returned status code is 200
+    * Verifies that the response message is "Success"
+
+
+  @US16 @US16B
+  Scenario: [API_US16_TC01]-(1B)
+            /api/addBloodGroup to your endpoint invalid Status returned
+            when sending a POST body containing authorization information
+            or wrong data ( name,is _blood_group ) the code is 403
+            and the message information in the response body is " failed " must be verified
+
+    * Api user sets "api/addBloodGroup" path parameters.
+    * Sets query parameters as id 9999
+    * Sends POST request with Body and invalid Authorization
+    * Verifies that the returned status code is 403
+    * Verifies that the response message is "failed"
+
+
+  @US16 @US16C
+  Scenario: [API_US16_TC01]-(1C)
+            Via API of the new blood group record to be created created , via API should be verified .
+
+    * Api user sets "api/addBloodGroup" path parameters.
+    * Creates request body as name "Jane Doe", isBloodGroup "A Rh +"
+    * Sends POST request with Body and valid Authorization
+    * Save addid number
+    * Api user sets "api/getBloodGroup" path parameters.
+    * Sends GET request valid Authorization
+    * Verifies the newly created blood group record via APi.
+
+
+  @US30 @US30A
+  Scenario: [API_US30_TC01]-(1A)
+            /api/getFindingCategoryById to your endpoint valid Status returned
+            when sending a GET body with authorization information
+            and correct data (id) that the code is 200
+            and the message information in the response body is " Success " must be verified
+
+    * Api user sets "api/addBloodGroup" path parameters.
+    * Sets query parameters as id 1
+    * Sends GET request with Body and valid Authorization
+    * Verifies that the returned status code is 200
+    * Verifies that the response message is "Success"
+
+
+  @US30 @US30B
+  Scenario: [API_US30_TC01]-(1B)
+            /api/getFindingCategoryById to your endpoint invalid Status returned
+            when sending a GET body containing authorization information
+            and invalid data (id) the code is 403
+            and the message information in the response body is " failed " must be verified
+
+    * Api user sets "api/addBloodGroup" path parameters.
+    * Sets query parameters as id 9999
+    * Sends GET request with Body with invalid Authorization
+    * Verifies that the returned status code is 403
+    * Verifies that the response message is "failed"
+
+
+  @US30 @US30C
+  Scenario: [API_US30_TC01]-(1C)
+            Inside the response body The data( id, category , created_at ) must be validated.
+
+    *
+    *
+    *
+    *
+    *
+    *
+    *
+
 
