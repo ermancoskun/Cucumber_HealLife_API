@@ -5,6 +5,7 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 
+import io.cucumber.java.en.When;
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 
@@ -17,6 +18,7 @@ import org.testng.asserts.SoftAssert;
 import org.w3c.dom.stylesheets.LinkStyle;
 import pojos.Pojo_RegisterCustomer;
 import utilities.API_Utils;
+import utilities.DB_Utils;
 
 import static io.restassured.RestAssured.given;
 import static org.junit.Assert.assertEquals;
@@ -259,6 +261,12 @@ public class APIStepDefinition {
 
 
 
+
+
+
+
+
+
     @Then("Creates an expected body with id {int}, exp_category {string},description {string} ,is_active {string}, is_deleted {string}, created_at {string}  in ExpenseHead.")
     public void createsAnExpectedBodyWithIdExp_categoryDescriptionIs_activeIs_deletedCreated_atInExpenseHead(int id, String exp_category, String description, String is_active, String is_deleted, String created_at) {
         reqBodyJson=API_Utils.createABody(id,exp_category,description,is_active,is_deleted,created_at);
@@ -289,22 +297,16 @@ public class APIStepDefinition {
         assertEquals(created_at, resJp.get("details.created_at"));
     }
 
-    @And("Verifies in the response body with id {string}, name {string},is_blood_group {string} , created_ at {string}")
-    public void verifiesInTheResponseBodyWithIdNameIs_blood_groupCreated_at(String  id, String name, String is_blood_group, String created__at,boolean aysenuriye) {
-        JsonPath resJp = response.jsonPath();
-        assertEquals(id, resJp.get("lists.id"));
-        assertEquals(name, resJp.get("lists.name"));
-        assertEquals(is_blood_group, resJp.get("lists.is_blood_group"));
-        assertEquals(created__at, resJp.get("lists.details.created__at"));
-    }
-
     @And("Verifies in the response body with id {string}")
     public void verifiesInTheResponseBodyWithId(String id) {
         JsonPath resJp = response.jsonPath();
         assertEquals(id, resJp.get("lists.id"));
     }
+
+
     @Then("Verifies in the response body with id {string}, name {string},description {string} , finding_category_id {string}, created_at {string}, category {string}  in ExpenseHead.")
     public void resverifiesInTheResponseBodyWithIdNameDescriptionFinding_category_idCreated_atCategoryInExpenseHead
+
         (String id, String name, String description, String finding_category_id, String created_at, String category){
             JsonPath respJp = response.jsonPath();
             assertEquals(id, respJp.getString("details.id"));
@@ -342,6 +344,7 @@ public class APIStepDefinition {
 
             System.out.println(finalData.toString());
         }
+
 
 
     @And("Verifies in the response body with id {string}, is visitors_ purpose  {string}, description {string}, created_at {string}  must be verified .")
@@ -406,6 +409,29 @@ public class APIStepDefinition {
                 .contentType(ContentType.JSON)
                 .when()
                 .get(fullPath);
+    }
+
+
+    @When("Add a new record")
+    public void addANewRecord() {
+
+        String body = "{\n" +
+                "            \"exp_category\": \"stationary\",\n" +
+                "            \"description\": \"stationary expense\",\n" +
+                "            \"is_active\": \"yes\",\n" +
+                "            \"is_deleted\": \"no\"\n" +
+                "} ";
+
+        response = API_Utils.addNewRecord(body,fullPath);
+
+
+    }
+
+    @And("Delete this record after is verified")
+    public void deleteThisRecordAfterIsVerified() {
+
+        API_Utils.deleteRecord(fullPath);
+
     }
 }
 
