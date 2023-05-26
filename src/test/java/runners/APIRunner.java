@@ -17,13 +17,9 @@ import org.junit.runner.RunWith;
         glue = {"stepDefinitions", "hooks"},
 
 
-        tags = "@furkan",
+        tags = "@US25",
+
         dryRun = false
-
-
-
-
-
 
 )
 public class APIRunner {

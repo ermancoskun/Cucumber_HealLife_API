@@ -183,21 +183,12 @@ public class APIStepDefinition {
     }
 
 
-    @And("Sets query parameters as id {int} with valid Authorization")
-    public void setsQueryParametersAsIdWithValidAuthorization(int id) {
-
-    }
-
     @And("Sends GET request with Body")
     public void sendsGETRequestWithBody() {
         response = API_Utils.getRequestWithBody(fullPath, reqBodyJson);
 
     }
 
-    @Given("Creates a request body with id {string} parameter to get finding category data")
-    public void creates_a_request_body_with_id_parameter_to_get_finding_category_data(int id) {
-        reqBodyJson = API_Utils.createABody(id);
-    }
 
     @Then("Verifies that the returned status code is {int}")
     public void verifiesThatTheReturnedStatusCodeIs(int statusCode) {
@@ -354,7 +345,6 @@ public class APIStepDefinition {
         assertEquals(id, resJp.get("lists.id"));
     }
 
-
     @Then("Verifies in the response body with id {string}, name {string},description {string} , finding_category_id {string}, created_at {string}, category {string}  in ExpenseHead.")
     public void resverifiesInTheResponseBodyWithIdNameDescriptionFinding_category_idCreated_atCategoryInExpenseHead
             (String id, String name, String description, String finding_category_id, String created_at, String
@@ -368,6 +358,7 @@ public class APIStepDefinition {
         assertEquals(created_at, respJp.getString("details.created_at"));
         assertEquals(category, respJp.getString("details.category"));
     }
+
 
     @And("Sends GET request with valid Authorization")
     public void sendsGETRequestWithValidAuthorization() {
@@ -465,12 +456,11 @@ public class APIStepDefinition {
             is_blood_group, String created_at) {
 
         JsonPath respJp = response.jsonPath();
-        assertEquals(id, respJp.get("lists.[2].id"));
-        assertEquals(name, respJp.get("lists.[2].name"));
-        assertEquals(is_blood_group, respJp.get("lists.[2].is_blood_group"));
-        assertEquals(created_at, respJp.get("lists.[2].created_at"));
+        assertEquals(id, respJp.get("lists[2].id"));
+        assertEquals(name, respJp.get("lists[2].name"));
+        assertEquals(is_blood_group, respJp.get("lists[2].is_blood_group"));
+        assertEquals(created_at, respJp.get("lists[2].created_at"));
     }
-
 
     @And("Delete this record after is verified")
     public void deleteThisRecordAfterIsVerified() throws InterruptedException {
@@ -478,10 +468,9 @@ public class APIStepDefinition {
     }
 
     @Given("Verify that the datas are contained in the response body as {string},{string},{string}")
-    public void verify_that_the_datas_are_contained_in_the_response_body_as(String rspnBody, String
-            data, String dataValue) {
-        String[] datasArr = data.split(",");
-        String[] dataValuesArr = dataValue.split(",");
+    public void verify_that_the_datas_are_contained_in_the_response_body_as(String rspnBody, String data, String dataValue) {
+        String[] datasArr = data.split("#");
+        String[] dataValuesArr = dataValue.split("#");
 
         for (int i = 0; i < datasArr.length; i++) {
             response
@@ -502,7 +491,6 @@ public class APIStepDefinition {
         assertEquals(visitors_purpose, resJp.get("lists[6].visitors_purpose"));
         assertEquals(description, resJp.get("lists[6].description"));
         assertEquals(created_at, resJp.get("lists[6].created_at"));
-
 
     }
 
