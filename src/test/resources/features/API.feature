@@ -237,12 +237,57 @@ Feature: API Tests
     Then Sends GET request invalid Authorization
     Then Verifies that the returned status codee is 403
 
+  Scenario: [API_US29->TC03] inside the response body list content (id: of content with "1" category : "Fever", created_at : "2021-10-25 02:02:48" ) must be verified.
+
+    Then Api kullanicisi "api/getFindingCategory" path parametreleri set eder
+    Given Get query is generated with valid information
+    Then id: of content with "1", category : "Fever", created_at : "2021-10-25 02:02:48", must be verified
+
+  Scenario: [API_US29->TC04] Response body icindeki list icerigi (id:"2" olan icerigin category: "Typhidot (or Widal Test)", created_at: "2021-10-25 02:03:35"   oldugu) dogrulanmali.
+
+    Then Api kullanicisi "api/getFindingCategory" path parametreleri set eder
+    Given Get query is generated with valid information
+    Then id: of content with "2", category : "Typhidot (or Widal Test)", created_at : "2021-10-25 02:03:35", must be verified
+
+  Scenario: [API_US29->TC05] Response body icindeki list icerigi (id:"2" olan icerigin category: "Typhidot (or Widal Test)", created_at: "2021-10-25 02:03:35"   oldugu) dogrulanmali.
+
+    Then Api kullanicisi "api/getFindingCategory" path parametreleri set eder
+    Given Get query is generated with valid information
+    Then id: of content with "2", category : "Skin Problem", created_at : "2021-10-25 02:14:41", must be verified
+
   Scenario: [API_US23->TC01] /api/deleteExpenseHead to your endpoint valid Status returned when sending a DELETE body with authorization information and correct data (id) that the code is 200 and the message information in the response body is " Success " must be verified
 
-    Then Api kullanicisi "api/addExpenseHead" path parametreleri set eder
-    When Add a new record
-    And Api kullanicisi "api/deleteExpenseHead" path parametreleri set eder
-    And Delete this record after is verified
+    Given Api user sets "api/addExpenseHead" path parameters.
+    And Request body is:
+    """
+    {
+            "exp_category": "stationary",
+            "description": "stationary expense",
+            "is_active": "yes",
+            "is_deleted": "no"
+    }
+    """
+    Then Sends POST request with Body and valid Authorization
+    Given Api user sets "api/deleteExpenseHead" path parameters.
+    And Sends DELETE request with Body and valid Authorization
+
+
+
+  Scenario: [API_US23->TC02] /api/deleteExpenseHead to your endpoint invalid Status returned when sending a DELETE body containing authorization information or wrong data (id) the code is 403 and the message information in the response body is " failed " must be verified
+
+    Given Api user sets "api/addExpenseHead" path parameters.
+    And Request body is:
+    """
+    {
+            "exp_category": "stationary",
+            "description": "stationary expense",
+            "is_active": "yes",
+            "is_deleted": "no"
+    }
+    """
+    Then Sends POST request with Body and valid Authorization
+    Given Api user sets "api/deleteExpenseHead" path parameters.
+    And Sends DELETE request with Body and invalid Authorization
 
 
 
