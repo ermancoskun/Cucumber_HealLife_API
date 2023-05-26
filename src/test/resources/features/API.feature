@@ -314,5 +314,19 @@ Feature: API Tests
     *
     *
     *
+  Scenario:  Scenario: : [API_US22]-(TC01_A) Being able to update the expenditure information registered in the system via API connection as an administrator. I want..
+    Given Api user sets "api/updateExpenseHead" path parameters.
+    And Creates an expected body and Sends Patch request valid Authorization with "id", "exp category", "description","is_active","is_deleted"
+    And Sends PATCH request with Body and valid Authorization
+    Then Verifies that the returned status code is 200
+    Then Verifies that the response message is "Success"
+
+  Scenario:  Scenario: : [API_US22]-(TC01_C) Being able to update the expenditure information registered in the system via API connection as an administrator. I want..
+    Given Api user sets "api/updateExpenseHead" path parameters.
+    And Creates an expected body and Sends Patch request valid Authorization with "id", "exp category", "description","is_active","is_deleted"
+    And Sends PATCH request with Body and invalid Authorization
+    Then Verifies that the returned status code is 403
+    Then Verifies that the response message is "failed"
+
 
 

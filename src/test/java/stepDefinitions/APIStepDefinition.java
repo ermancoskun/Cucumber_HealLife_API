@@ -183,15 +183,15 @@ public class APIStepDefinition {
     @And("Sends PATCH request with Body and invalid Authorization")
     public void sendsPATCHRequestWithBodyAndInvalidAuthorization() {
         String invalidToken = HooksAPI.token + "invalid";
-        Response response = given().headers("Authorization",
-                        "Bearer " + invalidToken,
-                        "Content-Type",
-                        ContentType.JSON,
-                        "Accept",
-                        ContentType.JSON).spec(HooksAPI.spec).contentType(ContentType.JSON)
-                .when().body(reqBodyJson.toString())
+        Response response = given()
+                .spec(HooksAPI.spec)
+                .contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + invalidToken)
+                .body(reqBodyJson.toString())
+                .when()
                 .patch(fullPath);
         response.prettyPrint();
+
     }
 
     @And("Sends DELETE request with Body and valid Authorization")
@@ -304,15 +304,6 @@ public class APIStepDefinition {
         System.out.println(finalData.toString());
     }
 
-
-    @And("Verifies in the response body with id {string}, is visitors_ purpose  {string}, description {string}, created_at {string}  must be verified .")
-    public void verifiesInTheResponseBodyWithIdIsVisitors_PurposeDescriptionCreated_atMustBeVerified(String id, String visitors_purpose, String description, String created_at) {
-        JsonPath resJp = response.jsonPath();
-        assertEquals(id, resJp.get("lists[6].id"));
-        assertEquals(visitors_purpose, resJp.get("lists[6].visitors_purpose"));
-        assertEquals(description, resJp.get("lists[6].description"));
-        assertEquals(created_at, resJp.get("lists[6].created_at"));
-    }
 
 
     @And("Sends GET request valid Authorization")
@@ -429,6 +420,14 @@ public class APIStepDefinition {
         assertEquals(visitors_purpose, resJp.get("lists[14].visitors_purpose"));
         assertEquals(description, resJp.get("lists[14].description"));
         assertEquals(created_at, resJp.get("lists[14].created_at"));
+
+    }
+
+
+
+    @And("Creates an expected body and Sends Patch request valid Authorization with {string}, {string}, {string},{string},{string}")
+    public void createsAnExpectedBodyAndSendsPatchRequestValidAuthorizationWith(String id, String exp_category, String description, String is_active, String is_deleted){
+        reqBodyJson=API_Utils.createABody("21","stationary 1","stationary expense","yes","no");
 
     }
 }

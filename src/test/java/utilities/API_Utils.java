@@ -139,7 +139,7 @@ public class API_Utils {
         jsonObject.put("created_at",created_at);
         return jsonObject;
     }
-    public static JSONObject createABody(int id ,String  exp_category, String description,String is_active,String is_deleted ){
+    public static JSONObject createABody(String id ,String  exp_category, String description,String is_active,String is_deleted ){
         JSONObject jsonObject=new JSONObject();
         jsonObject.put("id",id);
         jsonObject.put(" exp_category", exp_category);
