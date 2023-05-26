@@ -5,6 +5,7 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 
+import io.cucumber.java.en.When;
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 
@@ -17,6 +18,7 @@ import org.testng.asserts.SoftAssert;
 import org.w3c.dom.stylesheets.LinkStyle;
 import pojos.Pojo_RegisterCustomer;
 import utilities.API_Utils;
+import utilities.DB_Utils;
 
 import static io.restassured.RestAssured.given;
 import static org.junit.Assert.assertEquals;
@@ -263,9 +265,6 @@ public class APIStepDefinition {
 
 
 
-
-
-
     @Then("Creates an expected body with id {int}, exp_category {string},description {string} ,is_active {string}, is_deleted {string}, created_at {string}  in ExpenseHead.")
     public void createsAnExpectedBodyWithIdExp_categoryDescriptionIs_activeIs_deletedCreated_atInExpenseHead(int id, String exp_category, String description, String is_active, String is_deleted, String created_at) {
         reqBodyJson=API_Utils.createABody(id,exp_category,description,is_active,is_deleted,created_at);
@@ -295,7 +294,7 @@ public class APIStepDefinition {
         assertEquals(is_deleted, resJp.get("details.is_deleted"));
         assertEquals(created_at, resJp.get("details.created_at"));
     }
-
+/*
     @And("Verifies in the response body with id {string}, name {string},is_blood_group {string} , created_at {string}")
     public void verifiesInTheResponseBodyWithIdNameIs_blood_groupCreated_at(String  id, String name, String is_blood_group, String created_at) {
 
@@ -307,28 +306,32 @@ public class APIStepDefinition {
         assertEquals(created_at, resJp.get("lists.details.created_at"));
     }
 
+ */
+
     @And("Verifies in the response body with id {string}")
     public void verifiesInTheResponseBodyWithId(String id) {
-        JsonPath resJp=response.jsonPath();
-        assertEquals(id,resJp.get("lists.id"));
-
-    @Then("Verifies in the response body with id {string}, name {string},description {string} , finding_category_id {string}, created_at {string}, category {string}  in ExpenseHead.")
-    public void resverifiesInTheResponseBodyWithIdNameDescriptionFinding_category_idCreated_atCategoryInExpenseHead(String id, String name, String description, String finding_category_id, String created_at, String category) {
-        JsonPath respJp=response.jsonPath();
-        assertEquals(id,respJp.getString("details.id"));
-        assertEquals(name,respJp.getString("details.name"));
-        assertEquals(description,respJp.getString("details.description"));
-        assertEquals(finding_category_id,respJp.getString("details.finding_category_id"));
-        assertEquals(created_at,respJp.getString("details.created_at"));
-        assertEquals(category,respJp.getString("details.category"));
-    }
-    @And("Sends GET request with valid Authorization")
-    public void sendsGETRequestWithValidAuthorization() {
-        response=API_Utils.getRequest(fullPath);
+        JsonPath resJp = response.jsonPath();
+        assertEquals(id, resJp.get("lists.id"));
     }
 
-    @And("Creates an expected body with id {int}, is visitors_ purpose  {string}, description {string}, created_at {string}")
-    public void createsAnExpectedBodyWithIdIsVisitors_PurposeDescriptionCreated_at ( int id, String
+        @Then("Verifies in the response body with id {string}, name {string},description {string} , finding_category_id {string}, created_at {string}, category {string}  in ExpenseHead.")
+        public void resverifiesInTheResponseBodyWithIdNameDescriptionFinding_category_idCreated_atCategoryInExpenseHead
+        (String id, String name, String description, String finding_category_id, String created_at, String category){
+            JsonPath respJp = response.jsonPath();
+            assertEquals(id, respJp.getString("details.id"));
+            assertEquals(name, respJp.getString("details.name"));
+            assertEquals(description, respJp.getString("details.description"));
+            assertEquals(finding_category_id, respJp.getString("details.finding_category_id"));
+            assertEquals(created_at, respJp.getString("details.created_at"));
+            assertEquals(category, respJp.getString("details.category"));
+        }
+        @And("Sends GET request with valid Authorization")
+        public void sendsGETRequestWithValidAuthorization () {
+            response = API_Utils.getRequest(fullPath);
+        }
+
+        @And("Creates an expected body with id {int}, is visitors_ purpose  {string}, description {string}, created_at {string}")
+        public void createsAnExpectedBodyWithIdIsVisitors_PurposeDescriptionCreated_at ( int id, String
         visitors_purpose, String description, String creat_at){
             JSONObject data1 = new JSONObject();
             data1.put("id", "19");
@@ -350,6 +353,7 @@ public class APIStepDefinition {
 
             System.out.println(finalData.toString());
         }
+
 
 
     @And("Verifies in the response body with id {string}, is visitors_ purpose  {string}, description {string}, created_at {string}  must be verified .")
@@ -423,6 +427,31 @@ public class APIStepDefinition {
                 .when()
                 .get(fullPath);
 
+
+    }
+
+
+    @When("Add a new record")
+    public void addANewRecord() {
+
+        String body = "{\n" +
+                "            \"exp_category\": \"stationary\",\n" +
+                "            \"description\": \"stationary expense\",\n" +
+                "            \"is_active\": \"yes\",\n" +
+                "            \"is_deleted\": \"no\"\n" +
+                "} ";
+
+        response = API_Utils.addNewRecord(body,fullPath);
+
+        response.prettyPrint();
+
+
+    }
+
+    @And("Delete this record after is verified")
+    public void deleteThisRecordAfterIsVerified() {
+
+        API_Utils.deleteRecord(fullPath);
 
     }
 }

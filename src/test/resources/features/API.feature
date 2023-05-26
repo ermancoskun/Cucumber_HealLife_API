@@ -222,5 +222,13 @@ Feature: API Tests
     Then Sends GET request invalid Authorization
     Then Verifies that the returned status codee is 403
 
+  Scenario: [API_US23->TC01] /api/deleteExpenseHead to your endpoint valid Status returned when sending a DELETE body with authorization information and correct data (id) that the code is 200 and the message information in the response body is " Success " must be verified
+
+    Then Api kullanicisi "api/addExpenseHead" path parametreleri set eder
+    When Add a new record
+    And Api kullanicisi "api/deleteExpenseHead" path parametreleri set eder
+    And Delete this record after is verified
+
+
 
 
