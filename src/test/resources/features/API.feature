@@ -119,8 +119,6 @@ Feature: API Tests
     And Sets query parameters as id 123456
 
 
-
-
   Scenario: [API_US34]-(TC01_C) As an administrator I should be able to access the find list via the API link
 
     Given Api user sets "api/getFinding" path parameters.
@@ -145,11 +143,12 @@ Feature: API Tests
       #    "description":"special word details"
       #}'
 @US15
+
   Scenario: [API_US15_TC01]-(2)As an administrator, I should be able to access the relevant blood data by entering the id over the API connection .
     Given Api user sets "/api/getBloodGroupById" path parameters.
     Then Sets query parameters as id 1
     And Sends GET request with Body and valid Authorization
-    And Verifies in the response body with id "1", name "B+",is_blood_group "1" , created_ at "2021-10-25 01:54:10"
+    And Verifies in the response body with id "1", name "B+",is_blood_group "1" , created_ at "2021-10-25 01:54:10" boolean aysenuriye
 
     Scenario: [API_US07_TC01]-(1A) Link as an administrator registered to the system via visitor I should be able to update the purpose information .
       Given Api user sets "/api/visitorsPurposeUpdate" path parameters.
@@ -165,19 +164,31 @@ Feature: API Tests
     And Sends POST request with Body and invalid Authorization
     Then Verifies that the returned status code is 403
     Then Verifies that the response message is "failed"
-  @US15
+
     Scenario: [API_US07_TC01]-(2) Link as an administrator registered to the system via visitor I should be able to update the purpose information .
 
       Given Api user sets "/api/visitorsPurposeUpdate" path parameters.
       Then Sets query parameters as id 1
       And Sends POST request with Body and valid Authorization
       And Verifies in the response body with id "1"
-
+  @US15
   Scenario: [API_US07_TC01]-(3) Link as an administrator registered to the system via visitor I should be able to update the purpose information .
     Given Api user sets "/api/visitorsPurposeUpdate" path parameters.
+
     And  Creates a request body with id {string} parameter to get finding category data
 
 
+
+
+    And Creates request body as name "Jane Doe", isBloodGroup "A Rh +"
+    And Sends POST request with Body and valid Authorization
+    And Save addid number
+    And Api user sets "api/visitorsPurposeUpdate" path parameters.
+     And Sends GET request valid Authorization
+    And Verifies the newly created blood group record via APi.
+
+
+@said
 
   Scenario: [API_US14_TC01]-(1A)  As an administrator, I should be able to access the
   blood group list with valid authorization registered in the system via API connection.
@@ -223,8 +234,6 @@ Feature: API Tests
       | 3  | AB-  | 1              | 2021-10-25 02:32:41 |
       | 8  | O+   | 1              | 2021-10-25 02:33:28 |
 
-
-
   Scenario: [API_US04]-(TC01_A) Visitor via API connection as an administrator purpose List I should be able to reach .
     Given Api user sets "api/visitorsPurposeList" path parameters.
     And Sends GET request valid Authorization
@@ -235,20 +244,21 @@ Feature: API Tests
 
     Given Api user sets "api/visitorsPurposeList" path parameters.
     And  Sends GET request invalid Authorization
-    Then Verifies that the returned status codee is 403
-    Then Verifies that the response message is "Forbidden"
-  @API
-  Scenario: [API_US04]-(TC01_C)
-    Given Api user sets "api/visitorsPurposeList" path parameters.
-    And Sends GET request valid Authorization
-    And Verifies in the response body with id "19", is visitors_ purpose  "feridun bey", description "bayram 123 111", created_at "2023-04-12 08:34:56"  must be verified .
+    Then Verifies that the returned status code is 403
+    Then Verifies that the response message is "failed"
 
-  Scenario: [API_US04]-(TC01_D)
+  Scenario: [API_US04]-(TC01_C) As an administrator, I should be able to access the relevant expenditure data by entering the id over the API connection .
 
     Given Api user sets "api/visitorsPurposeList" path parameters.
-    And Creates an expected body with id 29, is visitors_ purpose  "special work", description "special word details"", created_at ""2023-05-18 17:00:26"
     And Sends GET request valid Authorization
-    And Verifies in the response body with id "29", is visitors_ purpose  "special work", description "special word details"", created_at ""2023-05-18 17:00:26""  must be verified .
+    And Verifies in the response body with id "19", is visitors_purpose  "feridun bey", description "bayram 123 111", created_at "2023-04-12 08:34:56"  must be verified .
+
+
+  Scenario: [API_US04]-(TC01_D) As an administrator, I should be able to access the relevant expenditure data by entering the id over the API connection .
+
+    Given Api user sets "api/visitorsPurposeList" path parameters.
+    And Sends GET request valid Authorization
+    And Verifies in the responsee body with id "29", is visitors_ purpose  "special work", description "special word details", created_at "2023-05-18 17:00:26"  must be verified .
 
   Scenario: [API_US29->TC01] /api/getFindingCategory to your endpoint valid a GET request with authorization information status when sent the code is 200 and the response the message information is " Success " should be verified .
 
