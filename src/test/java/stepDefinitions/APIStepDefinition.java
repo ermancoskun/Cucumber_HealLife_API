@@ -518,16 +518,7 @@ public class APIStepDefinition {
                 }
 
 
-                @And("Verifies in the response body with id {string}, name {string},is_blood_group {string} , created_ at {string} boolean aysenuriye")
-                public void verifiesInTheResponseBodyWithIdNameIs_blood_groupCreated_AtBooleanAysenuriye (String
-                arg0, String arg1, String arg2, String arg3){
-                    JsonPath respJp = response.jsonPath();
-                    assertEquals(arg0, respJp.get("lists.id"));
-                    assertEquals(arg1, respJp.get("lists.name"));
-                    assertEquals(arg2, respJp.get("lists.is_blood_group"));
-                    assertEquals(arg3, respJp.get("lists.created_at"));
 
-                }
 
                 @And("Verifies in the response body with id {string}, is visitors_purpose  {string}, description {string}, created_at {string}  must be verified .")
                 public void verifiesInTheResponseBodyWithIdIsVisitors_purposeDescriptionCreated_atMustBeVerified (String
