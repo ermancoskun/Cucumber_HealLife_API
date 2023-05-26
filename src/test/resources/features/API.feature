@@ -104,7 +104,7 @@ Feature: API Tests
     Then Verifies that the returned status code is 403
     Then Verifies that the response message is "failed"
 
-@US15
+
   Scenario: [API_US15_TC01]-(2)As an administrator, I should be able to access the relevant blood data by entering the id over the API connection .
     Given Api user sets "/api/getBloodGroupById" path parameters.
     Then Sets query parameters as id 1
@@ -125,20 +125,22 @@ Feature: API Tests
     And Sends POST request with Body and invalid Authorization
     Then Verifies that the returned status code is 403
     Then Verifies that the response message is "failed"
-  @US15
+
     Scenario: [API_US07_TC01]-(2) Link as an administrator registered to the system via visitor I should be able to update the purpose information .
 
       Given Api user sets "/api/visitorsPurposeUpdate" path parameters.
       Then Sets query parameters as id 1
       And Sends POST request with Body and valid Authorization
       And Verifies in the response body with id "1"
-
+  @US15
   Scenario: [API_US07_TC01]-(3) Link as an administrator registered to the system via visitor I should be able to update the purpose information .
     Given Api user sets "/api/visitorsPurposeUpdate" path parameters.
-
-
-
-
+    And Creates request body as name "Jane Doe", isBloodGroup "A Rh +"
+    And Sends POST request with Body and valid Authorization
+    And Save addid number
+    And Api user sets "api/visitorsPurposeUpdate" path parameters.
+     And Sends GET request valid Authorization
+    And Verifies the newly created blood group record via APi.
 
 
 @said
