@@ -164,18 +164,19 @@ public class APIStepDefinition {
 
     @Then("Verifies that the returned status code is {int}")
     public void verifiesThatTheReturnedStatusCodeIs(int statusCode) {
-        softAssert.assertEquals(response.getStatusCode(),statusCode,"Status code value is NOT "+statusCode);
+            softAssert.assertEquals(response.getStatusCode(),statusCode,"Status code value is NOT "+statusCode);
+
     }
 
     @Then("Verifies that the response message is {string}")
     public void verifiesThatTheResponseMessageIs(String message) {
-        JsonPath respJS= response.jsonPath();
-        softAssert.assertEquals(respJS.getString("message"),message,"Returned message is not true");
+            JsonPath respJS= response.jsonPath();
+            softAssert.assertEquals(respJS.getString("message"),message,"Returned message is not true");
     }
 
     @And("Sets query parameters as id {int}")
     public void setsQueryParametersAsId(int id) {
-       API_Utils.createABody(id);
+      reqBodyJson= API_Utils.createABody(id);
 
     }
 
@@ -186,8 +187,8 @@ public class APIStepDefinition {
 
     @And("Sends GET request with Body with invalid Authorization")
     public void sendsGETRequestWithBodyWithInvalidAuthorization() {
-        String invalidToken=HooksAPI.token+"invalid";
-        Response response= given()
+       String invalidToken="H3h3VhOQvXU8Ql83V6kgSeKQ6hREZk";
+        response= given()
                 .spec(HooksAPI.spec)
                 .headers("Authorization", "Bearer " + invalidToken)
                 .contentType(ContentType.JSON)
@@ -198,8 +199,61 @@ public class APIStepDefinition {
     }
     @Given("Sends POST request with Body and valid Authorization")
     public void sends_post_request_with_body_and_valid_authorization() {
-        API_Utils.postRequest(fullPath,reqBodyJson);
 
+        response=API_Utils.postRequest(fullPath,reqBodyJson);
+    }
+
+    @And("Sends POST request with Body and invalid Authorization")
+    public void sendsPOSTRequestWithBodyAndInvalidAuthorization() {
+        String invalidToken=HooksAPI.token+"invalid";
+        Response response=given().headers("Authorization",
+                        "Bearer " + invalidToken,
+                        "Content-Type",
+                        ContentType.JSON,
+                        "Accept",
+                        ContentType.JSON).spec(HooksAPI.spec).contentType(ContentType.JSON)
+                .when().body(reqBodyJson.toString())
+                .post(fullPath);
+        response.prettyPrint();
+    }
+
+    @And("Sends PATCH request with Body and valid Authorization")
+    public void sendsPATCHRequestWithBodyAndValidAuthorization() {
+        response=API_Utils.patchRequest(fullPath,reqBodyJson);
+    }
+
+    @And("Sends PATCH request with Body and invalid Authorization")
+    public void sendsPATCHRequestWithBodyAndInvalidAuthorization() {
+        String invalidToken=HooksAPI.token+"invalid";
+        Response response=given().headers("Authorization",
+                        "Bearer " + invalidToken,
+                        "Content-Type",
+                        ContentType.JSON,
+                        "Accept",
+                        ContentType.JSON).spec(HooksAPI.spec).contentType(ContentType.JSON)
+                .when().body(reqBodyJson.toString())
+                .patch(fullPath);
+        response.prettyPrint();
+    }
+
+    @And("Sends DELETE request with Body and valid Authorization")
+    public void sendsDELETERequestWithBodyAndValidAuthorization() {
+     response= API_Utils.deleteRequest(fullPath,reqBodyJson);
+    }
+
+    @And("Sends DELETE request with Body and invalid Authorization")
+    public void sendsDELETERequestWithBodyAndInvalidAuthorization() {
+        String invalidToken=HooksAPI.token+"invalid";
+        Response response=given().headers("Authorization",
+                        "Bearer " + invalidToken,
+                        "Content-Type",
+                        ContentType.JSON,
+                        "Accept",
+                        ContentType.JSON).spec(HooksAPI.spec).contentType(ContentType.JSON)
+                .when().body(reqBodyJson.toString())
+                .body(reqBodyJson)
+                .delete(fullPath);
+        response.prettyPrint();
     }
 
     @Then("Creates an expected body with id {int}, exp_category {string},description {string} ,is_active {string}, is_deleted {string}, created_at {string}  in ExpenseHead.")
@@ -231,5 +285,22 @@ public class APIStepDefinition {
         assertEquals(is_deleted, resJp.get("details.is_deleted"));
         assertEquals(created_at, resJp.get("details.created_at"));
     }
+
+    @Then("Verifies in the response body with id {string}, name {string},description {string} , finding_category_id {string}, created_at {string}, category {string}  in ExpenseHead.")
+    public void verifiesInTheResponseBodyWithIdNameDescriptionFinding_category_idCreated_atCategoryInExpenseHead(String id, String name, String description, String finding_category_id, String created_at, String category) {
+        JsonPath resJp=response.jsonPath();
+        assertEquals(id,resJp.get("details.id"));
+        assertEquals(name,resJp.get("details.name"));
+        assertEquals(description,resJp.get("details.description"));
+        assertEquals(finding_category_id,resJp.get("details.finding_category_id"));
+        assertEquals(created_at,resJp.get("details.created_at"));
+        assertEquals(category,resJp.get("details.category"));
+    }
+
+    @And("Sends GET request with valid Authorization")
+    public void sendsGETRequestWithValidAuthorization() {
+        response=API_Utils.getRequest(fullPath);
+    }
+
 }
 

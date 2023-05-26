@@ -37,14 +37,12 @@ public class API_Utils {
 
 
     public static Response getRequest(String endpoint) {
-
-        Response response = given().headers(
-                "Authorization",
-                "Bearer " + HooksAPI.token,
-                "Content-Type",
-                ContentType.JSON,
-                "Accept",
-                ContentType.JSON).when().get(endpoint);
+        Response response = given().
+                headers("Authorization", "Bearer " + HooksAPI.token)
+                .spec(HooksAPI.spec)
+                .contentType(ContentType.JSON)
+                .when()
+                .get(endpoint);
         response.prettyPrint();
         return response;
     }
@@ -100,6 +98,11 @@ public class API_Utils {
     }
 
     public static JSONObject createABody(int id){
+        JSONObject jsonObject=new JSONObject();
+        jsonObject.put("id",id);
+        return jsonObject;
+    }
+    public static JSONObject createABody(String id){
         JSONObject jsonObject=new JSONObject();
         jsonObject.put("id",id);
         return jsonObject;
