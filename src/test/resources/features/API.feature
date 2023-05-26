@@ -7,6 +7,7 @@ Feature: API Tests
   # Response daki message testi icin "Verifies that the response message is "Success"
   # Body oluşturulacak ise API_Utils'deki createABody() metoduna parametre girilerek olusturulur
   # ******STEPLERIMIZDE ASAGIDAKI GHERKIN IFADELERI KULLANALIM***************************************************
+  #      Given Api user sets "api/visitorsPurposeList" path parameters.
   #      And Sends GET request with Body and valid Authorization
   #      And Sends GET request with Body with invalid Authorization
   #      And Sends POST request with Body and valid Authorization
@@ -17,6 +18,9 @@ Feature: API Tests
   #      And Sends DELETE request with Body and invalid Authorization
   #      And Sends GET request valid Authorization
   #      And Sends GET request invalid Authorization
+  #      Then Verifies that the returned status code is 200
+  #      Then Verifies that the response message is "Success"
+  #      And Sets query parameters as id 1  (body sadece id den olusuyorsa)
 
   Scenario: [API_US35_TC01]-(1A) As an administrator, I should be able to access the relevant finding data by entering the id over the API connection .
 
@@ -100,12 +104,12 @@ Feature: API Tests
     Then Verifies that the returned status code is 403
     Then Verifies that the response message is "failed"
 
-
+@US15
   Scenario: [API_US15_TC01]-(2)As an administrator, I should be able to access the relevant blood data by entering the id over the API connection .
     Given Api user sets "/api/getBloodGroupById" path parameters.
     Then Sets query parameters as id 1
     And Sends GET request with Body and valid Authorization
-    And Verifies in the response body with id "1", name "B+",is_blood_group "1" , created_at "2021-10-25 01:54:10"
+    And Verifies in the response body with id "1", name "B+",is_blood_group "1" , created_ at "2021-10-25 01:54:10"
 
     Scenario: [API_US07_TC01]-(1A) Link as an administrator registered to the system via visitor I should be able to update the purpose information .
       Given Api user sets "/api/visitorsPurposeUpdate" path parameters.
@@ -131,6 +135,7 @@ Feature: API Tests
 
   Scenario: [API_US07_TC01]-(3) Link as an administrator registered to the system via visitor I should be able to update the purpose information .
     Given Api user sets "/api/visitorsPurposeUpdate" path parameters.
+    And  Creates a request body with id {string} parameter to get finding category data
 
 
 
@@ -221,6 +226,14 @@ Feature: API Tests
     Given Api kullanicisi "api/getFindingCategory" path parametreleri set eder
     Then Sends GET request invalid Authorization
     Then Verifies that the returned status codee is 403
+
+  Scenario: [API_US23->TC01] /api/deleteExpenseHead to your endpoint valid Status returned when sending a DELETE body with authorization information and correct data (id) that the code is 200 and the message information in the response body is " Success " must be verified
+
+    Then Api kullanicisi "api/addExpenseHead" path parametreleri set eder
+    When Add a new record
+    And Api kullanicisi "api/deleteExpenseHead" path parametreleri set eder
+    And Delete this record after is verified
+
 
 
   @US16 @US16A
