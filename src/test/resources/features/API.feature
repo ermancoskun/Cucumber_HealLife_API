@@ -7,6 +7,7 @@ Feature: API Tests
   # Response daki message testi icin "Verifies that the response message is "Success"
   # Body oluşturulacak ise API_Utils'deki createABody() metoduna parametre girilerek olusturulur
   # ******STEPLERIMIZDE ASAGIDAKI GHERKIN IFADELERI KULLANALIM***************************************************
+  #      Given Api user sets "api/visitorsPurposeList" path parameters.
   #      And Sends GET request with Body and valid Authorization
   #      And Sends GET request with Body with invalid Authorization
   #      And Sends POST request with Body and valid Authorization
@@ -17,6 +18,9 @@ Feature: API Tests
   #      And Sends DELETE request with Body and invalid Authorization
   #      And Sends GET request valid Authorization
   #      And Sends GET request invalid Authorization
+  #      Then Verifies that the returned status code is 200
+  #      Then Verifies that the response message is "Success"
+  #      And Sets query parameters as id 1  (body sadece id den olusuyorsa)
 
   Scenario: [API_US35_TC01]-(1A) As an administrator, I should be able to access the relevant finding data by entering the id over the API connection .
 
