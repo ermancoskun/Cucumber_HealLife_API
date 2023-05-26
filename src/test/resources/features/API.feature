@@ -411,6 +411,7 @@ Feature: API Tests
     Given Api user sets "api/deleteBloodGroup" path parameters.
     And Sends DELETE request with Body and valid Authorization
 
+  @US25
   Scenario: [API_US25_TC01]-(1A) As an administrator, I should be able to access the relevant announcement data by entering the id over the API connection.
     Given Api user sets "api/getNoticeById" path parameters.
     And Sets query parameters as id 1
@@ -423,6 +424,24 @@ Feature: API Tests
 
     Given Api user sets "api/getNoticeById" path parameters.
     And Sets query parameters as id 1
+    And Sends GET request with Body with invalid Authorization
+    Then Verifies that the returned status code is 403
+    Then Verifies that the response message is "failed"
+
+
+  Scenario: [API_US25_TC01]-(1C) As an administrator, I should not be able to access the relevant announcement data by entering the id over the API connection.
+
+    Given Api user sets "api/getNoticeById" path parameters.
+    And Sets query parameters as id 9999999
+    And Sends GET request with Body and valid Authorization
+    Then Verifies that the returned status code is 403
+    Then Verifies that the response message is "failed"
+
+
+  Scenario: [API_US25_TC01]-(1D) As an administrator, I should not be able to access the relevant announcement data by entering the id over the API connection.
+
+    Given Api user sets "api/getNoticeById" path parameters.
+    And Sets query parameters as id 9999999
     And Sends GET request with Body with invalid Authorization
     Then Verifies that the returned status code is 403
     Then Verifies that the response message is "failed"
