@@ -40,19 +40,16 @@ public class API_Utils {
 
     }
 
-
     public static Response deleteRequest(String endpoint,JSONObject reqBodyJson){
-        Response response = given().headers(
-                "Authorization",
-                "Bearer " + HooksAPI.token,
-                "Content-Type",
-                ContentType.JSON,
-                "Accept",
-                ContentType.JSON).when().
-                body(reqBodyJson).
-                delete(endpoint);
+        Response response= given()
+                .spec(HooksAPI.spec)
+                .headers("Authorization", "Bearer " + HooksAPI.token)
+                .contentType(ContentType.JSON)
+                .when()
+                .body(reqBodyJson.toString())
+                .delete(endpoint);
         response.prettyPrint();
-        return  response;
+        return response;
     }
     public static Response getRequest(String endpoint) {
         Response response = given()
@@ -87,16 +84,15 @@ public class API_Utils {
         return response;
     }
     public  static  Response patchRequest(String endPoint,JSONObject reqBody){
-     Response response=given().headers("Authorization",
-                        "Bearer " + HooksAPI.token,
-                        "Content-Type",
-                        ContentType.JSON,
-                        "Accept",
-                        ContentType.JSON).spec(HooksAPI.spec).contentType(ContentType.JSON)
-                .when().body(reqBody.toString()).patch(endPoint);
-
-     response.prettyPrint();
-        return  response;
+        Response response= given()
+                .spec(HooksAPI.spec)
+                .headers("Authorization", "Bearer " + HooksAPI.token)
+                .contentType(ContentType.JSON)
+                .when()
+                .body(reqBody.toString())
+                .patch(endPoint);
+        response.prettyPrint();
+        return response;
     }
 
     public static JSONObject createABody(int id){

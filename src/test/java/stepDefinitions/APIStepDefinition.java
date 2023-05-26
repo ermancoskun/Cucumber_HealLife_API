@@ -265,6 +265,8 @@ public class APIStepDefinition {
 
 
 
+
+
     @Then("Creates an expected body with id {int}, exp_category {string},description {string} ,is_active {string}, is_deleted {string}, created_at {string}  in ExpenseHead.")
     public void createsAnExpectedBodyWithIdExp_categoryDescriptionIs_activeIs_deletedCreated_atInExpenseHead(int id, String exp_category, String description, String is_active, String is_deleted, String created_at) {
         reqBodyJson=API_Utils.createABody(id,exp_category,description,is_active,is_deleted,created_at);
@@ -294,19 +296,6 @@ public class APIStepDefinition {
         assertEquals(is_deleted, resJp.get("details.is_deleted"));
         assertEquals(created_at, resJp.get("details.created_at"));
     }
-/*
-    @And("Verifies in the response body with id {string}, name {string},is_blood_group {string} , created_at {string}")
-    public void verifiesInTheResponseBodyWithIdNameIs_blood_groupCreated_at(String  id, String name, String is_blood_group, String created_at) {
-
-
-        JsonPath resJp = response.jsonPath();
-        assertEquals(id, resJp.get("lists.id"));
-        assertEquals(name, resJp.get("lists.name"));
-        assertEquals(is_blood_group, resJp.get("lists.is_blood_group"));
-        assertEquals(created_at, resJp.get("lists.details.created_at"));
-    }
-
- */
 
     @And("Verifies in the response body with id {string}")
     public void verifiesInTheResponseBodyWithId(String id) {
@@ -314,8 +303,10 @@ public class APIStepDefinition {
         assertEquals(id, resJp.get("lists.id"));
     }
 
-        @Then("Verifies in the response body with id {string}, name {string},description {string} , finding_category_id {string}, created_at {string}, category {string}  in ExpenseHead.")
-        public void resverifiesInTheResponseBodyWithIdNameDescriptionFinding_category_idCreated_atCategoryInExpenseHead
+
+    @Then("Verifies in the response body with id {string}, name {string},description {string} , finding_category_id {string}, created_at {string}, category {string}  in ExpenseHead.")
+    public void resverifiesInTheResponseBodyWithIdNameDescriptionFinding_category_idCreated_atCategoryInExpenseHead
+
         (String id, String name, String description, String finding_category_id, String created_at, String category){
             JsonPath respJp = response.jsonPath();
             assertEquals(id, respJp.getString("details.id"));
@@ -371,8 +362,6 @@ public class APIStepDefinition {
           response=API_Utils.getRequest(fullPath);
     }
 
-
-
     @And("Sends GET request invalid Authorization")
     public void sendsGETRequestInvalidAuthorization() {
         String invalidToken = HooksAPI.token + "invalid";
@@ -401,33 +390,25 @@ public class APIStepDefinition {
                 .when()
                 .get(fullPath);
         response.prettyPrint();
-
-
     }
 
-    @Then("Verifies in the response body with id {string}, name {string}, is_blood_group {string}, created_at {string}")
+    @Then("Verifies in the response body with id {string}, name {string}  is_blood_group {string}, created_at {string}")
     public void verifiesInTheResponseBodyWithIdNameIs_blood_groupCreated_at(String id, String name, String is_blood_group, String created_at) {
         JsonPath respJp = response.jsonPath();
         assertEquals(id,respJp.get("lists.[2].id"));
         assertEquals(name,respJp.get("lists.[2].name"));
         assertEquals(is_blood_group,respJp.get("lists.[2].is_blood_group"));
         assertEquals(created_at,respJp.get("lists.[2].created_at"));
-
-
-
     }
 
     @Given("Get query is generated with valid information")
     public void getQueryIsGeneratedWithValidInformation() {
-
         response= given()
                 .spec(HooksAPI.spec)
                 .header("Authorization","Bearer "+HooksAPI.token)
                 .contentType(ContentType.JSON)
                 .when()
                 .get(fullPath);
-
-
     }
 
 
@@ -442,8 +423,6 @@ public class APIStepDefinition {
                 "} ";
 
         response = API_Utils.addNewRecord(body,fullPath);
-
-        response.prettyPrint();
 
 
     }
