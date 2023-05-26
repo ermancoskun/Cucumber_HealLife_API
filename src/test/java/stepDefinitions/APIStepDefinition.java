@@ -472,19 +472,6 @@ public class APIStepDefinition {
     }
 
 
-    @When("Add a new record")
-    public void addANewRecord() {
-
-        String body = "{\n" +
-                "            \"exp_category\": \"stationary\",\n" +
-                "            \"description\": \"stationary expense\",\n" +
-                "            \"is_active\": \"yes\",\n" +
-                "            \"is_deleted\": \"no\"\n" +
-                "} ";
-
-        response = API_Utils.postRequest(body, reqBodyJson);
-    }
-
     @And("Delete this record after is verified")
     public void deleteThisRecordAfterIsVerified() throws InterruptedException {
         response = API_Utils.deleteRequest(fullPath);
@@ -558,6 +545,19 @@ public class APIStepDefinition {
         reqBodyJson = new JSONObject(body);
     }
 
+    @Then("id: of content with {string}, category : {string}, created_at : {string}, must be verified")
+    public void idOfContentWithCategoryCreated_atMustBeVerified(String id, String category, String created_at) {
+
+        //JSONObject object = response.as(JSONObject.class);
+        JsonPath path = response.jsonPath();
+        int dinamikId = Integer.parseInt(id) - 1;
+        Assert.assertEquals(id, path.get("lists[" + dinamikId + "].id"));
+        //Assert.assertNotEquals(category,path.get("lists["+dinamikId+"].category"));
+        //Assert.assertNotEquals(created_at,path.get("lists["+dinamikId+"].created_at"));
+
+        response.prettyPrint();
+
+    }
 
 }
 
