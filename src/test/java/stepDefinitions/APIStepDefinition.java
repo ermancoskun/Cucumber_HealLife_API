@@ -6,6 +6,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 
 import io.cucumber.java.en.When;
+import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 
@@ -25,11 +26,12 @@ import static org.junit.Assert.assertEquals;
 public class APIStepDefinition {
     SoftAssert softAssert = new SoftAssert();
     public static String fullPath;
-    public static Pojo_RegisterCustomer reqBody;
+
     public static JSONObject reqBodyJson;
     public static JSONObject expBodyJson;
     public static Response response;
     public static String addId;
+    public static String reqBody;
 
     int basariliStatusCode = 200;
     String message;
@@ -44,7 +46,7 @@ public class APIStepDefinition {
 
         for (int i = 0; i < paths.length; i++) {
 
-            String key = "pp" + (i + 1); // pp1 pp2 pp3
+            String key = "pp" + (i); // pp1 pp2 pp3
             String value = paths[i].trim();
 
             HooksAPI.spec.pathParam(key, value);
@@ -163,16 +165,7 @@ public class APIStepDefinition {
 
     @And("Sends POST request with Body and invalid Authorization")
     public void sendsPOSTRequestWithBodyAndInvalidAuthorization() {
-        String invalidToken = HooksAPI.token + "invalid";
-        response = given().headers("Authorization",
-                        "Bearer " + invalidToken,
-                        "Content-Type",
-                        ContentType.JSON,
-                        "Accept",
-                        ContentType.JSON).spec(HooksAPI.spec).contentType(ContentType.JSON)
-                .when().body(reqBodyJson.toString())
-                .post(fullPath);
-        response.prettyPrint();
+       response=API_Utils.postRequest(fullPath,reqBodyJson);
     }
 
     @And("Sends PATCH request with Body and valid Authorization")
@@ -194,24 +187,19 @@ public class APIStepDefinition {
         response.prettyPrint();
     }
 
-    @And("Sends DELETE request with Body and valid Authorization")
-    public void sendsDELETERequestWithBodyAndValidAuthorization() {
-        response = API_Utils.deleteRequest(fullPath, reqBodyJson);
-    }
 
     @And("Sends DELETE request with Body and invalid Authorization")
     public void sendsDELETERequestWithBodyAndInvalidAuthorization() {
-        String invalidToken = HooksAPI.token + "invalid";
-        Response response = given().headers("Authorization",
-                        "Bearer " + invalidToken,
-                        "Content-Type",
-                        ContentType.JSON,
-                        "Accept",
-                        ContentType.JSON).spec(HooksAPI.spec).contentType(ContentType.JSON)
-                .when().body(reqBodyJson.toString())
-                .body(reqBodyJson)
+        String invalidToken = "JQRvVtb9uMWEaS4sth5Hj8HsA2Pvkh";
+        JSONObject object = new JSONObject();
+        object.put("id",addId);
+        response = RestAssured.given().spec(HooksAPI.spec).headers("Authorization","Bearer "+invalidToken)
+                .contentType(ContentType.JSON)
+                .when().body(object.toString())
                 .delete(fullPath);
         response.prettyPrint();
+
+        Assert.assertEquals(403,response.getStatusCode());
     }
 
     @And("Save addid number")
@@ -350,8 +338,6 @@ public class APIStepDefinition {
                 .contentType(ContentType.JSON)
                 .when()
                 .get(fullPath);
-
-
     }
 
     @And("Sends GET request with invalid Authorization")
@@ -386,16 +372,12 @@ public class APIStepDefinition {
                 "            \"is_deleted\": \"no\"\n" +
                 "} ";
 
-        response = API_Utils.addNewRecord(body, fullPath);
-
-
+        response = API_Utils.postRequest(body, reqBodyJson);
     }
 
     @And("Delete this record after is verified")
-    public void deleteThisRecordAfterIsVerified() {
-
-        API_Utils.deleteRecord(fullPath);
-
+    public void deleteThisRecordAfterIsVerified() throws InterruptedException {
+        response=API_Utils.deleteRequest(fullPath);
     }
 
     @Given("Verify that the datas are contained in the response body as {string},{string},{string}")
@@ -443,8 +425,16 @@ public class APIStepDefinition {
         assertEquals(visitors_purpose, resJp.get("lists[14].visitors_purpose"));
         assertEquals(description, resJp.get("lists[14].description"));
         assertEquals(created_at, resJp.get("lists[14].created_at"));
+    }
 
+    @And("Request body is:")
+    public void requestBodyIs(String body) {
+        reqBodyJson=new JSONObject(body);
+    }
 
+    @And("Sends DELETE request with Body and valid Authorization")
+    public void sendsDELETERequestWithBodyAndValidAuthorization() {
+        response=API_Utils.deleteRequest(fullPath);
     }
 }
 

@@ -40,15 +40,17 @@ public class API_Utils {
 
     }
 
-    public static Response deleteRequest(String endpoint,JSONObject reqBodyJson){
-        Response response= given()
-                .spec(HooksAPI.spec)
-                .headers("Authorization", "Bearer " + HooksAPI.token)
+    public static Response deleteRequest(String endPoint){
+        JSONObject object = new JSONObject();
+        object.put("id",addId);
+        response = RestAssured.given().spec(HooksAPI.spec).headers("Authorization","Bearer "+HooksAPI.token)
                 .contentType(ContentType.JSON)
-                .when()
-                .body(reqBodyJson.toString())
-                .delete(endpoint);
+                .when().body(object.toString())
+                .delete(endPoint);
         response.prettyPrint();
+
+        Assert.assertEquals(200,response.getStatusCode());
+
         return response;
     }
     public static Response getRequest(String endpoint) {
@@ -73,7 +75,7 @@ public class API_Utils {
         return response;
     }
     public static  Response postRequest(String endpoint, JSONObject reqBodyJson){
-        Response response= given()
+         response= given()
                 .spec(HooksAPI.spec)
                 .headers("Authorization", "Bearer " + HooksAPI.token)
                 .contentType(ContentType.JSON)
@@ -81,6 +83,8 @@ public class API_Utils {
                 .body(reqBodyJson.toString())
                 .post(endpoint);
         response.prettyPrint();
+        JsonPath path = response.jsonPath();
+        addId = path.getString("addId");
         return response;
     }
     public  static  Response patchRequest(String endPoint,JSONObject reqBody){
@@ -160,34 +164,6 @@ public class API_Utils {
         return jsonObject;
     }
 
-    public static Response addNewRecord(String body,String endPoint){
 
-        response = RestAssured.given().spec(HooksAPI.spec).header("Authorization","Bearer "+HooksAPI.token)
-                .contentType(ContentType.JSON)
-                .when().body(body)
-                .post(endPoint);
-
-        JsonPath path = response.jsonPath();
-
-        addId = path.getString("addId");
-
-        return response;
-    }
-
-    public static Response deleteRecord(String endPoint){
-
-        JSONObject object = new JSONObject();
-        object.put("id",addId);
-
-        response = RestAssured.given().spec(HooksAPI.spec).header("Authorization","Bearer "+HooksAPI.token)
-                .contentType(ContentType.JSON)
-                .when().body(object.toString())
-                .delete(endPoint);
-
-
-        Assert.assertEquals(200,response.getStatusCode());
-
-        return response;
-    }
 
 }
