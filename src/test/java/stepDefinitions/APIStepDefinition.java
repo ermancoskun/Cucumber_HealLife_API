@@ -104,20 +104,11 @@ public class APIStepDefinition {
     }
 
 
-    @And("Sets query parameters as id {int} with valid Authorization")
-    public void setsQueryParametersAsIdWithValidAuthorization(int id) {
-
-    }
-
     @And("Sends GET request with Body")
     public void sendsGETRequestWithBody() {
         response = API_Utils.getRequestWithBody(fullPath, reqBodyJson);
     }
 
-    @Given("Creates a request body with id {string} parameter to get finding category data")
-    public void creates_a_request_body_with_id_parameter_to_get_finding_category_data(int id) {
-        reqBodyJson = API_Utils.createABody(id);
-    }
 
 
     @Then("Verifies that the returned status code is {int}")
@@ -243,25 +234,11 @@ public class APIStepDefinition {
 
 
     @And("Verifies in the response body with id {string}")
-
     public void verifiesInTheResponseBodyWithId(String id) {
         JsonPath resJp = response.jsonPath();
         assertEquals(id, resJp.get("lists.id"));
     }
 
-
-
-    @Then("Verifies in the response body with id {string}, name {string},description {string} , finding_category_id {string}, created_at {string}, category {string}  in ExpenseHead.")
-    public void resverifiesInTheResponseBodyWithIdNameDescriptionFinding_category_idCreated_atCategoryInExpenseHead
-            (String id, String name, String description, String finding_category_id, String created_at, String category) {
-        JsonPath respJp = response.jsonPath();
-        assertEquals(id, respJp.getString("details.id"));
-        assertEquals(name, respJp.getString("details.name"));
-        assertEquals(description, respJp.getString("details.description"));
-        assertEquals(finding_category_id, respJp.getString("details.finding_category_id"));
-        assertEquals(created_at, respJp.getString("details.created_at"));
-        assertEquals(category, respJp.getString("details.category"));
-    }
 
     @And("Sends GET request with valid Authorization")
     public void sendsGETRequestWithValidAuthorization() {
@@ -324,8 +301,6 @@ public class APIStepDefinition {
     @Then("Verifies that the returned status codee is {int}")
     public void verifiesThatTheReturnedStatusCodeeIs(int arg0) {
         Assert.assertTrue(message.contains("403"));
-
-
     }
 
 
@@ -354,13 +329,11 @@ public class APIStepDefinition {
     @Then("Verifies in the response body with id {string}, name {string}  is_blood_group {string}, created_at {string}")
     public void verifiesInTheResponseBodyWithIdNameIs_blood_groupCreated_at(String id, String name, String is_blood_group, String created_at) {
         JsonPath respJp = response.jsonPath();
-        assertEquals(id, respJp.get("lists.[2].id"));
-        assertEquals(name, respJp.get("lists.[2].name"));
-        assertEquals(is_blood_group, respJp.get("lists.[2].is_blood_group"));
-        assertEquals(created_at, respJp.get("lists.[2].created_at"));
+        assertEquals(id, respJp.get("lists[2].id"));
+        assertEquals(name, respJp.get("lists[2].name"));
+        assertEquals(is_blood_group, respJp.get("lists[2].is_blood_group"));
+        assertEquals(created_at, respJp.get("lists[2].created_at"));
     }
-
-
 
     @When("Add a new record")
     public void addANewRecord() {
@@ -382,9 +355,8 @@ public class APIStepDefinition {
 
     @Given("Verify that the datas are contained in the response body as {string},{string},{string}")
     public void verify_that_the_datas_are_contained_in_the_response_body_as(String rspnBody, String data, String dataValue) {
-        String[] datasArr = data.split(",");
-        String[] dataValuesArr = dataValue.split(",");
-
+        String[] datasArr = data.split("#");
+        String[] dataValuesArr = dataValue.split("#");
         for (int i = 0; i < datasArr.length; i++) {
             response
                     .then()
@@ -413,9 +385,6 @@ public class APIStepDefinition {
         assertEquals(visitors_purpose, resJp.get("lists[6].visitors_purpose"));
         assertEquals(description, resJp.get("lists[6].description"));
         assertEquals(created_at, resJp.get("lists[6].created_at"));
-
-
-
     }
 
     @And("Verifies in the responsee body with id {string}, is visitors_ purpose  {string}, description {string}, created_at {string}  must be verified .")
