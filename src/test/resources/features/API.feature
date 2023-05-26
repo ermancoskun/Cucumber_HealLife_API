@@ -284,7 +284,7 @@ Feature: API Tests
             and correct data (id) that the code is 200
             and the message information in the response body is " Success " must be verified
 
-    * Api user sets "api/addBloodGroup" path parameters.
+    * Api user sets "api/getFindingCategoryById" path parameters.
     * Sets query parameters as id 1
     * Sends GET request with Body and valid Authorization
     * Verifies that the returned status code is 200
@@ -298,7 +298,7 @@ Feature: API Tests
             and invalid data (id) the code is 403
             and the message information in the response body is " failed " must be verified
 
-    * Api user sets "api/addBloodGroup" path parameters.
+    * Api user sets "api/getFindingCategoryById" path parameters.
     * Sets query parameters as id 9999
     * Sends GET request with Body with invalid Authorization
     * Verifies that the returned status code is 403
@@ -307,14 +307,13 @@ Feature: API Tests
 
   @US30 @US30C
   Scenario: [API_US30_TC01]-(1C)
-            Inside the response body The data( id, category , created_at ) must be validated.
+            Inside the response body The data ( id, category , created_at ) must be validated.
 
-    *
-    *
-    *
-    *
-    *
-    *
+    * Api user sets "api/getFindingCategoryById" path parameters.
+    * Sets query parameters as id 1
+    * Sends GET request with Body and valid Authorization
+    * Verify that the datas are contained in the response body as "details.","id,category,created_at","1,ill category 2,2023-05-25 09:33:53"
+
 
   @API
   Scenario: [API_US18_TC01]-(1) As an administrator, I should be able to delete the blood group record in the system via the API link .
@@ -343,5 +342,6 @@ Feature: API Tests
     Then Sends POST request with Body and valid Authorization
     Given Api user sets "api/deleteBloodGroup" path parameters.
     And Sends DELETE request with Body and invalid Authorization
+
 
 

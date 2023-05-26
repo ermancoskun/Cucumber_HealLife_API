@@ -16,10 +16,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Assert;
 import org.testng.asserts.SoftAssert;
-import org.w3c.dom.stylesheets.LinkStyle;
 import pojos.Pojo_RegisterCustomer;
 import utilities.API_Utils;
-import utilities.DB_Utils;
 
 import static io.restassured.RestAssured.given;
 import static org.junit.Assert.assertEquals;
@@ -98,6 +96,7 @@ public class APIStepDefinition {
 
     @Given("Verifies the newly created blood group record via APi.")
     public void verifies_the_newly_created_blood_group_record_via_api() {
+        // Verify the blood group record created via api with id
         response
                 .then()
                 .assertThat()
@@ -147,10 +146,11 @@ public class APIStepDefinition {
 
     @And("Sends GET request with Body with invalid Authorization")
     public void sendsGETRequestWithBodyWithInvalidAuthorization() {
-        String invalidToken = "H3h3VhOQvXU8Ql83V6kgSeKQ6hREZk";
+        String invalidToken = "ZBRqKnnTiE9iSdHVCdMPbaP44dClmz";
+        System.out.println(fullPath);
         response = given()
                 .spec(HooksAPI.spec)
-                .headers("Authorization", "Bearer " + invalidToken)
+                .header("Authorization", "Bearer " + "ZBRqKnnTiE9iSdHVCdMPbaP44dClmz")
                 .contentType(ContentType.JSON)
                 .when()
                 .body(reqBodyJson.toString())
@@ -380,6 +380,20 @@ public class APIStepDefinition {
         response=API_Utils.deleteRequest(fullPath);
     }
 
+    @Given("Verify that the datas are contained in the response body as {string},{string},{string}")
+    public void verify_that_the_datas_are_contained_in_the_response_body_as(String rspnBody, String data, String dataValue) {
+        String[] datasArr = data.split(",");
+        String[] dataValuesArr = dataValue.split(",");
+
+        for (int i = 0; i < datasArr.length; i++) {
+            response
+                    .then()
+                    .assertThat()
+                    .body(rspnBody + datasArr[i], Matchers.equalTo(dataValuesArr[i]));
+            System.out.println(datasArr[i]);
+            System.out.println(dataValuesArr[i]);
+        }
+    }
 
 
     @And("Verifies in the response body with id {string}, name {string},is_blood_group {string} , created_ at {string} boolean aysenuriye")
@@ -412,7 +426,6 @@ public class APIStepDefinition {
         assertEquals(description, resJp.get("lists[14].description"));
         assertEquals(created_at, resJp.get("lists[14].created_at"));
     }
-
 
     @And("Request body is:")
     public void requestBodyIs(String body) {
