@@ -15,9 +15,8 @@ import org.junit.runner.RunWith;
         },
         features = "src/test/resources/features",
         glue = {"stepDefinitions", "hooks"},
-        tags = "@API",
+        tags = "@US15",
         dryRun = false
-
 
 
 

@@ -46,7 +46,10 @@ public class APIStepDefinition {
 
         for (int i = 0; i < paths.length; i++) {
 
-            String key = "pp" + (i); // pp1 pp2 pp3
+
+            String key = "pp" + (i + 1); // pp1 pp2 pp3
+
+
             String value = paths[i].trim();
 
             HooksAPI.spec.pathParam(key, value);
@@ -86,6 +89,82 @@ public class APIStepDefinition {
     }
 
 
+    @Given("Creates a request body with the name {string}, isBloodGroup {string} parameters to create Blood Group Data")
+    public void creates_a_request_body_with_the_name_is_blood_group_parameters_to_create_blood_group_data(String name, String bloodGroup) {
+        reqBodyJson = new JSONObject();
+        reqBodyJson.put("name", name);
+        reqBodyJson.put("is_blood_group", bloodGroup);
+
+        System.out.println(reqBodyJson.toString());
+    }
+
+    @Given("Saves the response body of the POST method.")
+    public void saves_the_response_body_of_the_post_method() {
+
+        response = given()
+                .spec(HooksAPI.spec)
+                .header("Authorization", "Bearer " + HooksAPI.token)
+                .contentType(ContentType.JSON)
+                .when()
+                .body(reqBodyJson.toString())
+                .post(fullPath);
+
+        response.prettyPrint();
+    }
+
+    @Given("Verifies that the status code value is {int} in the returned response body.")
+    public void verifies_that_the_status_code_value_is_in_the_returned_response_body(int statusCode) {
+        softAssert.assertEquals(response.getStatusCode(), statusCode, "Status code value is NOT " + statusCode);
+    }
+
+    @Given("Verifies that the message value is {string} in the returned response body.")
+    public void verifies_that_the_message_value_is_in_the_returned_response_body(String message) {
+        JsonPath respJS = response.jsonPath();
+        softAssert.assertEquals(message, respJS.getString("message"));
+    }
+
+
+    @Given("Creates an INVALID request body")
+    public void creates_an_invalid_request_body() {
+        reqBodyJson = API_Utils.createABody(99);
+
+    }
+
+    @Given("Access all blood group data with GET method")
+    public void access_all_blood_group_data_with_get_method() {
+        response = given()
+                .spec(HooksAPI.spec)
+                .header("Authorization", "Bearer " + HooksAPI.token)
+
+                .contentType(ContentType.JSON)
+                .when()
+                .get(fullPath);
+
+
+        // response.prettyPrint();
+
+    }
+
+
+    @Given("Verifies that the blood group record created with the API has been created")
+    public void verifies_that_the_blood_group_record_created_with_the_api_has_been_created() {
+
+        response
+                .then()
+                .assertThat()
+                .body("lists[.id", Matchers.hasItem(addId));
+
+    }
+
+
+    public void addAndSaveAddIdNumber() {
+        creates_a_request_body_with_the_name_is_blood_group_parameters_to_create_blood_group_data("Jane Doe", "0 Rh +");
+        saves_the_response_body_of_the_post_method();
+        JsonPath respJS = response.jsonPath();
+        addId = respJS.getString("addId");
+        System.out.println("addId :" + addId);
+    }
+
     @Given("Creates request body as name {string}, isBloodGroup {string}")
     public void creates_a_request_body_as_name_is_blood_group(String name, String bloodGroup) {
         reqBodyJson = API_Utils.createABody(name, bloodGroup, true);
@@ -112,6 +191,7 @@ public class APIStepDefinition {
     @And("Sends GET request with Body")
     public void sendsGETRequestWithBody() {
         response = API_Utils.getRequestWithBody(fullPath, reqBodyJson);
+
     }
 
     @Given("Creates a request body with id {string} parameter to get finding category data")
@@ -144,8 +224,12 @@ public class APIStepDefinition {
 
     @And("Sends GET request with Body with invalid Authorization")
     public void sendsGETRequestWithBodyWithInvalidAuthorization() {
-        String invalidToken = "ZBRqKnnTiE9iSdHVCdMPbaP44dClmz";
+
+        String invalidToken = "H3h3VhOQvXU8Ql83V6kgSeKQ6hREZk";
+
+        String invalidToken2 = "ZBRqKnnTiE9iSdHVCdMPbaP44dClmz";
         System.out.println(fullPath);
+
         response = given()
                 .spec(HooksAPI.spec)
                 .header("Authorization", "Bearer " + "ZBRqKnnTiE9iSdHVCdMPbaP44dClmz")
@@ -165,7 +249,20 @@ public class APIStepDefinition {
 
     @And("Sends POST request with Body and invalid Authorization")
     public void sendsPOSTRequestWithBodyAndInvalidAuthorization() {
-       response=API_Utils.postRequest(fullPath,reqBodyJson);
+
+        String invalidToken = HooksAPI.token + "invalid";
+        Response response = given().headers("Authorization",
+                        "Bearer " + invalidToken,
+                        "Content-Type",
+                        ContentType.JSON,
+                        "Accept",
+                        ContentType.JSON).spec(HooksAPI.spec).contentType(ContentType.JSON)
+                .when().body(reqBodyJson.toString())
+                .post(fullPath);
+        response.prettyPrint();
+
+        response = API_Utils.postRequest(fullPath, reqBodyJson);
+
     }
 
     @And("Sends PATCH request with Body and valid Authorization")
@@ -187,19 +284,19 @@ public class APIStepDefinition {
         response.prettyPrint();
     }
 
-
     @And("Sends DELETE request with Body and invalid Authorization")
     public void sendsDELETERequestWithBodyAndInvalidAuthorization() {
         String invalidToken = "JQRvVtb9uMWEaS4sth5Hj8HsA2Pvkh";
         JSONObject object = new JSONObject();
-        object.put("id",addId);
-        response = RestAssured.given().spec(HooksAPI.spec).headers("Authorization","Bearer "+invalidToken)
+        object.put("id", addId);
+        response = RestAssured.given().spec(HooksAPI.spec).headers("Authorization", "Bearer " + invalidToken)
                 .contentType(ContentType.JSON)
                 .when().body(object.toString())
+
                 .delete(fullPath);
         response.prettyPrint();
 
-        Assert.assertEquals(403,response.getStatusCode());
+        Assert.assertEquals(403, response.getStatusCode());
     }
 
     @And("Save addid number")
@@ -209,9 +306,9 @@ public class APIStepDefinition {
         System.out.println("addId = " + addId);
     }
 
-
     @Then("Creates an expected body with id {int}, exp_category {string},description {string} ,is_active {string}, is_deleted {string}, created_at {string}  in ExpenseHead.")
-    public void createsAnExpectedBodyWithIdExp_categoryDescriptionIs_activeIs_deletedCreated_atInExpenseHead(int id, String exp_category, String description, String is_active, String is_deleted, String created_at) {
+    public void createsAnExpectedBodyWithIdExp_categoryDescriptionIs_activeIs_deletedCreated_atInExpenseHead(
+            int id, String exp_category, String description, String is_active, String is_deleted, String created_at) {
         reqBodyJson = API_Utils.createABody(id, exp_category, description, is_active, is_deleted, created_at);
       /*
         {
@@ -226,12 +323,13 @@ public class APIStepDefinition {
         "is_deleted": "no",
         "created_at": "2021-10-29 01:35:42"
     }
-}
+    }
          */
     }
 
     @And("Verifies in the response body with id {string}, exp_category {string},description {string} , is_active {string}, is_deleted {string}, created_at {string}  in ExpenseHead.")
-    public void verifiesInTheResponseBodyWithIdExp_categoryDescriptionIs_activeIs_deletedCreated_atInExpenseHead(String id, String exp_category, String description, String is_active, String is_deleted, String created_at) {
+    public void verifiesInTheResponseBodyWithIdExp_categoryDescriptionIs_activeIs_deletedCreated_atInExpenseHead
+            (String id, String exp_category, String description, String is_active, String is_deleted, String created_at) {
         JsonPath resJp = response.jsonPath();
         assertEquals(id, resJp.get("details.id"));
         assertEquals(exp_category, resJp.get("details.exp_category"));
@@ -241,19 +339,17 @@ public class APIStepDefinition {
         assertEquals(created_at, resJp.get("details.created_at"));
     }
 
-
     @And("Verifies in the response body with id {string}")
-
     public void verifiesInTheResponseBodyWithId(String id) {
         JsonPath resJp = response.jsonPath();
         assertEquals(id, resJp.get("lists.id"));
     }
 
-
-
     @Then("Verifies in the response body with id {string}, name {string},description {string} , finding_category_id {string}, created_at {string}, category {string}  in ExpenseHead.")
     public void resverifiesInTheResponseBodyWithIdNameDescriptionFinding_category_idCreated_atCategoryInExpenseHead
-            (String id, String name, String description, String finding_category_id, String created_at, String category) {
+            (String id, String name, String description, String finding_category_id, String created_at, String
+                    category) {
+
         JsonPath respJp = response.jsonPath();
         assertEquals(id, respJp.getString("details.id"));
         assertEquals(name, respJp.getString("details.name"));
@@ -263,6 +359,10 @@ public class APIStepDefinition {
         assertEquals(category, respJp.getString("details.category"));
     }
 
+    @And("Sends GET request with valid Authorization")
+    public void sendsGETRequestWithValidAuthorization() {
+        response = API_Utils.getRequest(fullPath);
+    }
 
     @And("Creates an expected body with id {int}, is visitors_ purpose  {string}, description {string}, created_at {string}")
     public void createsAnExpectedBodyWithIdIsVisitors_PurposeDescriptionCreated_at(int id, String
@@ -290,7 +390,8 @@ public class APIStepDefinition {
 
 
     @And("Verifies in the response body with id {string}, is visitors_ purpose  {string}, description {string}, created_at {string}  must be verified .")
-    public void verifiesInTheResponseBodyWithIdIsVisitors_PurposeDescriptionCreated_atMustBeVerified(String id, String visitors_purpose, String description, String created_at) {
+    public void verifiesInTheResponseBodyWithIdIsVisitors_PurposeDescriptionCreated_atMustBeVerified(String
+                                                                                                             id, String visitors_purpose, String description, String created_at) {
         JsonPath resJp = response.jsonPath();
         assertEquals(id, resJp.get("lists[6].id"));
         assertEquals(visitors_purpose, resJp.get("lists[6].visitors_purpose"));
@@ -298,12 +399,10 @@ public class APIStepDefinition {
         assertEquals(created_at, resJp.get("lists[6].created_at"));
     }
 
-
     @And("Sends GET request valid Authorization")
     public void sendsGETRequestValidAuthorization() {
         response = API_Utils.getRequest(fullPath);
     }
-
 
     @And("Sends GET request invalid Authorization")
     public void sendsGETRequestInvalidAuthorization() {
@@ -321,9 +420,7 @@ public class APIStepDefinition {
     public void verifiesThatTheReturnedStatusCodeeIs(int arg0) {
         Assert.assertTrue(message.contains("403"));
 
-
     }
-
 
     @Given("Get query is generated with valid information")
     public void getQueryIsGeneratedWithValidInformation() {
@@ -347,8 +444,15 @@ public class APIStepDefinition {
         response.prettyPrint();
     }
 
+    @Then("Verifies in the response body with id {string}, name {string}, is_blood_group {string}, created_at {string}")
+    public void verifiesInTheeResponseBodyWithIdNameIs_blood_groupCreated_at(String id, String name, String
+            is_blood_group, String created_at) {
+    }
+
     @Then("Verifies in the response body with id {string}, name {string}  is_blood_group {string}, created_at {string}")
-    public void verifiesInTheResponseBodyWithIdNameIs_blood_groupCreated_at(String id, String name, String is_blood_group, String created_at) {
+    public void verifiesInTheResponseBodyWithIdNameIs_blood_groupCreated_at(String id, String name, String
+            is_blood_group, String created_at) {
+
         JsonPath respJp = response.jsonPath();
         assertEquals(id, respJp.get("lists.[2].id"));
         assertEquals(name, respJp.get("lists.[2].name"));
@@ -371,11 +475,12 @@ public class APIStepDefinition {
 
     @And("Delete this record after is verified")
     public void deleteThisRecordAfterIsVerified() throws InterruptedException {
-        response=API_Utils.deleteRequest(fullPath);
+        response = API_Utils.deleteRequest(fullPath);
     }
 
     @Given("Verify that the datas are contained in the response body as {string},{string},{string}")
-    public void verify_that_the_datas_are_contained_in_the_response_body_as(String rspnBody, String data, String dataValue) {
+    public void verify_that_the_datas_are_contained_in_the_response_body_as(String rspnBody, String
+            data, String dataValue) {
         String[] datasArr = data.split(",");
         String[] dataValuesArr = dataValue.split(",");
 
@@ -390,18 +495,9 @@ public class APIStepDefinition {
     }
 
 
-    @And("Verifies in the response body with id {string}, name {string},is_blood_group {string} , created_ at {string} boolean aysenuriye")
-    public void verifiesInTheResponseBodyWithIdNameIs_blood_groupCreated_AtBooleanAysenuriye(String arg0, String arg1, String arg2, String arg3) {
-        JsonPath respJp = response.jsonPath();
-        assertEquals(arg0,respJp.get("lists.id"));
-        assertEquals(arg1,respJp.get("lists.name"));
-        assertEquals(arg2,respJp.get("lists.is_blood_group"));
-        assertEquals(arg3,respJp.get("lists.created_at"));
-
-    }
-
     @And("Verifies in the response body with id {string}, is visitors_purpose  {string}, description {string}, created_at {string}  must be verified .")
-    public void verifiesInTheResponseBodyWithIdIsVisitors_purposeDescriptionCreated_atMustBeVerified(String id, String visitors_purpose, String description, String created_at) {
+    public void verifiesInTheResponseBodyWithIdIsVisitors_purposeDescriptionCreated_atMustBeVerified(String
+                                                                                                             id, String visitors_purpose, String description, String created_at) {
         JsonPath resJp = response.jsonPath();
         assertEquals(id, resJp.get("lists[6].id"));
         assertEquals(visitors_purpose, resJp.get("lists[6].visitors_purpose"));
@@ -411,7 +507,8 @@ public class APIStepDefinition {
     }
 
     @And("Verifies in the responsee body with id {string}, is visitors_ purpose  {string}, description {string}, created_at {string}  must be verified .")
-    public void verifiesInTheResponseeBodyWithIdIsVisitors_PurposeDescriptionCreated_atMustBeVerified(String id, String visitors_purpose, String description, String created_at) {
+    public void verifiesInTheResponseeBodyWithIdIsVisitors_PurposeDescriptionCreated_atMustBeVerified
+            (String id, String visitors_purpose, String description, String created_at) {
         JsonPath resJp = response.jsonPath();
         assertEquals(id, resJp.get("lists[14].id"));
         assertEquals(visitors_purpose, resJp.get("lists[14].visitors_purpose"));
@@ -421,17 +518,13 @@ public class APIStepDefinition {
 
     @And("Request body is:")
     public void requestBodyIs(String body) {
-        reqBodyJson=new JSONObject(body);
+        reqBodyJson = new JSONObject(body);
     }
+
 
     @And("Sends DELETE request with Body and valid Authorization")
     public void sendsDELETERequestWithBodyAndValidAuthorization() {
-        response=API_Utils.deleteRequest(fullPath);
-    }
-
-    @And("Sends GET request with valid Authorization")
-    public void sendsGETRequestWithValidAuthorization() {
-        response=API_Utils.getRequest(fullPath);
+        response = API_Utils.deleteRequest(fullPath);
     }
 
 }

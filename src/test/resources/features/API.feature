@@ -106,18 +106,19 @@ Feature: API Tests
 
 
   Scenario: [API_US15_TC01]-(1B)As an administrator, I should be able to access the relevant blood data by entering the id over the API connection .
-    Given Api user sets "/api/getBloodGroupById" path parameters.
+    Given Api user sets "api/getBloodGroupById" path parameters.
     And Sets query parameters as id 123456
     And Sends GET request with Body with invalid Authorization
     Then Verifies that the returned status code is 403
     Then Verifies that the response message is "failed"
 
-
+  @US15
   Scenario: [API_US15_TC01]-(2)As an administrator, I should be able to access the relevant blood data by entering the id over the API connection .
-    Given Api user sets "/api/getBloodGroupById" path parameters.
+    Given Api user sets "api/getBloodGroupById" path parameters.
     Then Sets query parameters as id 1
     And Sends GET request with Body and valid Authorization
-    And Verifies in the response body with id "1", name "B+",is_blood_group "1" , created_ at "2021-10-25 01:54:10" boolean aysenuriye
+    And Verify that the datas are contained in the response body as "lists.","id,name,is_blood_group,created_at","1,B+,1,2021-10-25 01:54:10"
+
 
     Scenario: [API_US07_TC01]-(1A) Link as an administrator registered to the system via visitor I should be able to update the purpose information .
       Given Api user sets "/api/visitorsPurposeUpdate" path parameters.
@@ -140,7 +141,7 @@ Feature: API Tests
       Then Sets query parameters as id 1
       And Sends POST request with Body and valid Authorization
       And Verifies in the response body with id "1"
-  @US15
+
   Scenario: [API_US07_TC01]-(3) Link as an administrator registered to the system via visitor I should be able to update the purpose information .
     Given Api user sets "/api/visitorsPurposeUpdate" path parameters.
     And Creates request body as name "Jane Doe", isBloodGroup "A Rh +"
@@ -365,3 +366,19 @@ Feature: API Tests
     Then Sends POST request with Body and valid Authorization
     Given Api user sets "api/deleteBloodGroup" path parameters.
     And Sends DELETE request with Body and invalid Authorization
+
+  Scenario: [API_US19->TC01]-(1A) As an administrator to hospital expenses via API connection I should be able to reach .
+
+    Given Api user sets "api/getExpenseHead" path parameters.
+    Then Sends GET request valid Authorization
+    And Verifies that the returned status code is 200
+    And Verifies that the response message is "Success"
+
+  Scenario: [API_US19->TC01]-(1B) As an administrator to hospital expenses via API connection I should be able to reach .
+     Given Api user sets "api/getExpenseHead" path parameters.
+     Then Sends GET request invalid Authorization
+     Then Verifies that the returned status code is 403
+     Then Verifies that the response message is "failed"
+
+
+  Scenario:[API_US19->TC02] As an administrator to hospital expenses via API connection I should be able to reach .
