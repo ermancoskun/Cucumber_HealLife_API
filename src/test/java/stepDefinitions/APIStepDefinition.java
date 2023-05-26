@@ -289,14 +289,14 @@ public class APIStepDefinition {
         assertEquals(created_at, resJp.get("details.created_at"));
     }
 
-/*    @And("Verifies in the response body with id {string}, name {string},is_blood_group {string} , created_at {string}")
-    public void verifiesInTheResponseBodyWithIdNameIs_blood_groupCreated_at(String  id, String name, String is_blood_group, String created_at) {
+    @And("Verifies in the response body with id {string}, name {string},is_blood_group {string} , created_ at {string}")
+    public void verifiesInTheResponseBodyWithIdNameIs_blood_groupCreated_at(String  id, String name, String is_blood_group, String created__at,boolean aysenuriye) {
         JsonPath resJp = response.jsonPath();
         assertEquals(id, resJp.get("lists.id"));
         assertEquals(name, resJp.get("lists.name"));
         assertEquals(is_blood_group, resJp.get("lists.is_blood_group"));
-        assertEquals(created_at, resJp.get("lists.details.created_at"));
-    }*/
+        assertEquals(created__at, resJp.get("lists.details.created__at"));
+    }
 
     @And("Verifies in the response body with id {string}")
     public void verifiesInTheResponseBodyWithId(String id) {
