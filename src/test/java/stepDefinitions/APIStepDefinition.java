@@ -632,7 +632,6 @@ public class APIStepDefinition {
     }
 
 
-
     @And("Request body is:")
     public void requestBodyIs(String body) {
         reqBodyJson = new JSONObject(body);
@@ -657,6 +656,16 @@ public class APIStepDefinition {
         response = API_Utils.deleteRequest(fullPath);
     }
 
+
+    @Then("It is verified that the {string} in the response body is the same as the id in the delete request body.")
+    public void ıtIsVerifiedThatTheInTheResponseBodyIsTheSameAsTheIdInTheDeleteRequestBody(String idKey) {
+
+        JsonPath path = response.jsonPath();
+
+        Assert.assertEquals(API_Utils.addId, path.getString(idKey));
+    }
+
+
     @Then("Creates an expected body with id {string}, name {string}, description {string}, finding_category_id : {string}, created_at : {string}, category : {string} .")
     public void createsAnExpectedBodyWithIdNameDescriptionFinding_category_idCreated_atCategory(String id, String name, String description, String finding_category_id, String created_at, String category) {
         reqBodyJson = API_Utils.createABody(id, name, description, finding_category_id, created_at, category);
@@ -673,6 +682,7 @@ public class APIStepDefinition {
         assertEquals(finding_category_id, respJp.getString("lists[6].finding_category_id"));
         assertEquals(created_at, respJp.getString("lists[6].created_at"));
         assertEquals(category, respJp.getString("lists[6].category"));
+
     }
 }
 
