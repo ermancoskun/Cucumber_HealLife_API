@@ -85,9 +85,35 @@ Feature: API Tests
     And Sends GET request with Body and valid Authorization
     And Verifies in the response body with id "5", exp_category "Power Generator Fuel Charge",description "They can utilise a variety of fuel options including natural gas, LPG and diesel." , is_active "yes", is_deleted "no", created_at "2021-10-29 01:35:42"  in ExpenseHead.
 
+  Scenario: [API_US34]-(TC01_A) As an administrator I should be able to access the find list via the API link
 
+    Given Api user sets "api/getFinding" path parameters.
+    Then Sets query parameters as id 12
+    And  Sends GET request with Body and valid Authorization
+    Then Verifies that the returned status code is 200
+    Then Verifies that the response message is "Success"
 
+  Scenario: [API_US34]-(TC01_B) As an administrator I should not be able to access the find list via the API link
 
+    Given Api user sets "api/getFinding" path parameters.
+    And Sets query parameters as id 12
+    And Sends GET request with Body with invalid Authorization
+    Then Verifies that the returned status code is 403
+    Then Verifies that the response message is "failed"
+
+  Scenario: [API_US34]-(TC01_C) As an administrator I should be able to access the find list via the API link
+
+    Given Api user sets "api/getFinding" path parameters.
+    Then Creates an expected body with id 12, name "Refractive Errors.", description "A refractive error is a very common eye disorder. It occurs when the eye cannot clearly focus the images from the outside world. The result of refractive errors is blurred vision, which is sometimes so severe that it causes visual impairment", finding_category_id : "6", created_at : "2021-10-25 02:20:29", category : "Eye Diseases"
+    And Sends GET request with Body and valid Authorization
+    And Verifies in the response body with id "12", name "Refractive Errors.", description "A refractive error is a very common eye disorder. It occurs when the eye cannot clearly focus the images from the outside world. The result of refractive errors is blurred vision, which is sometimes so severe that it causes visual impairment", finding_category_id : "6", created_at : "2021-10-25 02:20:29", category : "Eye Diseases"
+
+  Scenario: [API_US34]-(TC01_D) As an administrator I should be able to access the find list via the API link
+
+    Given Api user sets "api/getFinding" path parameters.
+    Then Creates an expected body with id 7, name "Rosacea", description "Rosacea (roe-ZAY-she-uh) is a common skin condition that causes blushing or flushing and visible blood vessels in your face. It may also produce small, pus-filled bumps. These signs and symptoms may flare up for weeks to months and then go away for a while. ", finding_category_id : "3", created_at : "2021-10-25 02:15:36", category : "Skin Problem"
+    And Sends GET request with Body and valid Authorization
+    And Verifies in the response body with id "7", name "Rosacea", description "Rosacea (roe-ZAY-she-uh) is a common skin condition that causes blushing or flushing and visible blood vessels in your face. It may also produce small, pus-filled bumps. These signs and symptoms may flare up for weeks to months and then go away for a while. ", finding_category_id : "3", created_at : "2021-10-25 02:15:36", category : "Skin Problem"
 
 
 

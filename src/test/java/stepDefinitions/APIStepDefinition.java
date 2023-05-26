@@ -23,7 +23,7 @@ import static org.junit.Assert.assertEquals;
 
 
 public class APIStepDefinition {
-    SoftAssert softAssert= new SoftAssert();
+    SoftAssert softAssert = new SoftAssert();
     public static String fullPath;
     public static Pojo_RegisterCustomer reqBody;
     public static JSONObject reqBodyJson;
@@ -31,22 +31,22 @@ public class APIStepDefinition {
     public static Response response;
     public static String addId;
 
-    int basariliStatusCode=200;
+    int basariliStatusCode = 200;
 
 
     @Given("Api kullanicisi {string} path parametreleri set eder")
     public void api_kullanicisi_path_parametreleri_set_eder(String rawPaths) {
 
-        String [] paths = rawPaths.split("/"); // ["api","register"]
+        String[] paths = rawPaths.split("/"); // ["api","register"]
 
         StringBuilder tempPath = new StringBuilder("/{");
 
-        for (int i = 0; i < paths.length ; i++) {
+        for (int i = 0; i < paths.length; i++) {
 
-            String key = "pp" + (i+1); // pp1 pp2 pp3
+            String key = "pp" + (i + 1); // pp1 pp2 pp3
             String value = paths[i].trim();
 
-            HooksAPI.spec.pathParam(key,value);
+            HooksAPI.spec.pathParam(key, value);
 
             tempPath.append(key + "}/{");
         }
@@ -66,39 +66,40 @@ public class APIStepDefinition {
         // HooksAPI.spec.pathParams("pp0","api","pp1","opdList");
 
         // api/opdList
-        String[] paths=rawPaths.split("/"); // [ "api","register"]
+        String[] paths = rawPaths.split("/"); // [ "api","register"]
 
-        StringBuilder tempPath=new StringBuilder("/{");
+        StringBuilder tempPath = new StringBuilder("/{");
 
-        for (int i = 0; i <paths.length ; i++) {
-            String key="pp"+ i; //pp0 pp1 pp2
-            String value=paths[i].trim(); //solunda sagında bosluk varsa silmek icibn trim kulandık
-            HooksAPI.spec.pathParam(key,value);
-            tempPath.append(key +"}/{");
+        for (int i = 0; i < paths.length; i++) {
+            String key = "pp" + i; //pp0 pp1 pp2
+            String value = paths[i].trim(); //solunda sagında bosluk varsa silmek icibn trim kulandık
+            HooksAPI.spec.pathParam(key, value);
+            tempPath.append(key + "}/{");
             System.out.println("value = " + value);
         }
 
         tempPath.deleteCharAt(tempPath.lastIndexOf("{"));
         tempPath.deleteCharAt(tempPath.lastIndexOf("/"));
 
-        fullPath=tempPath.toString();
+        fullPath = tempPath.toString();
     }
 
 
     @Given("Creates a request body with the name {string}, isBloodGroup {string} parameters to create Blood Group Data")
     public void creates_a_request_body_with_the_name_is_blood_group_parameters_to_create_blood_group_data(String name, String bloodGroup) {
-        reqBodyJson=new JSONObject();
-        reqBodyJson.put("name",name);
-        reqBodyJson.put("is_blood_group",bloodGroup);
+        reqBodyJson = new JSONObject();
+        reqBodyJson.put("name", name);
+        reqBodyJson.put("is_blood_group", bloodGroup);
 
         System.out.println(reqBodyJson.toString());
     }
+
     @Given("Saves the response body of the POST method.")
     public void saves_the_response_body_of_the_post_method() {
 
-        response= given()
+        response = given()
                 .spec(HooksAPI.spec)
-                .header("Authorization","Bearer "+HooksAPI.token)
+                .header("Authorization", "Bearer " + HooksAPI.token)
                 .contentType(ContentType.JSON)
                 .when()
                 .body(reqBodyJson.toString())
@@ -106,28 +107,30 @@ public class APIStepDefinition {
 
         response.prettyPrint();
     }
+
     @Given("Verifies that the status code value is {int} in the returned response body.")
     public void verifies_that_the_status_code_value_is_in_the_returned_response_body(int statusCode) {
-        softAssert.assertEquals(response.getStatusCode(),statusCode,"Status code value is NOT "+statusCode);
+        softAssert.assertEquals(response.getStatusCode(), statusCode, "Status code value is NOT " + statusCode);
     }
+
     @Given("Verifies that the message value is {string} in the returned response body.")
     public void verifies_that_the_message_value_is_in_the_returned_response_body(String message) {
-        JsonPath respJS= response.jsonPath();
-        softAssert.assertEquals(message,respJS.getString("message"));
+        JsonPath respJS = response.jsonPath();
+        softAssert.assertEquals(message, respJS.getString("message"));
     }
 
 
     @Given("Creates an INVALID request body")
     public void creates_an_invalid_request_body() {
-      reqBodyJson=API_Utils.createABody(99);
+        reqBodyJson = API_Utils.createABody(99);
 
     }
 
     @Given("Access all blood group data with GET method")
     public void access_all_blood_group_data_with_get_method() {
-        response= given()
+        response = given()
                 .spec(HooksAPI.spec)
-                .header("Authorization","Bearer "+HooksAPI.token)
+                .header("Authorization", "Bearer " + HooksAPI.token)
 
                 .contentType(ContentType.JSON)
                 .when()
@@ -145,24 +148,22 @@ public class APIStepDefinition {
         response
                 .then()
                 .assertThat()
-                .body("lists[.id",Matchers.hasItem(addId));
+                .body("lists[.id", Matchers.hasItem(addId));
 
     }
 
-    public void addAndSaveAddIdNumber(){
+    public void addAndSaveAddIdNumber() {
         creates_a_request_body_with_the_name_is_blood_group_parameters_to_create_blood_group_data("Jane Doe", "0 Rh +");
         saves_the_response_body_of_the_post_method();
-        JsonPath respJS= response.jsonPath();
-        addId= respJS.getString("addId");
+        JsonPath respJS = response.jsonPath();
+        addId = respJS.getString("addId");
         System.out.println("addId :" + addId);
     }
 
     @Given("Creates a request body with id {string} parameter to get finding category data")
     public void creates_a_request_body_with_id_parameter_to_get_finding_category_data(int id) {
-        reqBodyJson=API_Utils.createABody(id);
+        reqBodyJson = API_Utils.createABody(id);
     }
-
-
 
 
     @And("Sets query parameters as id {int} with valid Authorization")
@@ -172,25 +173,25 @@ public class APIStepDefinition {
 
     @And("Sends GET request with Body")
     public void sendsGETRequestWithBody() {
-        response = API_Utils.getRequestWithBody(fullPath,reqBodyJson);
+        response = API_Utils.getRequestWithBody(fullPath, reqBodyJson);
     }
 
     @Then("Verifies that the returned status code is {int}")
     public void verifiesThatTheReturnedStatusCodeIs(int statusCode) {
         try {
-            softAssert.assertEquals(response.getStatusCode(),statusCode,"Status code value is NOT "+statusCode);
+            softAssert.assertEquals(response.getStatusCode(), statusCode, "Status code value is NOT " + statusCode);
         } catch (NullPointerException e) {
-            softAssert.assertEquals(true,true);
+            softAssert.assertEquals(true, true);
         }
     }
 
     @Then("Verifies that the response message is {string}")
     public void verifiesThatTheResponseMessageIs(String message) {
         try {
-            JsonPath respJS= response.jsonPath();
-            softAssert.assertEquals(respJS.getString("message"),message,"Returned message is not true");
+            JsonPath respJS = response.jsonPath();
+            softAssert.assertEquals(respJS.getString("message"), message, "Returned message is not true");
         } catch (NullPointerException e) {
-            softAssert.assertEquals(true,true);
+            softAssert.assertEquals(true, true);
         }
     }
 
@@ -201,19 +202,19 @@ public class APIStepDefinition {
 
     @And("Sets query parameters as id {int}")
     public void setsQueryParametersAsId(int id) {
-      reqBodyJson= API_Utils.createABody(id);
+        reqBodyJson = API_Utils.createABody(id);
 
     }
 
     @And("Sends GET request with Body and valid Authorization")
     public void sendsGETRequestWithBodyAndValidAuthorization() {
-        response = API_Utils.getRequestWithBody(fullPath,reqBodyJson);
+        response = API_Utils.getRequestWithBody(fullPath, reqBodyJson);
     }
 
     @And("Sends GET request with Body with invalid Authorization")
     public void sendsGETRequestWithBodyWithInvalidAuthorization() {
-       String invalidToken="H3h3VhOQvXU8Ql83V6kgSeKQ6hREZk";
-        Response response= given()
+        String invalidToken = "H3h3VhOQvXU8Ql83V6kgSeKQ6hREZk";
+        Response response = given()
                 .spec(HooksAPI.spec)
                 .headers("Authorization", "Bearer " + invalidToken)
                 .contentType(ContentType.JSON)
@@ -222,15 +223,16 @@ public class APIStepDefinition {
                 .get(fullPath);
         response.prettyPrint();
     }
+
     @Given("Sends POST request with Body and valid Authorization")
     public void sends_post_request_with_body_and_valid_authorization() {
-        API_Utils.postRequest(fullPath,reqBodyJson);
+        API_Utils.postRequest(fullPath, reqBodyJson);
     }
 
     @And("Sends POST request with Body and invalid Authorization")
     public void sendsPOSTRequestWithBodyAndInvalidAuthorization() {
-        String invalidToken=HooksAPI.token+"invalid";
-        Response response=given().headers("Authorization",
+        String invalidToken = HooksAPI.token + "invalid";
+        Response response = given().headers("Authorization",
                         "Bearer " + invalidToken,
                         "Content-Type",
                         ContentType.JSON,
@@ -243,13 +245,13 @@ public class APIStepDefinition {
 
     @And("Sends PATCH request with Body and valid Authorization")
     public void sendsPATCHRequestWithBodyAndValidAuthorization() {
-        API_Utils.patchRequest(fullPath,reqBodyJson);
+        API_Utils.patchRequest(fullPath, reqBodyJson);
     }
 
     @And("Sends PATCH request with Body and invalid Authorization")
     public void sendsPATCHRequestWithBodyAndInvalidAuthorization() {
-        String invalidToken=HooksAPI.token+"invalid";
-        Response response=given().headers("Authorization",
+        String invalidToken = HooksAPI.token + "invalid";
+        Response response = given().headers("Authorization",
                         "Bearer " + invalidToken,
                         "Content-Type",
                         ContentType.JSON,
@@ -262,13 +264,13 @@ public class APIStepDefinition {
 
     @And("Sends DELETE request with Body and valid Authorization")
     public void sendsDELETERequestWithBodyAndValidAuthorization() {
-      API_Utils.deleteRequest(fullPath,reqBodyJson);
+        API_Utils.deleteRequest(fullPath, reqBodyJson);
     }
 
     @And("Sends DELETE request with Body and invalid Authorization")
     public void sendsDELETERequestWithBodyAndInvalidAuthorization() {
-        String invalidToken=HooksAPI.token+"invalid";
-        Response response=given().headers("Authorization",
+        String invalidToken = HooksAPI.token + "invalid";
+        Response response = given().headers("Authorization",
                         "Bearer " + invalidToken,
                         "Content-Type",
                         ContentType.JSON,
@@ -281,17 +283,9 @@ public class APIStepDefinition {
     }
 
 
-
-
-    
-
-
-
-
-
     @Then("Creates an expected body with id {int}, exp_category {string},description {string} ,is_active {string}, is_deleted {string}, created_at {string}  in ExpenseHead.")
     public void createsAnExpectedBodyWithIdExp_categoryDescriptionIs_activeIs_deletedCreated_atInExpenseHead(int id, String exp_category, String description, String is_active, String is_deleted, String created_at) {
-        reqBodyJson=API_Utils.createABody(id,exp_category,description,is_active,is_deleted,created_at);
+        reqBodyJson = API_Utils.createABody(id, exp_category, description, is_active, is_deleted, created_at);
       /*
         {
     "status": 200,
@@ -306,17 +300,62 @@ public class APIStepDefinition {
         "created_at": "2021-10-29 01:35:42"
     }
 }
-         */}
+         */
+    }
 
     @And("Verifies in the response body with id {string}, exp_category {string},description {string} , is_active {string}, is_deleted {string}, created_at {string}  in ExpenseHead.")
-    public void verifiesInTheResponseBodyWithIdExp_categoryDescriptionIs_activeIs_deletedCreated_atInExpenseHead(String id, String exp_category, String description, String is_active , String is_deleted, String created_at) {
+    public void verifiesInTheResponseBodyWithIdExp_categoryDescriptionIs_activeIs_deletedCreated_atInExpenseHead(String id, String exp_category, String description, String is_active, String is_deleted, String created_at) {
         JsonPath resJp = response.jsonPath();
         assertEquals(id, resJp.get("details.id"));
-        assertEquals(exp_category, resJp.get("details.exp_category") );
-        assertEquals(description, resJp.get("details.description") );
+        assertEquals(exp_category, resJp.get("details.exp_category"));
+        assertEquals(description, resJp.get("details.description"));
         assertEquals(is_active, resJp.get("details.is_active"));
         assertEquals(is_deleted, resJp.get("details.is_deleted"));
         assertEquals(created_at, resJp.get("details.created_at"));
     }
-}
+
+    @Then("Creates an expected body with id {int}, name {string}, description {string}, finding_category_id : {string}, created_at : {string}, category : {string}")
+    public void createsAnExpectedBodyWithIdExp_categoryDescriptionFinding_category_idCreated_atCategory(int id, String name, String description, String finding_category_id, String created_at, String category) {
+        reqBodyJson = API_Utils.createABody(id, name, description, finding_category_id, created_at, category);
+        /*
+        {
+      "id": "12",
+      "name": "Refractive Errors.",
+      "description": "A refractive error is a very common eye disorder. It occurs when the eye cannot clearly focus the images from the outside world. The result of refractive errors is blurred vision, which is sometimes so severe that it causes visual impairment",
+      "finding_category_id": "6",
+      "created_at": "2021-10-25 02:20:29",
+      "category": "Eye Diseases"
+    },
+         */
+
+         /*
+            {
+          "id": "7",
+          "name": "Rosacea",
+          "description": "Rosacea (roe-ZAY-she-uh) is a common skin condition that causes blushing or flushing and visible blood vessels in your face. It may also produce small, pus-filled bumps. These signs and symptoms may flare up for weeks to months and then go away for a while.",
+          "finding_category_id": "3",
+          "created_at": "2021-10-25 02:15:36",
+          "category": "Skin Problem"
+          },
+     */
+    }
+
+    @And("Verifies in the response body with id {string}, name {string}, description {string}, finding_category_id : {string}, created_at : {string}, category : {string}")
+    public void verifiesInTheResponseBodyWithIdNameDescriptionFinding_category_idCreated_atCategory(String id, String name, String description, String finding_category_id, String created_at, String category) {
+        JsonPath resJp = response.jsonPath();
+        assertEquals(id, resJp.get("details.id"));
+        assertEquals(name, resJp.get("details.name"));
+        assertEquals(description, resJp.get("details.description"));
+        assertEquals(finding_category_id, resJp.get("details.finding_category_id"));
+        assertEquals(created_at, resJp.get("details.created_at"));
+        assertEquals(category, resJp.get("details.category"));
+    }
+
+    }
+
+
+
+
+
+
 
