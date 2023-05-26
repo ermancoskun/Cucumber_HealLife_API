@@ -104,12 +104,12 @@ Feature: API Tests
     Then Verifies that the returned status code is 403
     Then Verifies that the response message is "failed"
 
-
+@US15
   Scenario: [API_US15_TC01]-(2)As an administrator, I should be able to access the relevant blood data by entering the id over the API connection .
     Given Api user sets "/api/getBloodGroupById" path parameters.
     Then Sets query parameters as id 1
     And Sends GET request with Body and valid Authorization
-    And Verifies in the response body with id "1", name "B+",is_blood_group "1" , created_at "2021-10-25 01:54:10"
+    And Verifies in the response body with id "1", name "B+",is_blood_group "1" , created_ at "2021-10-25 01:54:10"
 
     Scenario: [API_US07_TC01]-(1A) Link as an administrator registered to the system via visitor I should be able to update the purpose information .
       Given Api user sets "/api/visitorsPurposeUpdate" path parameters.
