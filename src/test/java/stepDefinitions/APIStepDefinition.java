@@ -85,84 +85,27 @@ public class APIStepDefinition {
     }
 
 
-    @Given("Creates a request body with the name {string}, isBloodGroup {string} parameters to create Blood Group Data")
-    public void creates_a_request_body_with_the_name_is_blood_group_parameters_to_create_blood_group_data(String name, String bloodGroup) {
-        reqBodyJson=new JSONObject();
-        reqBodyJson.put("name",name);
-        reqBodyJson.put("is_blood_group",bloodGroup);
+    @Given("Creates request body as name {string}, isBloodGroup {string}")
+    public void creates_a_request_body_as_name_is_blood_group(String name, String bloodGroup) {
+        reqBodyJson=API_Utils.createABody(name,bloodGroup,true);
 
         System.out.println(reqBodyJson.toString());
     }
-    @Given("Saves the response body of the POST method.")
-    public void saves_the_response_body_of_the_post_method() {
-
-        response= given()
-                .spec(HooksAPI.spec)
-                .header("Authorization","Bearer "+HooksAPI.token)
-                .contentType(ContentType.JSON)
-                .when()
-                .body(reqBodyJson.toString())
-                .post(fullPath);
-
-        response.prettyPrint();
-    }
-    @Given("Verifies that the status code value is {int} in the returned response body.")
-    public void verifies_that_the_status_code_value_is_in_the_returned_response_body(int statusCode) {
-        softAssert.assertEquals(response.getStatusCode(),statusCode,"Status code value is NOT "+statusCode);
-    }
-    @Given("Verifies that the message value is {string} in the returned response body.")
-    public void verifies_that_the_message_value_is_in_the_returned_response_body(String message) {
-        JsonPath respJS= response.jsonPath();
-        softAssert.assertEquals(message,respJS.getString("message"));
-    }
-
 
     @Given("Creates an INVALID request body")
     public void creates_an_invalid_request_body() {
-      reqBodyJson=API_Utils.createABody(99);
-
-    }
-
-    @Given("Access all blood group data with GET method")
-    public void access_all_blood_group_data_with_get_method() {
-        response= given()
-                .spec(HooksAPI.spec)
-                .header("Authorization","Bearer "+HooksAPI.token)
-
-                .contentType(ContentType.JSON)
-                .when()
-                .get(fullPath);
-
-
-        // response.prettyPrint();
-
+      reqBodyJson=API_Utils.createABody(99999);
     }
 
 
     @Given("Verifies that the blood group record created with the API has been created")
     public void verifies_that_the_blood_group_record_created_with_the_api_has_been_created() {
-
         response
                 .then()
                 .assertThat()
-                .body("lists[.id",Matchers.hasItem(addId));
+                .body("lists.id",Matchers.hasItem(addId));
 
     }
-
-    public void addAndSaveAddIdNumber(){
-        creates_a_request_body_with_the_name_is_blood_group_parameters_to_create_blood_group_data("Jane Doe", "0 Rh +");
-        saves_the_response_body_of_the_post_method();
-        JsonPath respJS= response.jsonPath();
-        addId= respJS.getString("addId");
-        System.out.println("addId :" + addId);
-    }
-
-    @Given("Creates a request body with id {string} parameter to get finding category data")
-    public void creates_a_request_body_with_id_parameter_to_get_finding_category_data(int id) {
-        reqBodyJson=API_Utils.createABody(id);
-    }
-
-
 
 
     @And("Sets query parameters as id {int} with valid Authorization")
@@ -216,13 +159,13 @@ public class APIStepDefinition {
     }
     @Given("Sends POST request with Body and valid Authorization")
     public void sends_post_request_with_body_and_valid_authorization() {
-        API_Utils.postRequest(fullPath,reqBodyJson);
+        response=API_Utils.postRequest(fullPath,reqBodyJson);
     }
 
     @And("Sends POST request with Body and invalid Authorization")
     public void sendsPOSTRequestWithBodyAndInvalidAuthorization() {
         String invalidToken=HooksAPI.token+"invalid";
-        Response response=given().headers("Authorization",
+        response=given().headers("Authorization",
                         "Bearer " + invalidToken,
                         "Content-Type",
                         ContentType.JSON,
@@ -271,6 +214,20 @@ public class APIStepDefinition {
                 .delete(fullPath);
         response.prettyPrint();
     }
+    @And("Save addid number")
+    public void save_addid_number() {
+        JsonPath respJP = response.jsonPath();
+    addId=respJP.getString("addId");
+        System.out.println("addId = " + addId);
+    }
+
+    @Given("Sends GET request")
+    public void sends_get_request() {
+        response=API_Utils.getRequest(fullPath);
+        response.prettyPrint();
+    }
+
+
 
 
 
@@ -310,5 +267,10 @@ public class APIStepDefinition {
         assertEquals(is_deleted, resJp.get("details.is_deleted"));
         assertEquals(created_at, resJp.get("details.created_at"));
     }
+
+
+
+
+
 }
 
