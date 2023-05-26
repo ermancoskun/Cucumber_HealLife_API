@@ -13,8 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static io.restassured.RestAssured.given;
-import static stepDefinitions.APIStepDefinition.fullPath;
-import static stepDefinitions.APIStepDefinition.reqBodyJson;
+import static stepDefinitions.APIStepDefinition.*;
 
 public class API_Utils {
     public static RequestSpecification spec;
@@ -46,6 +45,14 @@ public class API_Utils {
                 .get(endpoint);
         response.prettyPrint();
         return response;
+
+        /*
+            Response response = given().spec(specJsonPlaceholder-baseurl)
+                .when().body(requestBody.toString()).contentType(ContentType.JSON)
+                .put("{pp1}/{pp2}");
+
+        response.prettyPrint();
+         */
     }
 
     public static Response deleteRequest(String endpoint,JSONObject reqBodyJson){
@@ -161,6 +168,18 @@ public class API_Utils {
         jsonObject.put("is_deleted",is_deleted);
         jsonObject.put("created_at",created_at);
         return jsonObject;
+    }
+    public static Response getRequestWithInvalidAuthorization(String endpoint) {
+
+        String invalidToken=HooksAPI.token+"invalid";
+        response = given().spec(HooksAPI.spec).
+                headers("Authorization", "Bearer " + invalidToken)
+                .contentType(ContentType.JSON)
+                .when()
+                .get(endpoint);
+        response.prettyPrint();
+
+        return response;
     }
 
 }
