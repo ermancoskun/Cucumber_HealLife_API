@@ -345,3 +345,24 @@ Feature: API Tests
 
 
 
+  Scenario: [API_US19->TC01]-(1A) As an administrator to hospital expenses via API connection I should be able to reach .
+
+    Given Api user sets "api/getExpenseHead" path parameters.
+    Then Sends GET request valid Authorization
+    And Verifies that the returned status code is 200
+    And Verifies that the response message is "Success"
+
+
+
+
+
+
+  Scenario: [API_US19->TC01]-(1B) As an administrator to hospital expenses via API connection I should be able to reach .
+     Given Api user sets "api/getExpenseHead" path parameters.
+     Then Sends GET request invalid Authorization
+     Then Verifies that the returned status code is 403
+     Then Verifies that the response message is "failed"
+
+
+  Scenario:[API_US19->TC02] As an administrator to hospital expenses via API connection I should be able to reach .
+
