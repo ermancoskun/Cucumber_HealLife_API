@@ -289,6 +289,22 @@ public class APIStepDefinition {
         assertEquals(created_at, resJp.get("details.created_at"));
     }
 
+    @And("Verifies in the response body with id {string}, name {string},is_blood_group {string} , created_at {string}")
+    public void verifiesInTheResponseBodyWithIdNameIs_blood_groupCreated_at(String  id, String name, String is_blood_group, String created_at) {
+
+
+        JsonPath resJp = response.jsonPath();
+        assertEquals(id, resJp.get("lists.id"));
+        assertEquals(name, resJp.get("lists.name"));
+        assertEquals(is_blood_group, resJp.get("lists.is_blood_group"));
+        assertEquals(created_at, resJp.get("lists.details.created_at"));
+    }
+
+    @And("Verifies in the response body with id {string}")
+    public void verifiesInTheResponseBodyWithId(String id) {
+        JsonPath resJp=response.jsonPath();
+        assertEquals(id,resJp.get("lists.id"));
+
     @Then("Verifies in the response body with id {string}, name {string},description {string} , finding_category_id {string}, created_at {string}, category {string}  in ExpenseHead.")
     public void resverifiesInTheResponseBodyWithIdNameDescriptionFinding_category_idCreated_atCategoryInExpenseHead(String id, String name, String description, String finding_category_id, String created_at, String category) {
         JsonPath respJp=response.jsonPath();
@@ -400,6 +416,8 @@ public class APIStepDefinition {
                 .when()
                 .get(fullPath);
 
+
     }
 }
+
 
