@@ -55,7 +55,7 @@ Feature: API Tests
     Then Verifies that the returned status code is 403
     Then Verifies that the response message is "failed"
 
-
+@kol
   Scenario: [API_US35_TC01]-(2) As an administrator, I should be able to access the relevant finding data by entering the id over the API connection .
 
     Given Api user sets "api/getFindingById" path parameters.
@@ -63,8 +63,7 @@ Feature: API Tests
     And Sends GET request with Body and valid Authorization
     Then Verifies that the returned status code is 200
     Then Verifies that the response message is "Success"
-    Then Verifies in the response body with id "1", name "Stomach pain",description "Typhoid fever and paratyphoid fever have similar symptoms̵. People usually have a sustained fever (one that doesn’t come and go) that can be as high as 103–104°F (39–40°C)." , finding_category_id "2", created_at "2021-10-25 02:05:10", category "Typhidot (or Widal Test)"  in ExpenseHead.
-   # Then Verifies in the response body with id "7", name "",description "null" , finding_category_id "null", created_at "2023-05-25 12:08:07", category "null"  in ExpenseHead.
+    Then Verify that the datas are contained in the response body as "details.","id#name#description#finding_category_id#created_at#category","1#Stomach pain#Typhoid fever and paratyphoid fever have similar symptoms̵. People usually have a sustained fever (one that doesn’t come and go) that can be as high as 103–104°F (39–40°C).#2#2021-10-25 02:05:10#ill category 2"
 
   Scenario: [API_US20]-(TC01_A) As an administrator, I should be able to access the relevant expenditure data by entering the id over the API connection .
     Given Api user sets "api/getExpenseHeadById" path parameters.
@@ -176,7 +175,8 @@ Feature: API Tests
   content of blood group list registered in the system via API connection.
     Given Api user sets "api/getBloodGroup" path parameters.
     And Sends GET request with valid Authorization
-    Then Verifies in the response body with id "3", name "AB-", is_blood_group "1", created_at "2021-10-25 02:32:41"
+    Then Verify that the datas are contained in the response body as "lists[2].","id#name#is_blood_group#created_at","3#AB-#1#2021-10-25 02:32:41"
+  #  Then Verifies in the response body with id "3", name "AB-", is_blood_group "1", created_at "2021-10-25 02:32:41"
 
   Scenario: [API_US14]-(TC01_D)  As an administrator, I should be able to verify
   the content of blood group list registered in the system via API connection.
@@ -210,6 +210,7 @@ Feature: API Tests
     Then Verifies that the returned status code is 403
     Then Verifies that the response message is "failed"
 
+
   Scenario: [API_US04_TC01]-(2) As an administrator, I should be able to access the relevant expenditure data by entering the id over the API connection .
 
     Given Api user sets "api/visitorsPurposeList" path parameters.
@@ -236,12 +237,57 @@ Feature: API Tests
     Then Sends GET request invalid Authorization
     Then Verifies that the returned status codee is 403
 
+  Scenario: [API_US29->TC03] inside the response body list content (id: of content with "1" category : "Fever", created_at : "2021-10-25 02:02:48" ) must be verified.
+
+    Then Api kullanicisi "api/getFindingCategory" path parametreleri set eder
+    Given Get query is generated with valid information
+    Then id: of content with "1", category : "Fever", created_at : "2021-10-25 02:02:48", must be verified
+
+  Scenario: [API_US29->TC04] Response body icindeki list icerigi (id:"2" olan icerigin category: "Typhidot (or Widal Test)", created_at: "2021-10-25 02:03:35"   oldugu) dogrulanmali.
+
+    Then Api kullanicisi "api/getFindingCategory" path parametreleri set eder
+    Given Get query is generated with valid information
+    Then id: of content with "2", category : "Typhidot (or Widal Test)", created_at : "2021-10-25 02:03:35", must be verified
+
+  Scenario: [API_US29->TC05] Response body icindeki list icerigi (id:"2" olan icerigin category: "Typhidot (or Widal Test)", created_at: "2021-10-25 02:03:35"   oldugu) dogrulanmali.
+
+    Then Api kullanicisi "api/getFindingCategory" path parametreleri set eder
+    Given Get query is generated with valid information
+    Then id: of content with "2", category : "Skin Problem", created_at : "2021-10-25 02:14:41", must be verified
+
   Scenario: [API_US23->TC01] /api/deleteExpenseHead to your endpoint valid Status returned when sending a DELETE body with authorization information and correct data (id) that the code is 200 and the message information in the response body is " Success " must be verified
 
-    Then Api kullanicisi "api/addExpenseHead" path parametreleri set eder
-    When Add a new record
-    And Api kullanicisi "api/deleteExpenseHead" path parametreleri set eder
-    And Delete this record after is verified
+    Given Api user sets "api/addExpenseHead" path parameters.
+    And Request body is:
+    """
+    {
+            "exp_category": "stationary",
+            "description": "stationary expense",
+            "is_active": "yes",
+            "is_deleted": "no"
+    }
+    """
+    Then Sends POST request with Body and valid Authorization
+    Given Api user sets "api/deleteExpenseHead" path parameters.
+    And Sends DELETE request with Body and valid Authorization
+
+
+
+  Scenario: [API_US23->TC02] /api/deleteExpenseHead to your endpoint invalid Status returned when sending a DELETE body containing authorization information or wrong data (id) the code is 403 and the message information in the response body is " failed " must be verified
+
+    Given Api user sets "api/addExpenseHead" path parameters.
+    And Request body is:
+    """
+    {
+            "exp_category": "stationary",
+            "description": "stationary expense",
+            "is_active": "yes",
+            "is_deleted": "no"
+    }
+    """
+    Then Sends POST request with Body and valid Authorization
+    Given Api user sets "api/deleteExpenseHead" path parameters.
+    And Sends DELETE request with Body and invalid Authorization
 
 
 
@@ -314,13 +360,13 @@ Feature: API Tests
     * Verifies that the response message is "failed"
 
 
-  @US30 @US30C
+  @dml
   Scenario: [API_US30_TC01]-(1C)
       Inside the response body The data ( id, category , created_at ) must be validated.
     * Api user sets "api/getFindingCategoryById" path parameters.
     * Sets query parameters as id 1
     * Sends GET request with Body and valid Authorization
-    * Verify that the datas are contained in the response body as "details.","id,category,created_at","1,ill category 2,2023-05-25 09:33:53"
+    * Verify that the datas are contained in the response body as "details.","id#category#created_at","1#ill category 2#2023-05-25 09:33:53"
 
 
   @wip
@@ -375,6 +421,7 @@ Feature: API Tests
     Given Api user sets "api/deleteBloodGroup" path parameters.
     And Sends DELETE request with Body and valid Authorization
 
+  @US25
   Scenario: [API_US25_TC01]-(1A) As an administrator, I should be able to access the relevant announcement data by entering the id over the API connection.
     Given Api user sets "api/getNoticeById" path parameters.
     And Sets query parameters as id 1
@@ -387,6 +434,24 @@ Feature: API Tests
 
     Given Api user sets "api/getNoticeById" path parameters.
     And Sets query parameters as id 1
+    And Sends GET request with Body with invalid Authorization
+    Then Verifies that the returned status code is 403
+    Then Verifies that the response message is "failed"
+
+
+  Scenario: [API_US25_TC01]-(1C) As an administrator, I should not be able to access the relevant announcement data by entering the id over the API connection.
+
+    Given Api user sets "api/getNoticeById" path parameters.
+    And Sets query parameters as id 9999999
+    And Sends GET request with Body and valid Authorization
+    Then Verifies that the returned status code is 403
+    Then Verifies that the response message is "failed"
+
+
+  Scenario: [API_US25_TC01]-(1D) As an administrator, I should not be able to access the relevant announcement data by entering the id over the API connection.
+
+    Given Api user sets "api/getNoticeById" path parameters.
+    And Sets query parameters as id 9999999
     And Sends GET request with Body with invalid Authorization
     Then Verifies that the returned status code is 403
     Then Verifies that the response message is "failed"

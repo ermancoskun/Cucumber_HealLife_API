@@ -183,21 +183,12 @@ public class APIStepDefinition {
     }
 
 
-    @And("Sets query parameters as id {int} with valid Authorization")
-    public void setsQueryParametersAsIdWithValidAuthorization(int id) {
-
-    }
-
     @And("Sends GET request with Body")
     public void sendsGETRequestWithBody() {
         response = API_Utils.getRequestWithBody(fullPath, reqBodyJson);
 
     }
 
-    @Given("Creates a request body with id {string} parameter to get finding category data")
-    public void creates_a_request_body_with_id_parameter_to_get_finding_category_data(int id) {
-        reqBodyJson = API_Utils.createABody(id);
-    }
 
     @Then("Verifies that the returned status code is {int}")
     public void verifiesThatTheReturnedStatusCodeIs(int statusCode) {
@@ -354,7 +345,6 @@ public class APIStepDefinition {
         assertEquals(id, resJp.get("lists.id"));
     }
 
-
     @Then("Verifies in the response body with id {string}, name {string},description {string} , finding_category_id {string}, created_at {string}, category {string}  in ExpenseHead.")
     public void resverifiesInTheResponseBodyWithIdNameDescriptionFinding_category_idCreated_atCategoryInExpenseHead
             (String id, String name, String description, String finding_category_id, String created_at, String
@@ -368,6 +358,7 @@ public class APIStepDefinition {
         assertEquals(created_at, respJp.getString("details.created_at"));
         assertEquals(category, respJp.getString("details.category"));
     }
+
 
     @And("Sends GET request with valid Authorization")
     public void sendsGETRequestWithValidAuthorization() {
@@ -465,24 +456,10 @@ public class APIStepDefinition {
             is_blood_group, String created_at) {
 
         JsonPath respJp = response.jsonPath();
-        assertEquals(id, respJp.get("lists.[2].id"));
-        assertEquals(name, respJp.get("lists.[2].name"));
-        assertEquals(is_blood_group, respJp.get("lists.[2].is_blood_group"));
-        assertEquals(created_at, respJp.get("lists.[2].created_at"));
-    }
-
-
-    @When("Add a new record")
-    public void addANewRecord() {
-
-        String body = "{\n" +
-                "            \"exp_category\": \"stationary\",\n" +
-                "            \"description\": \"stationary expense\",\n" +
-                "            \"is_active\": \"yes\",\n" +
-                "            \"is_deleted\": \"no\"\n" +
-                "} ";
-
-        response = API_Utils.postRequest(body, reqBodyJson);
+        assertEquals(id, respJp.get("lists[2].id"));
+        assertEquals(name, respJp.get("lists[2].name"));
+        assertEquals(is_blood_group, respJp.get("lists[2].is_blood_group"));
+        assertEquals(created_at, respJp.get("lists[2].created_at"));
     }
 
     @And("Delete this record after is verified")
@@ -491,10 +468,9 @@ public class APIStepDefinition {
     }
 
     @Given("Verify that the datas are contained in the response body as {string},{string},{string}")
-    public void verify_that_the_datas_are_contained_in_the_response_body_as(String rspnBody, String
-            data, String dataValue) {
-        String[] datasArr = data.split(",");
-        String[] dataValuesArr = dataValue.split(",");
+    public void verify_that_the_datas_are_contained_in_the_response_body_as(String rspnBody, String data, String dataValue) {
+        String[] datasArr = data.split("#");
+        String[] dataValuesArr = dataValue.split("#");
 
         for (int i = 0; i < datasArr.length; i++) {
             response
@@ -515,7 +491,6 @@ public class APIStepDefinition {
         assertEquals(visitors_purpose, resJp.get("lists[6].visitors_purpose"));
         assertEquals(description, resJp.get("lists[6].description"));
         assertEquals(created_at, resJp.get("lists[6].created_at"));
-
 
     }
 
@@ -563,6 +538,19 @@ public class APIStepDefinition {
         reqBodyJson = new JSONObject(body);
     }
 
+    @Then("id: of content with {string}, category : {string}, created_at : {string}, must be verified")
+    public void idOfContentWithCategoryCreated_atMustBeVerified(String id, String category, String created_at) {
+
+        //JSONObject object = response.as(JSONObject.class);
+        JsonPath path = response.jsonPath();
+        int dinamikId = Integer.parseInt(id) - 1;
+        Assert.assertEquals(id, path.get("lists[" + dinamikId + "].id"));
+        //Assert.assertNotEquals(category,path.get("lists["+dinamikId+"].category"));
+        //Assert.assertNotEquals(created_at,path.get("lists["+dinamikId+"].created_at"));
+
+        response.prettyPrint();
+
+    }
 
 }
 
