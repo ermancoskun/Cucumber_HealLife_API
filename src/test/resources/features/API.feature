@@ -338,11 +338,21 @@ Feature: API Tests
     Then Verifies that the returned status code is 403
     Then Verifies that the response message is "failed"
 
-
-  Scenario: [API_US22_TC01]-(2) Being able to update the expenditure information registered in the system via API connection as an administrator. I want..
+@wip
+   Scenario: [API_US22_TC01]-(2) Being able to update the expenditure information registered in the system via API connection as an administrator. I want..
     Given Api user sets "api/updateExpenseHead" path parameters.
-    And   Creates new body and Sends Patch request body valid Authorization with "id", "exp category", "description","is_active","is_deleted"
-    Given It is verified that the id information sent is the same as the id in the patch request body
+    And Request body is:
+    """
+    {
+            "id": 22,
+            "exp_category": "stationary 1",
+            "description": "stationary expense",
+            "is_active": "yes",
+            "is_deleted": "no"
+    }
+    """
+  Then It is verified that the id information sent is the same as the id in the patch request body
+
 
   Scenario: [API_US22_TC01]-(3)Being able to update the expenditure information registered in the system via API connection as an administrator. I want..
     Given Api user sets "api/updateExpenseHead" path parameters.
