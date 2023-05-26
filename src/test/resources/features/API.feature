@@ -45,7 +45,7 @@ Feature: API Tests
     And Sends GET request with Body and valid Authorization
     Then Verifies that the returned status code is 403
     Then Verifies that the response message is "failed"
-
+@403
   Scenario: [API_US35_TC01]-(1D) As an administrator, I should not be able to access the relevant finding data by entering the id over the API connection .
 
     Given Api user sets "api/getFindingById" path parameters.
@@ -54,7 +54,7 @@ Feature: API Tests
     Then Verifies that the returned status code is 403
     Then Verifies that the response message is "failed"
 
-  @API
+
   Scenario: [API_US35_TC01]-(2) As an administrator, I should be able to access the relevant finding data by entering the id over the API connection .
 
     Given Api user sets "api/getFindingById" path parameters.
@@ -285,7 +285,7 @@ Feature: API Tests
             and correct data (id) that the code is 200
             and the message information in the response body is " Success " must be verified
 
-    * Api user sets "api/addBloodGroup" path parameters.
+    * Api user sets "api/getFindingCategoryById" path parameters.
     * Sets query parameters as id 1
     * Sends GET request with Body and valid Authorization
     * Verifies that the returned status code is 200
@@ -299,7 +299,7 @@ Feature: API Tests
             and invalid data (id) the code is 403
             and the message information in the response body is " failed " must be verified
 
-    * Api user sets "api/addBloodGroup" path parameters.
+    * Api user sets "api/getFindingCategoryById" path parameters.
     * Sets query parameters as id 9999
     * Sends GET request with Body with invalid Authorization
     * Verifies that the returned status code is 403
@@ -308,14 +308,62 @@ Feature: API Tests
 
   @US30 @US30C
   Scenario: [API_US30_TC01]-(1C)
-            Inside the response body The data( id, category , created_at ) must be validated.
+            Inside the response body The data ( id, category , created_at ) must be validated.
 
-    *
-    *
-    *
-    *
-    *
-    *
-    *
+    * Api user sets "api/getFindingCategoryById" path parameters.
+    * Sets query parameters as id 1
+    * Sends GET request with Body and valid Authorization
+    * Verify that the datas are contained in the response body as "details.","id,category,created_at","1,ill category 2,2023-05-25 09:33:53"
 
+
+  @API
+  Scenario: [API_US18_TC01]-(1) As an administrator, I should be able to delete the blood group record in the system via the API link .
+    Given Api user sets "api/addBloodGroup" path parameters.
+    And Request body is:
+    """
+    {
+            "name": "Metot yolluyom duyuyonnu",
+            "is_blood_group": "2"
+    }
+    """
+    Then Sends POST request with Body and valid Authorization
+    Given Api user sets "api/deleteBloodGroup" path parameters.
+    And Sends DELETE request with Body and valid Authorization
+
+
+  Scenario: [API_US18_TC01]-(2) As an administrator, I should not be able to delete the blood group record in the system via the API link .
+    Given Api user sets "api/addBloodGroup" path parameters.
+    And Request body is:
+    """
+    {
+            "name": "Metot yolluyom duyuyonnu",
+            "is_blood_group": "2"
+    }
+    """
+    Then Sends POST request with Body and valid Authorization
+    Given Api user sets "api/deleteBloodGroup" path parameters.
+    And Sends DELETE request with Body and invalid Authorization
+
+
+
+  Scenario: [API_US19->TC01]-(1A) As an administrator to hospital expenses via API connection I should be able to reach .
+
+    Given Api user sets "api/getExpenseHead" path parameters.
+    Then Sends GET request valid Authorization
+    And Verifies that the returned status code is 200
+    And Verifies that the response message is "Success"
+
+
+
+
+
+
+  Scenario: [API_US19->TC01]-(1B) As an administrator to hospital expenses via API connection I should be able to reach .
+     Given Api user sets "api/getExpenseHead" path parameters.
+     Then Sends GET request invalid Authorization
+     Then Verifies that the returned status code is 403
+     Then Verifies that the response message is "failed"
+
+
+  Scenario:[API_US19->TC02] As an administrator to hospital expenses via API connection I should be able to reach .
 
