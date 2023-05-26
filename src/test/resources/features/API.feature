@@ -22,6 +22,7 @@ Feature: API Tests
   #      Then Verifies that the response message is "Success"
   #      And Sets query parameters as id 1  (body sadece id den olusuyorsa)
 
+
   Scenario: [API_US35_TC01]-(1A) As an administrator, I should be able to access the relevant finding data by entering the id over the API connection .
 
     Given Api user sets "api/getFindingById" path parameters.
@@ -45,7 +46,7 @@ Feature: API Tests
     And Sends GET request with Body and valid Authorization
     Then Verifies that the returned status code is 403
     Then Verifies that the response message is "failed"
-@403
+
   Scenario: [API_US35_TC01]-(1D) As an administrator, I should not be able to access the relevant finding data by entering the id over the API connection .
 
     Given Api user sets "api/getFindingById" path parameters.
@@ -87,7 +88,14 @@ Feature: API Tests
     Then Creates an expected body with id 5, exp_category "Power Generator Fuel Charge",description "They can utilise a variety of fuel options including natural gas, LPG and diesel." ,is_active "yes", is_deleted "no", created_at "2021-10-29 01:35:42"  in ExpenseHead.
     And Sends GET request with Body and valid Authorization
     And Verifies in the response body with id "5", exp_category "Power Generator Fuel Charge",description "They can utilise a variety of fuel options including natural gas, LPG and diesel." , is_active "yes", is_deleted "no", created_at "2021-10-29 01:35:42"  in ExpenseHead.
+  @API
+  Scenario: [API_US14_TC01]-(1A)  As an administrator, I should be able to access the
+  blood group list with valid authorization registered in the system via API connection.
 
+    Given Api user sets "api/getBloodGroup" path parameters.
+    And Sends GET request with valid Authorization
+    Then Verifies that the returned status code is 200
+    Then Verifies that the response message is "Success"
 
     Scenario: [API_US15_TC01]-(1A) As an administrator, I should be able to access the relevant blood data by entering the id over the API connection .
       Given Api user sets "/api/getBloodGroupById" path parameters.
@@ -330,6 +338,21 @@ Feature: API Tests
     Given Api user sets "api/deleteBloodGroup" path parameters.
     And Sends DELETE request with Body and valid Authorization
 
+  Scenario: [API_US25_TC01]-(1A) As an administrator, I should be able to access the relevant announcement data by entering the id over the API connection.
+    Given Api user sets "api/getNoticeById" path parameters.
+    And Sets query parameters as id 1
+    And Sends GET request with Body and valid Authorization
+    Then Verifies that the returned status code is 200
+    Then Verifies that the response message is "Success"
+
+
+  Scenario: [API_US25_TC01]-(1B) As an administrator, I should not be able to access the relevant announcement data by entering the id over the API connection.
+
+    Given Api user sets "api/getNoticeById" path parameters.
+    And Sets query parameters as id 1
+    And Sends GET request with Body with invalid Authorization
+    Then Verifies that the returned status code is 403
+    Then Verifies that the response message is "failed"
 
   Scenario: [API_US18_TC01]-(2) As an administrator, I should not be able to delete the blood group record in the system via the API link .
     Given Api user sets "api/addBloodGroup" path parameters.
@@ -344,19 +367,12 @@ Feature: API Tests
     Given Api user sets "api/deleteBloodGroup" path parameters.
     And Sends DELETE request with Body and invalid Authorization
 
-
-
   Scenario: [API_US19->TC01]-(1A) As an administrator to hospital expenses via API connection I should be able to reach .
 
     Given Api user sets "api/getExpenseHead" path parameters.
     Then Sends GET request valid Authorization
     And Verifies that the returned status code is 200
     And Verifies that the response message is "Success"
-
-
-
-
-
 
   Scenario: [API_US19->TC01]-(1B) As an administrator to hospital expenses via API connection I should be able to reach .
      Given Api user sets "api/getExpenseHead" path parameters.
@@ -366,4 +382,3 @@ Feature: API Tests
 
 
   Scenario:[API_US19->TC02] As an administrator to hospital expenses via API connection I should be able to reach .
-
