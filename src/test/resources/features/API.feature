@@ -132,6 +132,11 @@ Feature: API Tests
   Scenario: [API_US07_TC01]-(3) Link as an administrator registered to the system via visitor I should be able to update the purpose information .
     Given Api user sets "/api/visitorsPurposeUpdate" path parameters.
 
+
+
+
+
+
 @said
   Scenario: [API_US14_TC01]-(1A)  As an administrator, I should be able to access the
   blood group list with valid authorization registered in the system via API connection.
