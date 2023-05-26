@@ -421,7 +421,7 @@ public class APIStepDefinition {
 
     }
 
-    @And("Creates body and Sends Patch request valid Authorization with {string}, {string}, {string},{string},{string}")
+    @And("Creates body and Sends Patch request body valid Authorization with {string}, {string}, {string},{string},{string}")
     public void createsBodyAndSendsPatchRequestValidAuthorizationWith(String id, String exp_category, String description, String is_active, String is_deleted) {
         reqBodyJson = API_Utils.createABody("21", "stationary 1", "stationary expense", "yes", "no");
 
@@ -429,9 +429,20 @@ public class APIStepDefinition {
 
     @Given("It is verified that the id information sent is the same as the id in the patch request body")
     public void ıtIsVerifiedThatTheIdInformationSentIsTheSameAsTheIdInThePatchRequestBody() {
-   
+
+        JsonPath resJP = response.jsonPath();
+        expBodyJson=new JSONObject();
+        expBodyJson.put("updateId", 11);
+
+        Assert.assertEquals(expBodyJson.get("updateId"),resJP.get("updateId"));
 
     }
+
+    @And("Creates new body and Sends Patch request body valid Authorization with {string}, {string}, {string},{string},{string}")
+    public void createsNewBodyAndSendsPatchRequestBodyValidAuthorizationWith(String id, String exp_category, String description, String is_active, String is_deleted) {
+        reqBodyJson = API_Utils.createABody("22", "stationary 1", "stationary expense", "yes", "no");
+
+     }
 }
 
 
