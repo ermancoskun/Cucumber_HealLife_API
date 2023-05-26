@@ -104,7 +104,7 @@ Feature: API Tests
     Then Verifies that the returned status code is 403
     Then Verifies that the response message is "failed"
 
-@US15
+
   Scenario: [API_US15_TC01]-(2)As an administrator, I should be able to access the relevant blood data by entering the id over the API connection .
     Given Api user sets "/api/getBloodGroupById" path parameters.
     Then Sets query parameters as id 1
@@ -125,20 +125,22 @@ Feature: API Tests
     And Sends POST request with Body and invalid Authorization
     Then Verifies that the returned status code is 403
     Then Verifies that the response message is "failed"
-  @US15
+
     Scenario: [API_US07_TC01]-(2) Link as an administrator registered to the system via visitor I should be able to update the purpose information .
 
       Given Api user sets "/api/visitorsPurposeUpdate" path parameters.
       Then Sets query parameters as id 1
       And Sends POST request with Body and valid Authorization
       And Verifies in the response body with id "1"
-
+  @US15
   Scenario: [API_US07_TC01]-(3) Link as an administrator registered to the system via visitor I should be able to update the purpose information .
     Given Api user sets "/api/visitorsPurposeUpdate" path parameters.
-
-
-
-
+    And Creates request body as name "Jane Doe", isBloodGroup "A Rh +"
+    And Sends POST request with Body and valid Authorization
+    And Save addid number
+    And Api user sets "api/visitorsPurposeUpdate" path parameters.
+     And Sends GET request valid Authorization
+    And Verifies the newly created blood group record via APi.
 
 
 @said
@@ -316,17 +318,26 @@ Feature: API Tests
     *
   Scenario:  Scenario: : [API_US22]-(TC01_A) Being able to update the expenditure information registered in the system via API connection as an administrator. I want..
     Given Api user sets "api/updateExpenseHead" path parameters.
-    And Creates an expected body and Sends Patch request valid Authorization with "id", "exp category", "description","is_active","is_deleted"
+    And Creates body and Sends Patch request valid Authorization with "id", "exp category", "description","is_active","is_deleted"
     And Sends PATCH request with Body and valid Authorization
     Then Verifies that the returned status code is 200
     Then Verifies that the response message is "Success"
 
-  Scenario:  Scenario: : [API_US22]-(TC01_C) Being able to update the expenditure information registered in the system via API connection as an administrator. I want..
+  Scenario:  Scenario: : [API_US22]-(TC01_B) Being able to update the expenditure information registered in the system via API connection as an administrator. I want..
     Given Api user sets "api/updateExpenseHead" path parameters.
-    And Creates an expected body and Sends Patch request valid Authorization with "id", "exp category", "description","is_active","is_deleted"
     And Sends PATCH request with Body and invalid Authorization
     Then Verifies that the returned status code is 403
     Then Verifies that the response message is "failed"
+
+
+  Scenario:  Scenario: : [API_US22]-(TC01_C) Being able to update the expenditure information registered in the system via API connection as an administrator. I want..
+    Given Api user sets "api/updateExpenseHead" path parameters.
+    And Creates an expected body and Sends Patch request valid Authorization with "id", "exp category", "description","is_active","is_deleted"
+     Given It is verified that the id information sent is the same as the id in the patch request body
+
+
+
+
 
 
 

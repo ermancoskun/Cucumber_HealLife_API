@@ -182,17 +182,20 @@ public class APIStepDefinition {
 
     @And("Sends PATCH request with Body and invalid Authorization")
     public void sendsPATCHRequestWithBodyAndInvalidAuthorization() {
-        String invalidToken = HooksAPI.token + "invalid";
-        Response response = given()
-                .spec(HooksAPI.spec)
-                .contentType(ContentType.JSON)
-                .header("Authorization", "Bearer " + invalidToken)
-                .body(reqBodyJson.toString())
-                .when()
-                .patch(fullPath);
-        response.prettyPrint();
 
+        JSONObject reqbodys = new JSONObject();
+        reqbodys.put("id", 77);
+        response = given()
+                .spec(HooksAPI.spec)
+                .headers("Authorization", "Bearer " + "adasdasdasdasdasdasd")
+                .contentType(ContentType.JSON)
+                // .header("Accept","application/json")
+                .when().body(reqbodys.toString())
+                .get(fullPath);
+
+        response.prettyPrint();
     }
+
 
     @And("Sends DELETE request with Body and valid Authorization")
     public void sendsDELETERequestWithBodyAndValidAuthorization() {
@@ -262,7 +265,6 @@ public class APIStepDefinition {
     }
 
 
-
     @Then("Verifies in the response body with id {string}, name {string},description {string} , finding_category_id {string}, created_at {string}, category {string}  in ExpenseHead.")
     public void resverifiesInTheResponseBodyWithIdNameDescriptionFinding_category_idCreated_atCategoryInExpenseHead
             (String id, String name, String description, String finding_category_id, String created_at, String category) {
@@ -303,7 +305,6 @@ public class APIStepDefinition {
 
         System.out.println(finalData.toString());
     }
-
 
 
     @And("Sends GET request valid Authorization")
@@ -366,7 +367,6 @@ public class APIStepDefinition {
     }
 
 
-
     @When("Add a new record")
     public void addANewRecord() {
 
@@ -390,14 +390,13 @@ public class APIStepDefinition {
     }
 
 
-
     @And("Verifies in the response body with id {string}, name {string},is_blood_group {string} , created_ at {string} boolean aysenuriye")
     public void verifiesInTheResponseBodyWithIdNameIs_blood_groupCreated_AtBooleanAysenuriye(String arg0, String arg1, String arg2, String arg3) {
         JsonPath respJp = response.jsonPath();
-        assertEquals(arg0,respJp.get("lists.id"));
-        assertEquals(arg1,respJp.get("lists.name"));
-        assertEquals(arg2,respJp.get("lists.is_blood_group"));
-        assertEquals(arg3,respJp.get("lists.created_at"));
+        assertEquals(arg0, respJp.get("lists.id"));
+        assertEquals(arg1, respJp.get("lists.name"));
+        assertEquals(arg2, respJp.get("lists.is_blood_group"));
+        assertEquals(arg3, respJp.get("lists.created_at"));
 
     }
 
@@ -408,7 +407,6 @@ public class APIStepDefinition {
         assertEquals(visitors_purpose, resJp.get("lists[6].visitors_purpose"));
         assertEquals(description, resJp.get("lists[6].description"));
         assertEquals(created_at, resJp.get("lists[6].created_at"));
-
 
 
     }
@@ -423,13 +421,19 @@ public class APIStepDefinition {
 
     }
 
+    @And("Creates body and Sends Patch request valid Authorization with {string}, {string}, {string},{string},{string}")
+    public void createsBodyAndSendsPatchRequestValidAuthorizationWith(String id, String exp_category, String description, String is_active, String is_deleted) {
+        reqBodyJson = API_Utils.createABody("21", "stationary 1", "stationary expense", "yes", "no");
 
+    }
 
-    @And("Creates an expected body and Sends Patch request valid Authorization with {string}, {string}, {string},{string},{string}")
-    public void createsAnExpectedBodyAndSendsPatchRequestValidAuthorizationWith(String id, String exp_category, String description, String is_active, String is_deleted){
-        reqBodyJson=API_Utils.createABody("21","stationary 1","stationary expense","yes","no");
+    @Given("It is verified that the id information sent is the same as the id in the patch request body")
+    public void ıtIsVerifiedThatTheIdInformationSentIsTheSameAsTheIdInThePatchRequestBody() {
+   
 
     }
 }
+
+
 
 
