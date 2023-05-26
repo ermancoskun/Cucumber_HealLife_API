@@ -140,7 +140,6 @@ public class APIStepDefinition {
                 .when()
                 .get(fullPath);
 
-
         // response.prettyPrint();
 
     }
@@ -148,12 +147,10 @@ public class APIStepDefinition {
 
     @Given("Verifies that the blood group record created with the API has been created")
     public void verifies_that_the_blood_group_record_created_with_the_api_has_been_created() {
-
         response
                 .then()
                 .assertThat()
                 .body("lists[.id", Matchers.hasItem(addId));
-
     }
 
 
@@ -182,12 +179,6 @@ public class APIStepDefinition {
                 .body("lists.id", Matchers.hasItem(addId));
     }
 
-
-    @And("Sends GET request with Body")
-    public void sendsGETRequestWithBody() {
-        response = API_Utils.getRequestWithBody(fullPath, reqBodyJson);
-
-    }
 
 
     @Then("Verifies that the returned status code is {int}")
@@ -449,22 +440,6 @@ public class APIStepDefinition {
     @Then("Verifies in the response body with id {string}, name {string}, is_blood_group {string}, created_at {string}")
     public void verifiesInTheeResponseBodyWithIdNameIs_blood_groupCreated_at(String id, String name, String
             is_blood_group, String created_at) {
-    }
-
-    @Then("Verifies in the response body with id {string}, name {string}  is_blood_group {string}, created_at {string}")
-    public void verifiesInTheResponseBodyWithIdNameIs_blood_groupCreated_at(String id, String name, String
-            is_blood_group, String created_at) {
-
-        JsonPath respJp = response.jsonPath();
-        assertEquals(id, respJp.get("lists[2].id"));
-        assertEquals(name, respJp.get("lists[2].name"));
-        assertEquals(is_blood_group, respJp.get("lists[2].is_blood_group"));
-        assertEquals(created_at, respJp.get("lists[2].created_at"));
-    }
-
-    @And("Delete this record after is verified")
-    public void deleteThisRecordAfterIsVerified() throws InterruptedException {
-        response = API_Utils.deleteRequest(fullPath);
     }
 
     @Given("Verify that the datas are contained in the response body as {string},{string},{string}")
