@@ -167,5 +167,35 @@ public class API_Utils {
             return jsonObject;
         }
 
+    public static Response addNewRecord(String body,String endPoint){
+
+        response = RestAssured.given().spec(HooksAPI.spec).header("Authorization","Bearer "+HooksAPI.token)
+                .contentType(ContentType.JSON)
+                .when().body(body)
+                .post(endPoint);
+
+        JsonPath path = response.jsonPath();
+
+        addId = path.getString("addId");
+
+        return response;
     }
+
+    public static Response deleteRecord(String endPoint){
+
+        JSONObject object = new JSONObject();
+        object.put("id",addId);
+
+        response = RestAssured.given().spec(HooksAPI.spec).header("Authorization","Bearer "+HooksAPI.token)
+                .contentType(ContentType.JSON)
+                .when().body(object.toString())
+                .delete(endPoint);
+
+
+        Assert.assertEquals(200,response.getStatusCode());
+
+        return response;
+    }
+
+}
 
