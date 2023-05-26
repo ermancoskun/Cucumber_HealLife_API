@@ -45,7 +45,7 @@ Feature: API Tests
     And Sends GET request with Body and valid Authorization
     Then Verifies that the returned status code is 403
     Then Verifies that the response message is "failed"
-
+@403
   Scenario: [API_US35_TC01]-(1D) As an administrator, I should not be able to access the relevant finding data by entering the id over the API connection .
 
     Given Api user sets "api/getFindingById" path parameters.
@@ -54,7 +54,7 @@ Feature: API Tests
     Then Verifies that the returned status code is 403
     Then Verifies that the response message is "failed"
 
-  @API
+
   Scenario: [API_US35_TC01]-(2) As an administrator, I should be able to access the relevant finding data by entering the id over the API connection .
 
     Given Api user sets "api/getFindingById" path parameters.
@@ -315,6 +315,33 @@ Feature: API Tests
     *
     *
     *
-    *
+
+  @API
+  Scenario: [API_US18_TC01]-(1) As an administrator, I should be able to delete the blood group record in the system via the API link .
+    Given Api user sets "api/addBloodGroup" path parameters.
+    And Request body is:
+    """
+    {
+            "name": "Metot yolluyom duyuyonnu",
+            "is_blood_group": "2"
+    }
+    """
+    Then Sends POST request with Body and valid Authorization
+    Given Api user sets "api/deleteBloodGroup" path parameters.
+    And Sends DELETE request with Body and valid Authorization
+
+
+  Scenario: [API_US18_TC01]-(2) As an administrator, I should not be able to delete the blood group record in the system via the API link .
+    Given Api user sets "api/addBloodGroup" path parameters.
+    And Request body is:
+    """
+    {
+            "name": "Metot yolluyom duyuyonnu",
+            "is_blood_group": "2"
+    }
+    """
+    Then Sends POST request with Body and valid Authorization
+    Given Api user sets "api/deleteBloodGroup" path parameters.
+    And Sends DELETE request with Body and invalid Authorization
 
 
