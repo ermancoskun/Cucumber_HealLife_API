@@ -135,7 +135,6 @@ Feature: API Tests
 
   Scenario: [API_US07_TC01]-(3) Link as an administrator registered to the system via visitor I should be able to update the purpose information .
     Given Api user sets "/api/visitorsPurposeUpdate" path parameters.
-    And  Creates a request body with id {string} parameter to get finding category data
 
 
 
