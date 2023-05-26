@@ -36,19 +36,6 @@ public class API_Utils {
     }
 
 
-    public static Response getRequest(String endpoint) {
-
-        Response response = given().headers(
-                "Authorization",
-                "Bearer " + HooksAPI.token,
-                "Content-Type",
-                ContentType.JSON,
-                "Accept",
-                ContentType.JSON).when().get(endpoint);
-        response.prettyPrint();
-        return response;
-    }
-
     public static Response deleteRequest(String endpoint,JSONObject reqBodyJson){
         Response response = given().headers(
                 "Authorization",
@@ -62,6 +49,16 @@ public class API_Utils {
         response.prettyPrint();
         return  response;
     }
+    public static Response getRequest(String endpoint) {
+        Response response = given()
+                .spec(HooksAPI.spec)
+                .headers("Authorization", "Bearer " + HooksAPI.token)
+                .contentType(ContentType.JSON)
+                .when()
+                .get(endpoint);
+        response.prettyPrint();
+        return response;
+    }
     public static Response getRequestWithBody(String endpoint, JSONObject reqBodyJson){
         Response response= given()
                 .spec(HooksAPI.spec)
@@ -73,16 +70,14 @@ public class API_Utils {
         response.prettyPrint();
         return response;
     }
-    public static  Response postRequest(String endPoint, JSONObject reqBodyJson){
-
-        Response response=given().headers("Authorization",
-                        "Bearer " + HooksAPI.token,
-                        "Content-Type",
-                        ContentType.JSON,
-                        "Accept",
-                        ContentType.JSON).spec(HooksAPI.spec).contentType(ContentType.JSON)
-                .when().body(reqBodyJson.toString())
-                .post(endPoint);
+    public static  Response postRequest(String endpoint, JSONObject reqBodyJson){
+        Response response= given()
+                .spec(HooksAPI.spec)
+                .headers("Authorization", "Bearer " + HooksAPI.token)
+                .contentType(ContentType.JSON)
+                .when()
+                .body(reqBodyJson.toString())
+                .post(endpoint);
         response.prettyPrint();
         return response;
     }
@@ -100,6 +95,11 @@ public class API_Utils {
     }
 
     public static JSONObject createABody(int id){
+        JSONObject jsonObject=new JSONObject();
+        jsonObject.put("id",id);
+        return jsonObject;
+    }
+    public static JSONObject createABody(String id){
         JSONObject jsonObject=new JSONObject();
         jsonObject.put("id",id);
         return jsonObject;
