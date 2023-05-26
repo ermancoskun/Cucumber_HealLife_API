@@ -271,7 +271,6 @@ Feature: API Tests
     And Sends DELETE request with Body and valid Authorization
 
 
-
   Scenario: [API_US23->TC02] /api/deleteExpenseHead to your endpoint invalid Status returned when sending a DELETE body containing authorization information or wrong data (id) the code is 403 and the message information in the response body is " failed " must be verified
 
     Given Api user sets "api/addExpenseHead" path parameters.
@@ -287,6 +286,24 @@ Feature: API Tests
     Then Sends POST request with Body and valid Authorization
     Given Api user sets "api/deleteExpenseHead" path parameters.
     And Sends DELETE request with Body and invalid Authorization
+
+  @furkan
+  Scenario: [API_US23->TC03] inside the response body of deletedId info /api/deleteExpenseHead delete sent to endpoint It is the same as the id information in the request body . should be verified .
+
+    Given Api user sets "api/addExpenseHead" path parameters.
+    And Request body is:
+    """
+    {
+            "exp_category": "stationary",
+            "description": "stationary expense",
+            "is_active": "yes",
+            "is_deleted": "no"
+    }
+    """
+    Then Sends POST request with Body and valid Authorization
+    Given Api user sets "api/deleteExpenseHead" path parameters.
+    And Sends DELETE request with Body and valid Authorization
+    Then It is verified that the "deletedId" in the response body is the same as the id in the delete request body.
 
 
 

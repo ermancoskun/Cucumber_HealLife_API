@@ -21,7 +21,7 @@ import static stepDefinitions.APIStepDefinition.reqBodyJson;
 public class API_Utils {
 
     private static Response response;
-    private static String addId;
+    public static String addId;
     public static RequestSpecification spec;
     public static String generateToken() {
 

@@ -559,6 +559,14 @@ public class APIStepDefinition {
 
     }
 
+    @Then("It is verified that the {string} in the response body is the same as the id in the delete request body.")
+    public void ıtIsVerifiedThatTheInTheResponseBodyIsTheSameAsTheIdInTheDeleteRequestBody(String idKey) {
+
+        JsonPath path = response.jsonPath();
+
+        Assert.assertEquals(API_Utils.addId,path.getString(idKey));
+
+    }
 }
 
 
