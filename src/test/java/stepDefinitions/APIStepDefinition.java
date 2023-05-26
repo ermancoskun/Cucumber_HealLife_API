@@ -272,17 +272,26 @@ public class APIStepDefinition {
 
     @And("Sends PATCH request with Body and invalid Authorization")
     public void sendsPATCHRequestWithBodyAndInvalidAuthorization() {
-        String invalidToken = HooksAPI.token + "invalid";
-        Response response = given().headers("Authorization",
-                        "Bearer " + invalidToken,
-                        "Content-Type",
-                        ContentType.JSON,
-                        "Accept",
-                        ContentType.JSON).spec(HooksAPI.spec).contentType(ContentType.JSON)
-                .when().body(reqBodyJson.toString())
-                .patch(fullPath);
+
+        JSONObject reqbodys = new JSONObject();
+        reqbodys.put("id", 77);
+        response = given()
+                .spec(HooksAPI.spec)
+                .headers("Authorization", "Bearer " + "adasdasdasdasdasdasd")
+                .contentType(ContentType.JSON)
+                // .header("Accept","application/json")
+                .when().body(reqbodys.toString())
+                .get(fullPath);
+
         response.prettyPrint();
     }
+
+
+    @And("Sends DELETE request with Body and valid Authorization")
+    public void sendsDELETERequestWithBodyAndValidAuthorization() {
+        response = API_Utils.deleteRequest(fullPath);
+    }
+
 
     @And("Sends DELETE request with Body and invalid Authorization")
     public void sendsDELETERequestWithBodyAndInvalidAuthorization() {
@@ -345,6 +354,7 @@ public class APIStepDefinition {
         assertEquals(id, resJp.get("lists.id"));
     }
 
+
     @Then("Verifies in the response body with id {string}, name {string},description {string} , finding_category_id {string}, created_at {string}, category {string}  in ExpenseHead.")
     public void resverifiesInTheResponseBodyWithIdNameDescriptionFinding_category_idCreated_atCategoryInExpenseHead
             (String id, String name, String description, String finding_category_id, String created_at, String
@@ -398,6 +408,7 @@ public class APIStepDefinition {
         assertEquals(description, resJp.get("lists[6].description"));
         assertEquals(created_at, resJp.get("lists[6].created_at"));
     }
+
 
     @And("Sends GET request valid Authorization")
     public void sendsGETRequestValidAuthorization() {
@@ -460,6 +471,7 @@ public class APIStepDefinition {
         assertEquals(created_at, respJp.get("lists.[2].created_at"));
     }
 
+
     @When("Add a new record")
     public void addANewRecord() {
 
@@ -492,23 +504,23 @@ public class APIStepDefinition {
             System.out.println(datasArr[i]);
             System.out.println(dataValuesArr[i]);
         }
+
     }
 
 
     @And("Verifies in the response body with id {string}, is visitors_purpose  {string}, description {string}, created_at {string}  must be verified .")
-    public void verifiesInTheResponseBodyWithIdIsVisitors_purposeDescriptionCreated_atMustBeVerified(String
-                                                                                                             id, String visitors_purpose, String description, String created_at) {
+    public void verifiesInTheResponseBodyWithIdIsVisitors_purposeDescriptionCreated_atMustBeVerified(String id, String visitors_purpose, String description, String created_at) {
         JsonPath resJp = response.jsonPath();
         assertEquals(id, resJp.get("lists[6].id"));
         assertEquals(visitors_purpose, resJp.get("lists[6].visitors_purpose"));
         assertEquals(description, resJp.get("lists[6].description"));
         assertEquals(created_at, resJp.get("lists[6].created_at"));
 
+
     }
 
     @And("Verifies in the responsee body with id {string}, is visitors_ purpose  {string}, description {string}, created_at {string}  must be verified .")
-    public void verifiesInTheResponseeBodyWithIdIsVisitors_PurposeDescriptionCreated_atMustBeVerified
-            (String id, String visitors_purpose, String description, String created_at) {
+    public void verifiesInTheResponseeBodyWithIdIsVisitors_PurposeDescriptionCreated_atMustBeVerified(String id, String visitors_purpose, String description, String created_at) {
         JsonPath resJp = response.jsonPath();
         assertEquals(id, resJp.get("lists[14].id"));
         assertEquals(visitors_purpose, resJp.get("lists[14].visitors_purpose"));
@@ -516,15 +528,38 @@ public class APIStepDefinition {
         assertEquals(created_at, resJp.get("lists[14].created_at"));
     }
 
+
+    @And("Creates body and Sends Patch request body valid Authorization with {string}, {string}, {string},{string},{string}")
+    public void createsBodyAndSendsPatchRequestValidAuthorizationWith(String id, String exp_category, String description, String is_active, String is_deleted) {
+        reqBodyJson = API_Utils.createABody(21, "stationary 1", "stationary expense", "yes", "no");
+
+    }
+
+    @Given("It is verified that the id information sent is the same as the id in the patch request body")
+    public void ıtIsVerifiedThatTheIdInformationSentIsTheSameAsTheIdInThePatchRequestBody() {
+
+        JsonPath resJP = response.jsonPath();
+        expBodyJson = new JSONObject();
+        expBodyJson.put("updateId", 11);
+
+        Assert.assertEquals(expBodyJson.get("updateId"), resJP.get("updateId"));
+
+    }
+
+    @And("Creates new body and Sends Patch request body valid Authorization with {string}, {string}, {string},{string},{string}")
+    public void createsNewBodyAndSendsPatchRequestBodyValidAuthorizationWith(String id, String exp_category, String description, String is_active, String is_deleted) {
+        reqBodyJson = API_Utils.createABody(22, "stationary 1", "stationary expense", "yes", "no");
+
+    }
+
+
     @And("Request body is:")
     public void requestBodyIs(String body) {
         reqBodyJson = new JSONObject(body);
     }
 
 
-    @And("Sends DELETE request with Body and valid Authorization")
-    public void sendsDELETERequestWithBodyAndValidAuthorization() {
-        response = API_Utils.deleteRequest(fullPath);
-    }
-
 }
+
+
+
