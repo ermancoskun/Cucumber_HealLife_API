@@ -410,6 +410,27 @@ public class APIStepDefinition {
 
     }
 
+    @And("Verifies in the response body with id {string}, is visitors_purpose  {string}, description {string}, created_at {string}  must be verified .")
+    public void verifiesInTheResponseBodyWithIdIsVisitors_purposeDescriptionCreated_atMustBeVerified(String id, String visitors_purpose, String description, String created_at) {
+        JsonPath resJp = response.jsonPath();
+        assertEquals(id, resJp.get("lists[6].id"));
+        assertEquals(visitors_purpose, resJp.get("lists[6].visitors_purpose"));
+        assertEquals(description, resJp.get("lists[6].description"));
+        assertEquals(created_at, resJp.get("lists[6].created_at"));
+
+
+
+    }
+
+    @And("Verifies in the responsee body with id {string}, is visitors_ purpose  {string}, description {string}, created_at {string}  must be verified .")
+    public void verifiesInTheResponseeBodyWithIdIsVisitors_PurposeDescriptionCreated_atMustBeVerified(String id, String visitors_purpose, String description, String created_at) {
+        JsonPath resJp = response.jsonPath();
+        assertEquals(id, resJp.get("lists[14].id"));
+        assertEquals(visitors_purpose, resJp.get("lists[14].visitors_purpose"));
+        assertEquals(description, resJp.get("lists[14].description"));
+        assertEquals(created_at, resJp.get("lists[14].created_at"));
+
+    }
 }
 
 
