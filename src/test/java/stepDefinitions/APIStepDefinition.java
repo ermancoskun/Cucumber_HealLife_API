@@ -4,12 +4,10 @@ import hooks.HooksAPI;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
-
 import io.cucumber.java.en.When;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
-
 import io.restassured.response.Response;
 import org.hamcrest.Matchers;
 import org.json.JSONArray;
@@ -18,7 +16,6 @@ import org.junit.Assert;
 import org.testng.asserts.SoftAssert;
 import pojos.Pojo_RegisterCustomer;
 import utilities.API_Utils;
-
 import static io.restassured.RestAssured.given;
 import static org.junit.Assert.assertEquals;
 
@@ -34,7 +31,9 @@ public class APIStepDefinition {
     public static String reqBody;
 
     int basariliStatusCode = 200;
+
     String message;
+
 
 
     @Given("Api kullanicisi {string} path parametreleri set eder")
@@ -140,20 +139,16 @@ public class APIStepDefinition {
                 .when()
                 .get(fullPath);
 
-
         // response.prettyPrint();
 
     }
 
-
     @Given("Verifies that the blood group record created with the API has been created")
     public void verifies_that_the_blood_group_record_created_with_the_api_has_been_created() {
-
         response
                 .then()
                 .assertThat()
                 .body("lists[.id", Matchers.hasItem(addId));
-
     }
 
 
@@ -165,34 +160,22 @@ public class APIStepDefinition {
         System.out.println("addId :" + addId);
     }
 
+
     @Given("Creates request body as name {string}, isBloodGroup {string}")
     public void creates_a_request_body_as_name_is_blood_group(String name, String bloodGroup) {
         reqBodyJson = API_Utils.createABody(name, bloodGroup, true);
-
         System.out.println(reqBodyJson.toString());
     }
 
 
     @Given("Verifies the newly created blood group record via APi.")
     public void verifies_the_newly_created_blood_group_record_via_api() {
-        // Verify the blood group record created via api with id
         response
                 .then()
                 .assertThat()
                 .body("lists.id", Matchers.hasItem(addId));
     }
 
-
-    @And("Sets query parameters as id {int} with valid Authorization")
-    public void setsQueryParametersAsIdWithValidAuthorization(int id) {
-
-    }
-
-    @And("Sends GET request with Body")
-    public void sendsGETRequestWithBody() {
-        response = API_Utils.getRequestWithBody(fullPath, reqBodyJson);
-
-    }
 
     @Given("Creates a request body with id {string} parameter to get finding category data")
     public void creates_a_request_body_with_id_parameter_to_get_finding_category_data(int id) {
@@ -203,7 +186,6 @@ public class APIStepDefinition {
     @Then("Verifies that the returned status code is {int}")
     public void verifiesThatTheReturnedStatusCodeIs(int statusCode) {
         softAssert.assertEquals(response.getStatusCode(), statusCode, "Status code value is NOT " + statusCode);
-
     }
 
     @Then("Verifies that the response message is {string}")
@@ -212,11 +194,9 @@ public class APIStepDefinition {
         softAssert.assertNotEquals(respJS.getString("message"), message, "Returned message is not true");
     }
 
-
     @And("Sets query parameters as id {int}")
     public void setsQueryParametersAsId(int id) {
         reqBodyJson = API_Utils.createABody(id);
-
     }
 
     @And("Sends GET request with Body and valid Authorization")
@@ -226,12 +206,9 @@ public class APIStepDefinition {
 
     @And("Sends GET request with Body with invalid Authorization")
     public void sendsGETRequestWithBodyWithInvalidAuthorization() {
-
         String invalidToken = "H3h3VhOQvXU8Ql83V6kgSeKQ6hREZk";
-
         String invalidToken2 = "ZBRqKnnTiE9iSdHVCdMPbaP44dClmz";
         System.out.println(fullPath);
-
         response = given()
                 .spec(HooksAPI.spec)
                 .header("Authorization", "Bearer " + "ZBRqKnnTiE9iSdHVCdMPbaP44dClmz")
@@ -249,9 +226,9 @@ public class APIStepDefinition {
 
     @And("Sends POST request with Body and invalid Authorization")
     public void sendsPOSTRequestWithBodyAndInvalidAuthorization() {
-
         String invalidToken = HooksAPI.token + "invalid";
-        Response response = given().headers("Authorization",
+       response = given().headers("Authorization",
+
                         "Bearer " + invalidToken,
                         "Content-Type",
                         ContentType.JSON,
@@ -260,8 +237,6 @@ public class APIStepDefinition {
                 .when().body(reqBodyJson.toString())
                 .post(fullPath);
         response.prettyPrint();
-
-        response = API_Utils.postRequest(fullPath, reqBodyJson);
 
     }
 
@@ -272,34 +247,32 @@ public class APIStepDefinition {
 
     @And("Sends PATCH request with Body and invalid Authorization")
     public void sendsPATCHRequestWithBodyAndInvalidAuthorization() {
-        String invalidToken = HooksAPI.token + "invalid";
-        Response response = given().headers("Authorization",
-                        "Bearer " + invalidToken,
-                        "Content-Type",
-                        ContentType.JSON,
-                        "Accept",
-                        ContentType.JSON).spec(HooksAPI.spec).contentType(ContentType.JSON)
-                .when().body(reqBodyJson.toString())
-                .patch(fullPath);
+        JSONObject reqbodys = new JSONObject();
+        reqbodys.put("id", 77);
+        response = given()
+                .spec(HooksAPI.spec)
+                .headers("Authorization", "Bearer " + "adasdasdasdasdasdasd")
+                .contentType(ContentType.JSON)
+                // .header("Accept","application/json")
+                .when().body(reqbodys.toString())
+                .get(fullPath);
         response.prettyPrint();
     }
-
 
     @And("Sends DELETE request with Body and invalid Authorization")
     public void sendsDELETERequestWithBodyAndInvalidAuthorization() {
         String invalidToken = "JQRvVtb9uMWEaS4sth5Hj8HsA2Pvkh";
         JSONObject object = new JSONObject();
         object.put("id", addId);
-        response = RestAssured.given().spec(HooksAPI.spec).headers("Authorization", "Bearer " + invalidToken)
+        response = RestAssured.given().spec(HooksAPI.spec).
+                headers("Authorization", "Bearer " + invalidToken)
                 .contentType(ContentType.JSON)
-                .when().body(object.toString())
-
+                .when()
+                .body(object.toString())
                 .delete(fullPath);
         response.prettyPrint();
-
         Assert.assertEquals(403, response.getStatusCode());
     }
-
 
     @And("Save addid number")
     public void save_addid_number() {
@@ -312,71 +285,9 @@ public class APIStepDefinition {
     @Then("Creates an expected body with id {int}, exp_category {string},description {string} ,is_active {string}, is_deleted {string}, created_at {string}  in ExpenseHead.")
     public void createsAnExpectedBodyWithIdExp_categoryDescriptionIs_activeIs_deletedCreated_atInExpenseHead(
             int id, String exp_category, String description, String is_active, String is_deleted, String created_at) {
-        reqBodyJson = API_Utils.createABody(id, exp_category, description, is_active, is_deleted, created_at);
-      /*
-        {
-    "status": 200,
-    "message": "Success",
-    "Token_remaining_time": 25,
-    "details": {
-        "id": "5",
-        "exp_category": "Power Generator Fuel Charge",
-        "description": "They can utilise a variety of fuel options including natural gas, LPG and diesel.",
-        "is_active": "yes",
-        "is_deleted": "no",
-        "created_at": "2021-10-29 01:35:42"
+
+
     }
-}
-         */
-    }
-
-
-    @And("Verifies in the response body with id {string}, exp_category {string},description {string} , is_active {string}, is_deleted {string}, created_at {string}  in ExpenseHead.")
-    public void verifiesInTheResponseBodyWithIdExp_categoryDescriptionIs_activeIs_deletedCreated_atInExpenseHead(String id, String exp_category, String description, String is_active, String is_deleted, String created_at) {
-        JsonPath resJp = response.jsonPath();
-        assertEquals(id, resJp.get("details.id"));
-        assertEquals(exp_category, resJp.get("details.exp_category"));
-        assertEquals(description, resJp.get("details.description"));
-        assertEquals(is_active, resJp.get("details.is_active"));
-        assertEquals(is_deleted, resJp.get("details.is_deleted"));
-        assertEquals(created_at, resJp.get("details.created_at"));
-    }
-
-    @Then("Verifies in the response body with id {string}, name {string},description {string} , finding_category_id {string}, created_at {string}, category {string}  in ExpenseHead.")
-    public void verifiesInTheResponseBodyWithIdNameDescriptionFinding_category_idCreated_atCategoryInExpenseHead(String id, String name, String description, String finding_category_id, String created_at, String category) {
-        JsonPath resJp = response.jsonPath();
-        assertEquals(id, resJp.get("details.id"));
-        assertEquals(name, resJp.get("details.name"));
-        assertEquals(description, resJp.get("details.description"));
-        assertEquals(finding_category_id, resJp.get("details.finding_category_id"));
-        assertEquals(created_at, resJp.get("details.created_at"));
-//        assertEquals(category,resJp.get("details.category"));
-    }
-
-
-    @And("Creates an expected body with id {int}, is visitors_ purpose  {string}, description {string}, created_at {string}")
-    public void createsAnExpectedBodyWithIdIsVisitors_PurposeDescriptionCreated_at(int id, String visitors_purpose, String description, String creat_at) {
-        JSONObject data1 = new JSONObject();
-        data1.put("id", "19");
-        data1.put("visitors_purpose", "feridun bey");
-        data1.put("description", "bayram 123 111");
-        data1.put("created_at", "2023-04-12 08:34:56");
-
-        JSONObject data2 = new JSONObject();
-        data2.put("status", 200);
-        data2.put("message", "Success");
-        data2.put("Token_remaining_time", 871);
-
-        JSONArray jsonArray = new JSONArray();
-        jsonArray.put(data1);
-
-        JSONObject finalData = new JSONObject();
-        finalData.put("lists", jsonArray);
-        finalData.put("otherData", data2);
-
-        System.out.println(finalData.toString());
-    }
-
 
     @And("Verifies in the response body with id {string}, is visitors_ purpose  {string}, description {string}, created_at {string}  must be verified .")
     public void verifiesInTheResponseBodyWithIdIsVisitors_PurposeDescriptionCreated_atMustBeVerified(String id, String visitors_purpose, String description, String creat_at) {
@@ -391,6 +302,7 @@ public class APIStepDefinition {
     @And("Sends GET request with invalid Authorization")
     public void sendsGETRequestWithInvalidAuthorization() {
         response = API_Utils.getRequestWithInvalidAuthorization(fullPath);
+
 
 
     }
@@ -568,5 +480,4 @@ public class APIStepDefinition {
 
     }
 }
-
 
