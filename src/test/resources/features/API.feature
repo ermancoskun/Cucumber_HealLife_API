@@ -419,7 +419,7 @@ Feature: API Tests
     Then Verifies that the returned status code is 200
     Then Verifies that the response message is "Success"
 
-
+  @US25
   Scenario: [API_US25_TC01]-(1B) As an administrator, I should not be able to access the relevant announcement data by entering the id over the API connection.
 
     Given Api user sets "api/getNoticeById" path parameters.
@@ -428,7 +428,7 @@ Feature: API Tests
     Then Verifies that the returned status code is 403
     Then Verifies that the response message is "failed"
 
-
+  @US25
   Scenario: [API_US25_TC01]-(1C) As an administrator, I should not be able to access the relevant announcement data by entering the id over the API connection.
 
     Given Api user sets "api/getNoticeById" path parameters.
@@ -437,7 +437,7 @@ Feature: API Tests
     Then Verifies that the returned status code is 403
     Then Verifies that the response message is "failed"
 
-
+  @US25
   Scenario: [API_US25_TC01]-(1D) As an administrator, I should not be able to access the relevant announcement data by entering the id over the API connection.
 
     Given Api user sets "api/getNoticeById" path parameters.
@@ -445,6 +445,49 @@ Feature: API Tests
     And Sends GET request with Body with invalid Authorization
     Then Verifies that the returned status code is 403
     Then Verifies that the response message is "failed"
+
+  @US25
+  Scenario: [API_US25_TC01]-(2) As an administrator, I should be able to access the relevant announcement data by entering the id over the API connection.
+
+    Given Api user sets "api/getNoticeById" path parameters.
+    And Sets query parameters as id 1
+    And Sends GET request with Body and valid Authorization
+    Then Verifies that the returned status code is 200
+    Then Verifies that the response message is "Success"
+    Then Verify that the datas are contained in the response body as "lists","id#type#slug#url#title#date#event_start#event_end#event_venue#description#is_active#created_at#meta_title#meta_description#meta_keyword#feature_image#publish_date#publish#sidebar","1#banner#null#null#Banner Images#null#null#null#null#null#no#2018-07-13 13:27:19#####0000-00-00#0#0"
+
+  @US17
+  Scenario: [API_US17_TC01]-(1A) As an administrator, I should be able to update the blood information registered in the system via the API connection .
+
+    Given Api user sets "api/updateBloodGroup" path parameters.
+    And Creates body and Sends Patch request body valid Authorization with "id", "name", "is _blood_group"
+    And Sends PATCH request with Body and valid Authorization
+    Then Verifies that the returned status code is 200
+    Then Verifies that the response message is "Success"
+
+  @US17
+  Scenario: [API_US17_TC01]-(1B) As an administrator, I should not be able to update the blood information registered in the system via the API connection .
+
+    Given Api user sets "api/updateBloodGroup" path parameters.
+    And Sends PATCH request with Body and invalid Authorization
+    Then Verifies that the returned status code is 403
+    Then Verifies that the response message is "failed"
+
+  @US17
+  Scenario: [API_US17_TC01]-(2) As an administrator, I should be able to verify the blood information registered in the system via the API connection .
+
+    Given Api user sets "api/updateBloodGroup" path parameters.
+    And Creates body and Sends Patch request body valid Authorization with "id", "name", "is _blood_group"
+    And Sends PATCH request with Body and valid Authorization
+    Given It is verified that the id information sent is the same as the id in the patch request body
+
+  @US17
+  Scenario: [API_US17_TC01]-(3) As an administrator, I should be able to verify the blood information registered in the system via the API connection .
+
+    Given Api user sets "api/updateBloodGroup" path parameters.
+    And Creates body and Sends Patch request body valid Authorization with "id", "name", "is _blood_group"
+    And Sends PATCH request with Body and valid Authorization
+    Given It is verified that the id information sent is the same as the id in the patch request body
 
   Scenario: [API_US18_TC01]-(2) As an administrator, I should not be able to delete the blood group record in the system via the API link .
     Given Api user sets "api/addBloodGroup" path parameters.

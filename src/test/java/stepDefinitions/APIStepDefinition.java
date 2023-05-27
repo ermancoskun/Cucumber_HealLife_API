@@ -547,6 +547,10 @@ public class APIStepDefinition {
 
     }
 
+    @And("Creates body and Sends Patch request body valid Authorization with {string}, {string}, {string}")
+    public void createsBodyAndSendsPatchRequestBodyValidAuthorizationWith(String id, String name, String is_blood_group) {
+        reqBodyJson = API_Utils.createABody(1, "DirtBlood", "AB+");
+    }
 }
 
 
