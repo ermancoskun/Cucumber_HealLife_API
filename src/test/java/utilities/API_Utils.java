@@ -45,9 +45,7 @@ public class API_Utils {
                     .contentType(ContentType.JSON)
                     .when().body(object.toString())
                     .delete(endPoint);
-
             response.prettyPrint();
-
             Assert.assertEquals(200, response.getStatusCode());
 
             return response;

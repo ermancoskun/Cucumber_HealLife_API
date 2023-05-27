@@ -230,9 +230,7 @@ public class APIStepDefinition {
     @And("Sends POST request with Body and invalid Authorization")
     public void sendsPOSTRequestWithBodyAndInvalidAuthorization() {
         String invalidToken = HooksAPI.token + "invalid";
-
        response = given().headers("Authorization",
-
                         "Bearer " + invalidToken,
                         "Content-Type",
                         ContentType.JSON,
@@ -501,7 +499,6 @@ public class APIStepDefinition {
     public void ıtIsVerifiedThatTheInTheResponseBodyIsTheSameAsTheIdInTheDeleteRequestBody(String idKey) {
         JsonPath path = response.jsonPath();
         Assert.assertEquals(API_Utils.addId, path.getString(idKey));
-
     }
 
     @Then("Creates an expected body with id {string}, exp_category {string},description {string} ,is_active {string}, is_deleted {string}, created_at {string}  in ExpenseHead.")
@@ -577,11 +574,14 @@ public class APIStepDefinition {
 
     }
 
+
+
     @And("Creates body and Sends Patch request body valid Authorization with {string}, {string}, {string}")
     public void createsBodyAndSendsPatchRequestBodyValidAuthorizationWith(String id, String name, String
             is_blood_group) {
         reqBodyJson = API_Utils.createABody(1, "DirtBlood", "AB+");
     }
+
 
 
     @And("Sets query parametres as relivant id")
@@ -607,6 +607,17 @@ public class APIStepDefinition {
         Assert.assertEquals(expBodyJson.get("updateId"), resJP.get("updateId"));
 
     }
+
+
+    @Then("Has been verified that the sent addId and replied {string} data are the same.")
+    public void hasBeenVerifiedThatTheSentAddIdAndRepliedDataAreTheSame(String changedData) {
+        JsonPath resJP = response.jsonPath();
+        String actualID = resJP.getString(changedData);
+        System.out.println("actualID = " + actualID);
+        System.out.println("addId = " + addId);
+        assertEquals("Unsuccessful change", actualID, addId);
+    }
+
     @And("Sets update body with response id")
     public void setsUpdateBodyWithResponseId() {
 
@@ -614,7 +625,6 @@ public class APIStepDefinition {
         reqBodyJson .put("id", addId);
         reqBodyJson .put("visitors_purpose","purpose update");
         reqBodyJson .put("description","purpose update details");
-
     }
 }
 
