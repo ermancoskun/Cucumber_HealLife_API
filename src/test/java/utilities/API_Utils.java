@@ -9,7 +9,6 @@ import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.json.JSONObject;
 import org.junit.Assert;
-
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;

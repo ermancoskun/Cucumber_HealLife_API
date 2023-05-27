@@ -93,7 +93,6 @@ public class APIStepDefinition {
         reqBodyJson = new JSONObject();
         reqBodyJson.put("name", name);
         reqBodyJson.put("is_blood_group", bloodGroup);
-
         System.out.println(reqBodyJson.toString());
     }
 
@@ -467,6 +466,19 @@ public class APIStepDefinition {
         reqBodyJson = new JSONObject(body);
     }
 
+
+    @Then("id: of content with {string}, category : {string}, created_at : {string}, must be verified")
+    public void idOfContentWithCategoryCreated_atMustBeVerified(String id, String category, String created_at) {
+
+        //JSONObject object = response.as(JSONObject.class);
+        JsonPath path = response.jsonPath();
+        int dinamikId = Integer.parseInt(id) - 1;
+        Assert.assertEquals(id, path.get("lists[" + dinamikId + "].id"));
+        //Assert.assertNotEquals(category,path.get("lists["+dinamikId+"].category"));
+        //Assert.assertNotEquals(created_at,path.get("lists["+dinamikId+"].created_at"));
+        response.prettyPrint();
+    }
+
     @And("Sends DELETE request with Body and valid Authorization")
     public void sendsDELETERequestWithBodyAndValidAuthorization() {
         response = API_Utils.deleteRequest(fullPath);
@@ -477,6 +489,11 @@ public class APIStepDefinition {
             JsonPath resJp = response.jsonPath();
             assertEquals(id, resJp.get("lists.id"));
 
+
+    @Then("It is verified that the {string} in the response body is the same as the id in the delete request body.")
+    public void ıtIsVerifiedThatTheInTheResponseBodyIsTheSameAsTheIdInTheDeleteRequestBody(String idKey) {
+        JsonPath path = response.jsonPath();
+        Assert.assertEquals(API_Utils.addId, path.getString(idKey));
 
     }
     @Then("Creates an expected body with id {string}, exp_category {string},description {string} ,is_active {string}, is_deleted {string}, created_at {string}  in ExpenseHead.")
@@ -512,7 +529,6 @@ public class APIStepDefinition {
     }
     @And("Verifies in the response body with id {string}, name {string}, description {string}, finding_category_id : {string}, created_at : {string}, category : {string} in Finding")
     public void verifiesInTheResponseBodyWithIdNameDescriptionFinding_category_idCreated_atCategoryInFinding(String id, String name, String description , String finding_category_id, String created_at, String category) {
-
         JsonPath respJp = response.jsonPath();
         assertEquals(id, respJp.getString("lists[6].id"));
         assertEquals(name, respJp.getString("lists[6].name"));
@@ -520,7 +536,7 @@ public class APIStepDefinition {
         assertEquals(finding_category_id, respJp.getString("lists[6].finding_category_id"));
         assertEquals(created_at, respJp.getString("lists[6].created_at"));
         assertEquals(category, respJp.getString("lists[6].category"));
-
+        //bu son satır mainde
     }
     @Then("Creates an expected body with id {string}, name {string}, description {string}, finding_category_id : {string}, created_at : {string}, category : {string} .")
     public void createsAnExpectedBodyWithIdNameDescriptionFinding_category_idCreated_atCategory(String id, String name, String description, String finding_category_id, String created_at, String category) {
