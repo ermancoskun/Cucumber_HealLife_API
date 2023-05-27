@@ -510,5 +510,43 @@ public class APIStepDefinition {
         assertEquals(is_deleted, resJp.get("details.is_deleted"));
         assertEquals(created_at, resJp.get("details.created_at"));
     }
+    @And("Verifies in the response body with id {string}, name {string}, description {string}, finding_category_id : {string}, created_at : {string}, category : {string} in Finding")
+    public void verifiesInTheResponseBodyWithIdNameDescriptionFinding_category_idCreated_atCategoryInFinding(String id, String name, String description , String finding_category_id, String created_at, String category) {
+
+        JsonPath respJp = response.jsonPath();
+        assertEquals(id, respJp.getString("lists[6].id"));
+        assertEquals(name, respJp.getString("lists[6].name"));
+        assertEquals(description, respJp.getString("lists[6].description"));
+        assertEquals(finding_category_id, respJp.getString("lists[6].finding_category_id"));
+        assertEquals(created_at, respJp.getString("lists[6].created_at"));
+        assertEquals(category, respJp.getString("lists[6].category"));
+
+    }
+    @Then("Creates an expected body with id {string}, name {string}, description {string}, finding_category_id : {string}, created_at : {string}, category : {string} .")
+    public void createsAnExpectedBodyWithIdNameDescriptionFinding_category_idCreated_atCategory(String id, String name, String description, String finding_category_id, String created_at, String category) {
+        reqBodyJson = API_Utils.createABody(id, name, description, finding_category_id, created_at, category);
+    }
+    @And("Verifies in the response body with id {string}, name {string}, description {string}, finding_category_id : {string}, created_at : {string}, category : {string} in ExpenseHead.")
+    public void verifiesInTheResponseBodyWithIdNameDescriptionFinding_category_idCreated_atCategory(String id, String name, String description, String finding_category_id, String created_at, String category) {
+
+        JsonPath respJp = response.jsonPath();
+        assertEquals(id, respJp.getString("lists[10].id"));
+        assertEquals(name, respJp.getString("lists[10].name"));
+        assertEquals(description, respJp.getString("lists[10].description"));
+        assertEquals(finding_category_id, respJp.getString("lists[10].finding_category_id"));
+        assertEquals(created_at, respJp.getString("lists[10].created_at"));
+        assertEquals(category, respJp.getString("lists[10].category"));
+    }
+    @Then("id: of content with {string}, category : {string}, created_at : {string}, must be verified")
+    public void idOfContentWithCategoryCreated_atMustBeVerified(String id, String category, String created_at) {
+
+        //JSONObject object = response.as(JSONObject.class);
+        JsonPath path = response.jsonPath();
+        int dinamikId = Integer.parseInt(id) - 1;
+        Assert.assertEquals(id, path.get("lists[" + dinamikId + "].id"));
+        //Assert.assertNotEquals(category,path.get("lists["+dinamikId+"].category"));
+        //Assert.assertNotEquals(created_at,path.get("lists["+dinamikId+"].created_at"));
+        response.prettyPrint();
+    }
 }
 

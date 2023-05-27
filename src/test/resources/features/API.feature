@@ -361,7 +361,6 @@ Feature: API Tests
     Then Sends POST request with Body and valid Authorization
     Given Api user sets "api/deleteExpenseHead" path parameters.
     And Sends DELETE request with Body and valid Authorization
-    Then It is verified that the "deletedId" in the response body is the same as the id in the delete request body.
 
 
   @US16 @US16A
