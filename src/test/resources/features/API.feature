@@ -97,7 +97,6 @@ Feature: API Tests
     Then Verifies that the response message is "Success"
 
 
-
   Scenario: [API_US34]-(1A) As an administrator I should be able to access the find list via the API link
 
     Given Api user sets "api/getFinding" path parameters.
@@ -117,18 +116,19 @@ Feature: API Tests
 
   Scenario: [API_US15_TC01]-(1A) As an administrator, I should be able to access the relevant blood data by entering the id over the API connection .
 
-
-      Given Api user sets "/api/getBloodGroupById" path parameters.
-      Then Sets query parameters as id 1
-      And Sends GET request with Body and valid Authorization
-      Then Verifies that the returned status code is 200
-      Then Verifies that the response message is "Success"
+    Given Api user sets "api/getBloodGroupById" path parameters.
+    Then Sets query parameters as id 1
+    And Sends GET request with Body and valid Authorization
+    Then Verifies that the returned status code is 200
+    Then Verifies that the response message is "Success"
 
 
   Scenario: [API_US15_TC01]-(1B)As an administrator, I should be able to access the relevant blood data by entering the id over the API connection .
     Given Api user sets "api/getBloodGroupById" path parameters.
     And Sets query parameters as id 123456
-
+    And Sends GET request invalid Authorization
+    Then Verifies that the returned status code is 403
+    Then Verifies that the response message is "failed"
 
   Scenario: [API_US34]-(1C) As an administrator I should be able to access the find list via the API link
 
@@ -167,49 +167,59 @@ Feature: API Tests
       #    "description":"special word details"
       #}'
 
-  @US15
+
 
   Scenario: [API_US15_TC01]-(2)As an administrator, I should be able to access the relevant blood data by entering the id over the API connection .
     Given Api user sets "api/getBloodGroupById" path parameters.
     Then Sets query parameters as id 1
     And Sends GET request with Body and valid Authorization
-    And Verify that the datas are contained in the response body as "lists.","id,name,is_blood_group,created_at","1,B+,1,2021-10-25 01:54:10"
+    And Verify that the datas are contained in the response body as "lists.","id#name#is_blood_group#created_at","1#B+#1#2021-10-25 01:54:10"
 
 
+  @US
   Scenario: [API_US07_TC01]-(1A) Link as an administrator registered to the system via visitor I should be able to update the purpose information .
-    Given Api user sets "/api/visitorsPurposeUpdate" path parameters.
-    Then Sets query parameters as id 1
-    And Sends POST request with Body and valid Authorization
+    Given Api user sets "api/visitorsPurposeAdd" path parameters.
+    And Request body is:
+    """
+  {
+    "visitors_purpose":"deneme purpose",
+    "description":"deneme description"
+}
+    """
+    Then Sends POST request with Body and valid Authorization
+    Given Api user sets "api/visitorsPurposeUpdate" path parameters.
+    And Sets update body with response id
+    And Sends PATCH request with Body and valid Authorization
     Then Verifies that the returned status code is 200
     Then Verifies that the response message is "Success"
 
-
   Scenario: [API_US07_TC01]-(1B) Link as an administrator registered to the system via visitor I should be able to update the purpose information .
-    Given Api user sets "/api/visitorsPurposeUpdate" path parameters.
+    Given Api user sets "api/visitorsPurposeUpdate" path parameters.
     Then Sets query parameters as id 123456
     And Sends POST request with Body and invalid Authorization
     Then Verifies that the returned status code is 403
     Then Verifies that the response message is "failed"
 
+
   Scenario: [API_US07_TC01]-(2) Link as an administrator registered to the system via visitor I should be able to update the purpose information .
 
-    Given Api user sets "/api/visitorsPurposeUpdate" path parameters.
-    Then Sets query parameters as id 1
+    Given Api user sets "api/visitorsPurposeUpdate" path parameters.
+    Then Sets query parameters as id 5
     And Sends POST request with Body and valid Authorization
-    And Verifies in the response body with id "1"
+    And Verifies in the response body with id "5"
+
 
   Scenario: [API_US07_TC01]-(3) Link as an administrator registered to the system via visitor I should be able to update the purpose information .
-    Given Api user sets "/api/visitorsPurposeUpdate" path parameters.
-    And  Creates a request body with id {string} parameter to get finding category data
-    And Creates request body as name "Jane Doe", isBloodGroup "A Rh +"
-    And Sends POST request with Body and valid Authorization
-    And Save addid number
-    And Api user sets "api/visitorsPurposeUpdate" path parameters.
-    And Sends GET request valid Authorization
-    And Verifies the newly created blood group record via APi.
+
+    * Api user sets "api/visitorsPurposeUpdate" path parameters.
+    * Creates request body as name "Jane Doe", isBloodGroup "A Rh +"
+    * Sends POST request with Body and valid Authorization
+    * Save addid number
+    * Api user sets "api/visitorsPurposeUpdate" path parameters.
+    * Sends GET request valid Authorization
+    * Verifies the newly created blood group record via APi.
 
 
-  @US14-1A
 
   Scenario: [API_US14_TC01]-(1A)  As an administrator, I should be able to access the
   blood group list with valid authorization registered in the system via API connection.
@@ -361,7 +371,6 @@ Feature: API Tests
     Given Api user sets "api/deleteExpenseHead" path parameters.
     And Sends DELETE request with Body and valid Authorization
 
-
   @US16 @US16A
   Scenario: [API_US16_TC01]-(1A)
   /api/addBloodGroup to your endpoint valid Status returned
@@ -456,7 +465,6 @@ Feature: API Tests
 
   @wip
   Scenario: [API_US22_TC01]-(2) Being able to update the expenditure information registered in the system via API connection as an administrator. I want..
-
     Given Api user sets "api/updateExpenseHead" path parameters.
     And Request body is:
     """
@@ -469,6 +477,7 @@ Feature: API Tests
     }
     """
     Then It is verified that the id information sent is the same as the id in the patch request body
+
 
   @US25
   Scenario: [API_US22_TC01]-(3)Being able to update the expenditure information registered in the system via API connection as an administrator. I want..
@@ -499,7 +508,6 @@ Feature: API Tests
     And Sets query parametres as relivant id
     And  Sends GET request with Body and valid Authorization
     Then Creat get request exp_category is updated be verified
-
 
   @API
   Scenario: [API_US18_TC01]-(1) As an administrator, I should be able to delete the blood group record in the system via the API link .

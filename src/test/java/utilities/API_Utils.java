@@ -87,7 +87,7 @@ public class API_Utils {
             return response;
         }
         public static Response patchRequest (String endPoint, JSONObject reqBody){
-            Response response = given()
+           response = given()
                     .spec(HooksAPI.spec)
                     .headers("Authorization", "Bearer " + HooksAPI.token)
                     .contentType(ContentType.JSON)

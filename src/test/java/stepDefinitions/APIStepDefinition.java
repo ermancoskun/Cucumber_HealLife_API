@@ -182,16 +182,19 @@ public class APIStepDefinition {
     }
 
 
-    @Then("Verifies that the returned status code is {int}")
+   @Then("Verifies that the returned status code is {int}")
     public void verifiesThatTheReturnedStatusCodeIs(int statusCode) {
         softAssert.assertEquals(response.getStatusCode(), statusCode, "Status code value is NOT " + statusCode);
     }
 
-    @Then("Verifies that the response message is {string}")
+
+   @Then("Verifies that the response message is {string}")
     public void verifiesThatTheResponseMessageIs(String message) {
+
         JsonPath respJS = response.jsonPath();
-        softAssert.assertNotEquals(respJS.getString("message"), message, "Returned message is not true");
-    }
+        softAssert.assertEquals(respJS.getString("message"), message, "Returned message is not true");
+
+}
 
     @And("Sets query parameters as id {int}")
     public void setsQueryParametersAsId(int id) {
@@ -220,13 +223,15 @@ public class APIStepDefinition {
 
     @Given("Sends POST request with Body and valid Authorization")
     public void sends_post_request_with_body_and_valid_authorization() {
+
         response = API_Utils.postRequest(fullPath, reqBodyJson);
     }
 
     @And("Sends POST request with Body and invalid Authorization")
     public void sendsPOSTRequestWithBodyAndInvalidAuthorization() {
         String invalidToken = HooksAPI.token + "invalid";
-        response = given().headers("Authorization",
+
+       response = given().headers("Authorization",
 
                         "Bearer " + invalidToken,
                         "Content-Type",
@@ -241,6 +246,7 @@ public class APIStepDefinition {
 
     @And("Sends PATCH request with Body and valid Authorization")
     public void sendsPATCHRequestWithBodyAndValidAuthorization() {
+
         response = API_Utils.patchRequest(fullPath, reqBodyJson);
     }
 
@@ -601,6 +607,14 @@ public class APIStepDefinition {
         Assert.assertEquals(expBodyJson.get("updateId"), resJP.get("updateId"));
 
     }
+    @And("Sets update body with response id")
+    public void setsUpdateBodyWithResponseId() {
 
+      reqBodyJson = new JSONObject();
+        reqBodyJson .put("id", addId);
+        reqBodyJson .put("visitors_purpose","purpose update");
+        reqBodyJson .put("description","purpose update details");
+
+    }
 }
 
