@@ -4,12 +4,10 @@ import hooks.HooksAPI;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
-
 import io.cucumber.java.en.When;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
-
 import io.restassured.response.Response;
 import org.hamcrest.Matchers;
 import org.json.JSONArray;
@@ -18,7 +16,6 @@ import org.junit.Assert;
 import org.testng.asserts.SoftAssert;
 import pojos.Pojo_RegisterCustomer;
 import utilities.API_Utils;
-
 import static io.restassured.RestAssured.given;
 import static org.junit.Assert.assertEquals;
 
@@ -146,7 +143,6 @@ public class APIStepDefinition {
 
     }
 
-
     @Given("Verifies that the blood group record created with the API has been created")
     public void verifies_that_the_blood_group_record_created_with_the_api_has_been_created() {
         response
@@ -163,8 +159,6 @@ public class APIStepDefinition {
         addId = respJS.getString("addId");
         System.out.println("addId :" + addId);
     }
-
-
 
 
     @Given("Creates request body as name {string}, isBloodGroup {string}")
@@ -505,7 +499,6 @@ public class APIStepDefinition {
     @And("Creates body and Sends Patch request body valid Authorization with {string}, {string}, {string},{string},{string}")
     public void createsBodyAndSendsPatchRequestValidAuthorizationWith(String id, String exp_category, String description, String is_active, String is_deleted) {
         reqBodyJson = API_Utils.createABody(21, "stationary 1", "stationary expense", "yes", "no");
-
     }
 
     @Given("It is verified that the id information sent is the same as the id in the patch request body")
@@ -522,7 +515,6 @@ public class APIStepDefinition {
         JsonPath resJP = response.jsonPath();
         expBodyJson = new JSONObject();
         expBodyJson.put("updateId", 22);
-
         Assert.assertEquals(expBodyJson.get("updateId"), resJP.get("updateId"));
 
     }
