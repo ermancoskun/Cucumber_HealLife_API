@@ -211,7 +211,7 @@ public class APIStepDefinition {
     }
 
 
-    @Then("Verifies that the returned status code is {int}")
+   @Then("Verifies that the returned status code is {int}")
     public void verifiesThatTheReturnedStatusCodeIs(int statusCode) {
 
         try {
@@ -225,20 +225,18 @@ public class APIStepDefinition {
 
     }
 
-    @Then("Verifies that the response message is {string}")
-    public void verifiesThatTheResponseMessageIs(String message) {
 
-        try {
-            JsonPath respJS = response.jsonPath();
-            softAssert.assertEquals(respJS.getString("message"), message, "Returned message is not true");
-        } catch (NullPointerException e) {
-            softAssert.assertEquals(true, true);
-        }
+
+
+   @Then("Verifies that the response message is {string}")
+    public void verifiesThatTheResponseMessageIs(String message) {
 
         JsonPath respJS = response.jsonPath();
         softAssert.assertEquals(respJS.getString("message"), message, "Returned message is not true");
 
-    }
+}
+
+
 
     @And("Sets query parameters as id {int}")
     public void setsQueryParametersAsId(int id) {
@@ -277,10 +275,6 @@ public class APIStepDefinition {
     @Given("Sends POST request with Body and valid Authorization")
     public void sends_post_request_with_body_and_valid_authorization() {
 
-
-        API_Utils.postRequest(fullPath, reqBodyJson);
-
-
         response = API_Utils.postRequest(fullPath, reqBodyJson);
 
     }
@@ -290,8 +284,6 @@ public class APIStepDefinition {
 
         String invalidToken = HooksAPI.token + "invalid";
 
-
-        Response response ;
 
        response = given().headers("Authorization",
 
@@ -311,8 +303,6 @@ public class APIStepDefinition {
 
     @And("Sends PATCH request with Body and valid Authorization")
     public void sendsPATCHRequestWithBodyAndValidAuthorization() {
-
-        API_Utils.patchRequest(fullPath, reqBodyJson);
 
         response = API_Utils.patchRequest(fullPath, reqBodyJson);
 
@@ -682,6 +672,16 @@ public class APIStepDefinition {
         assertEquals(finding_category_id, respJp.getString("lists[6].finding_category_id"));
         assertEquals(created_at, respJp.getString("lists[6].created_at"));
         assertEquals(category, respJp.getString("lists[6].category"));
+
+    }
+
+    @And("Sets update body with response id")
+    public void setsUpdateBodyWithResponseId() {
+
+      reqBodyJson = new JSONObject();
+        reqBodyJson .put("id", addId);
+        reqBodyJson .put("visitors_purpose","purpose update");
+        reqBodyJson .put("description","purpose update details");
 
     }
 }
