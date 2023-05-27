@@ -263,31 +263,31 @@ Feature: API Tests
     Given Api user sets "api/visitorsPurposeList" path parameters.
     And Sends GET request valid Authorization
     And Verifies in the responsee body with id "29", is visitors_ purpose  "special work", description "special word details", created_at "2023-05-18 17:00:26"  must be verified .
-
+  @furkann
   Scenario: [API_US29->TC01] /api/getFindingCategory to your endpoint valid a GET request with authorization information status when sent the code is 200 and the response the message information is " Success " should be verified .
-    Then Api kullanicisi "api/getFindingCategory" path parametreleri set eder
-    Given Get query is generated with valid information
+    Then Api user sets "api/getFindingCategory" path parameters.
+    Given Sends GET request valid Authorization
     And Verifies that the returned status code is 200
     And Verifies that the response message is "Success"
-
+@furkann
   Scenario: [API_US29->TC02] /api/getFindingCategory to your endpoint invalid A GET Request with authorization information status when sent that the code is 403 and the response the message information is " failed " must be verified
-    Given Api kullanicisi "api/getFindingCategory" path parametreleri set eder
+    Given Api user sets "api/getFindingCategory" path parameters.
     Then Sends GET request invalid Authorization
-    Then Verifies that the returned status codee is 403
-
+    Then Verifies that the returned status code is 403
+  @furkann
   Scenario: [API_US29->TC03] inside the response body list content (id: of content with "1" category : "Fever", created_at : "2021-10-25 02:02:48" ) must be verified.
-    Then Api kullanicisi "api/getFindingCategory" path parametreleri set eder
-    Given Get query is generated with valid information
+    Given Api user sets "api/getFindingCategory" path parameters.
+    Given Sends GET request valid Authorization
     Then id: of content with "1", category : "Fever", created_at : "2021-10-25 02:02:48", must be verified
-
+  @furkann
   Scenario: [API_US29->TC04] Response body icindeki list icerigi (id:"2" olan icerigin category: "Typhidot (or Widal Test)", created_at: "2021-10-25 02:03:35"   oldugu) dogrulanmali.
-    Then Api kullanicisi "api/getFindingCategory" path parametreleri set eder
-    Given Get query is generated with valid information
+    Given Api user sets "api/getFindingCategory" path parameters.
+    Given Sends GET request valid Authorization
     Then id: of content with "2", category : "Typhidot (or Widal Test)", created_at : "2021-10-25 02:03:35", must be verified
-
+  @furkann
   Scenario: [API_US29->TC05] Response body icindeki list icerigi (id:"2" olan icerigin category: "Typhidot (or Widal Test)", created_at: "2021-10-25 02:03:35"   oldugu) dogrulanmali.
-    Then Api kullanicisi "api/getFindingCategory" path parametreleri set eder
-    Given Get query is generated with valid information
+    Given Api user sets "api/getFindingCategory" path parameters.
+    Given Sends GET request valid Authorization
     Then id: of content with "2", category : "Skin Problem", created_at : "2021-10-25 02:14:41", must be verified
 
   Scenario: [API_US23->TC01] /api/deleteExpenseHead to your endpoint valid Status returned when sending a DELETE body with authorization information and correct data (id) that the code is 200 and the message information in the response body is " Success " must be verified
