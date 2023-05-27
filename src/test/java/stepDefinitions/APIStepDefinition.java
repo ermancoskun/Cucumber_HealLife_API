@@ -93,7 +93,6 @@ public class APIStepDefinition {
         reqBodyJson = new JSONObject();
         reqBodyJson.put("name", name);
         reqBodyJson.put("is_blood_group", bloodGroup);
-
         System.out.println(reqBodyJson.toString());
     }
 
