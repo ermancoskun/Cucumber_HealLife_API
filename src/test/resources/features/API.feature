@@ -24,7 +24,6 @@ Feature: API Tests
 
 
   Scenario: [API_US35_TC01]-(1A) As an administrator, I should be able to access the relevant finding data by entering the id over the API connection .
-
     Given Api user sets "api/getFindingById" path parameters.
     And Sets query parameters as id 1
     And Sends GET request with Body and valid Authorization
@@ -32,7 +31,6 @@ Feature: API Tests
     Then Verifies that the response message is "Success"
 
   Scenario: [API_US35_TC01]-(1B) As an administrator, I should not be able to access the relevant finding data by entering the id over the API connection .
-
     Given Api user sets "api/getFindingById" path parameters.
     And Sets query parameters as id 1
     And Sends GET request with Body with invalid Authorization
@@ -40,7 +38,6 @@ Feature: API Tests
     Then Verifies that the response message is "failed"
 
   Scenario: [API_US35_TC01]-(1C) As an administrator, I should not be able to access the relevant finding data by entering the id over the API connection .
-
     Given Api user sets "api/getFindingById" path parameters.
     And Sets query parameters as id 9999999
     And Sends GET request with Body and valid Authorization
@@ -48,7 +45,6 @@ Feature: API Tests
     Then Verifies that the response message is "failed"
 
   Scenario: [API_US35_TC01]-(1D) As an administrator, I should not be able to access the relevant finding data by entering the id over the API connection .
-
     Given Api user sets "api/getFindingById" path parameters.
     And Sets query parameters as id 9999999
     And Sends GET request with Body with invalid Authorization
@@ -57,7 +53,6 @@ Feature: API Tests
 
   @kol
   Scenario: [API_US35_TC01]-(2) As an administrator, I should be able to access the relevant finding data by entering the id over the API connection .
-
     Given Api user sets "api/getFindingById" path parameters.
     And Sets query parameters as id 1
     And Sends GET request with Body and valid Authorization
@@ -116,11 +111,11 @@ Feature: API Tests
 
 
   Scenario: [API_US15_TC01]-(1A) As an administrator, I should be able to access the relevant blood data by entering the id over the API connection .
-      Given Api user sets "/api/getBloodGroupById" path parameters.
-      Then Sets query parameters as id 1
-      And Sends GET request with Body and valid Authorization
-      Then Verifies that the returned status code is 200
-      Then Verifies that the response message is "Success"
+    Given Api user sets "/api/getBloodGroupById" path parameters.
+    Then Sets query parameters as id 1
+    And Sends GET request with Body and valid Authorization
+    Then Verifies that the returned status code is 200
+    Then Verifies that the response message is "Success"
 
 
   Scenario: [API_US15_TC01]-(1B)As an administrator, I should be able to access the relevant blood data by entering the id over the API connection .
@@ -158,7 +153,7 @@ Feature: API Tests
 
   Scenario: [API_US06]-(1A) A new visitor via API link as an administrator purpose registration I want to be able to create .
 
-      Given Api user sets "api/visitorsPurposeAdd" path parameters.
+    Given Api user sets "api/visitorsPurposeAdd" path parameters.
 
       #{
       #    "visitors_purpose":"special work",
@@ -198,12 +193,7 @@ Feature: API Tests
 
   Scenario: [API_US07_TC01]-(3) Link as an administrator registered to the system via visitor I should be able to update the purpose information .
     Given Api user sets "/api/visitorsPurposeUpdate" path parameters.
-
     And  Creates a request body with id {string} parameter to get finding category data
-
-
-
-
     And Creates request body as name "Jane Doe", isBloodGroup "A Rh +"
     And Sends POST request with Body and valid Authorization
     And Save addid number
@@ -432,7 +422,6 @@ Feature: API Tests
     * Verify that the datas are contained in the response body as "details.","id#category#created_at","1#ill category 2#2023-05-25 09:33:53"
 
 
-  @wip
 
   Scenario:  Scenario: : [API_US22_TC01]-(1A) Being able to update the expenditure information registered in the system via API connection as an administrator. I want..
     Given Api user sets "api/updateExpenseHead" path parameters.
@@ -447,8 +436,8 @@ Feature: API Tests
     Then Verifies that the returned status code is 403
     Then Verifies that the response message is "failed"
 
-@wip
-   Scenario: [API_US22_TC01]-(2) Being able to update the expenditure information registered in the system via API connection as an administrator. I want..
+  @wip
+  Scenario: [API_US22_TC01]-(2) Being able to update the expenditure information registered in the system via API connection as an administrator. I want..
     Given Api user sets "api/updateExpenseHead" path parameters.
     And Request body is:
     """
@@ -460,7 +449,7 @@ Feature: API Tests
             "is_deleted": "no"
     }
     """
-  Then It is verified that the id information sent is the same as the id in the patch request body
+    Then It is verified that the id information sent is the same as the id in the patch request body
 
 
   Scenario: [API_US22_TC01]-(3)Being able to update the expenditure information registered in the system via API connection as an administrator. I want..

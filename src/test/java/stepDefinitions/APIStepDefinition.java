@@ -93,7 +93,6 @@ public class APIStepDefinition {
         reqBodyJson = new JSONObject();
         reqBodyJson.put("name", name);
         reqBodyJson.put("is_blood_group", bloodGroup);
-
         System.out.println(reqBodyJson.toString());
     }
 
@@ -535,8 +534,6 @@ public class APIStepDefinition {
         //Assert.assertNotEquals(category,path.get("lists["+dinamikId+"].category"));
         //Assert.assertNotEquals(created_at,path.get("lists["+dinamikId+"].created_at"));
         response.prettyPrint();
-
-
     }
     @And("Sends DELETE request with Body and valid Authorization")
     public void sendsDELETERequestWithBodyAndValidAuthorization() {
@@ -546,9 +543,7 @@ public class APIStepDefinition {
 
     @Then("It is verified that the {string} in the response body is the same as the id in the delete request body.")
     public void ıtIsVerifiedThatTheInTheResponseBodyIsTheSameAsTheIdInTheDeleteRequestBody(String idKey) {
-
         JsonPath path = response.jsonPath();
-
         Assert.assertEquals(API_Utils.addId, path.getString(idKey));
     }
 
@@ -561,7 +556,6 @@ public class APIStepDefinition {
 
     @And("Verifies in the response body with id {string}, name {string}, description {string}, finding_category_id : {string}, created_at : {string}, category : {string} in Finding")
     public void verifiesInTheResponseBodyWithIdNameDescriptionFinding_category_idCreated_atCategoryInFinding(String id, String name, String description , String finding_category_id, String created_at, String category) {
-
         JsonPath respJp = response.jsonPath();
         assertEquals(id, respJp.getString("lists[6].id"));
         assertEquals(name, respJp.getString("lists[6].name"));
@@ -569,7 +563,7 @@ public class APIStepDefinition {
         assertEquals(finding_category_id, respJp.getString("lists[6].finding_category_id"));
         assertEquals(created_at, respJp.getString("lists[6].created_at"));
         assertEquals(category, respJp.getString("lists[6].category"));
-
+        //bu son satır mainde
     }
 }
 
