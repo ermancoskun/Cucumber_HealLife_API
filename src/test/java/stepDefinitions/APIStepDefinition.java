@@ -571,6 +571,30 @@ public class APIStepDefinition {
         assertEquals(category, respJp.getString("lists[6].category"));
 
     }
+
+
+    @Then("Creat get request exp_category is updated be verified")
+    public void creatGetRequestExp_categoryIsUpdatedBeVerified() {
+
+
+        JsonPath respJp = response.jsonPath();
+
+        Assert.assertEquals(respJp.getString(respJp.getString("stationary 1")),"stationary update");
+
+
+
+
+
+}
+
+    @And("Sets query parametres as relivant id")
+    public void setsQueryParametresAsRelivantId() {
+        reqBodyJson=API_Utils.createABody(addId);
+
+
+
+
+    }
 }
 
 

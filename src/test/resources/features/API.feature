@@ -447,7 +447,7 @@ Feature: API Tests
     Then Verifies that the returned status code is 403
     Then Verifies that the response message is "failed"
 
-@wip
+
    Scenario: [API_US22_TC01]-(2) Being able to update the expenditure information registered in the system via API connection as an administrator. I want..
     Given Api user sets "api/updateExpenseHead" path parameters.
     And Request body is:
@@ -462,11 +462,35 @@ Feature: API Tests
     """
   Then It is verified that the id information sent is the same as the id in the patch request body
 
-
+  @US25
   Scenario: [API_US22_TC01]-(3)Being able to update the expenditure information registered in the system via API connection as an administrator. I want..
     Given Api user sets "api/updateExpenseHead" path parameters.
-    And Sends PATCH request with Body and invalid Authorization
-    Given It is verified that the id information sent is the same as the id in the patch request body
+    And Request body is:
+    """
+   {
+            "exp_category": "stationary 1",
+            "description": "stationary expense",
+            "is_active": "yes",
+            "is_deleted": "no"
+}
+    """
+    Then Sends POST request with Body and valid Authorization
+    Given Api user sets "api/addExpenseHead" path parameters.
+    And Request body is:
+    """
+    {
+            "id": 22,
+            "exp_category": "stationary update",
+            "description": "stationary expense",
+            "is_active": "yes",
+            "is_deleted": "no"
+}
+    """
+    And  Sends PATCH request with Body and valid Authorization
+    And  Api user sets "api/getExpenseHead" path parameters.
+    And Sets query parametres as relivant id
+    And  Sends GET request with Body and valid Authorization
+    Then Creat get request exp_category is updated be verified
 
 
   @API
