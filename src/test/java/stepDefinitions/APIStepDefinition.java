@@ -16,6 +16,7 @@ import org.junit.Assert;
 import org.testng.asserts.SoftAssert;
 import pojos.Pojo_RegisterCustomer;
 import utilities.API_Utils;
+
 import static io.restassured.RestAssured.given;
 import static org.junit.Assert.assertEquals;
 
@@ -33,7 +34,6 @@ public class APIStepDefinition {
     int basariliStatusCode = 200;
 
     String message;
-
 
 
     @Given("Api kullanicisi {string} path parametreleri set eder")
@@ -226,7 +226,7 @@ public class APIStepDefinition {
     @And("Sends POST request with Body and invalid Authorization")
     public void sendsPOSTRequestWithBodyAndInvalidAuthorization() {
         String invalidToken = HooksAPI.token + "invalid";
-       response = given().headers("Authorization",
+        response = given().headers("Authorization",
 
                         "Bearer " + invalidToken,
                         "Content-Type",
@@ -303,9 +303,9 @@ public class APIStepDefinition {
         response = API_Utils.getRequestWithInvalidAuthorization(fullPath);
 
 
-
     }
-//And Creates a request body with exp_category "business" ,description "business expense" , is_active "yes", is_deleted "no" in ExpenseHead.
+
+    //And Creates a request body with exp_category "business" ,description "business expense" , is_active "yes", is_deleted "no" in ExpenseHead.
     @And("Creates a request body with exp_category {string} ,description {string} , is_active {string}, is_deleted {string} in ExpenseHead.")
     public void createsARequestBodyWithExp_categoryDescriptionIs_activeIs_deletedInExpenseHead(String exp_category, String description, String is_active, String is_deleted) {
         reqBodyJson = new JSONObject();
@@ -484,18 +484,19 @@ public class APIStepDefinition {
         response = API_Utils.deleteRequest(fullPath);
     }
 
-        @And("Verifies in the response body with id {string}")
-        public void verifiesInTheResponseBodyWithId(String id) {
-            JsonPath resJp = response.jsonPath();
-            assertEquals(id, resJp.get("lists.id"));
+    @And("Verifies in the response body with id {string}")
+    public void verifiesInTheResponseBodyWithId(String id) {
+        JsonPath resJp = response.jsonPath();
+        assertEquals(id, resJp.get("lists.id"));
 
-        }
+    }
+
     @Then("It is verified that the {string} in the response body is the same as the id in the delete request body.")
     public void ıtIsVerifiedThatTheInTheResponseBodyIsTheSameAsTheIdInTheDeleteRequestBody(String idKey) {
         JsonPath path = response.jsonPath();
         Assert.assertEquals(API_Utils.addId, path.getString(idKey));
-
     }
+
     @Then("Creates an expected body with id {string}, exp_category {string},description {string} ,is_active {string}, is_deleted {string}, created_at {string}  in ExpenseHead.")
     public void createsAnExpectedBodyWithIdExp_categoryDescriptionIs_activeIs_deletedCreated_atInExpenseHead(
             String id, String exp_category, String description, String is_active, String is_deleted, String created_at) {
@@ -516,6 +517,7 @@ public class APIStepDefinition {
     }
          */
     }
+
     @And("Verifies in the response body with id {string}, exp_category {string},description {string} , is_active {string}, is_deleted {string}, created_at {string}  in ExpenseHead.")
     public void verifiesInTheResponseBodyWithIdExp_categoryDescriptionIs_activeIs_deletedCreated_atInExpenseHead
             (String id, String exp_category, String description, String is_active, String is_deleted, String created_at) {
@@ -527,8 +529,9 @@ public class APIStepDefinition {
         assertEquals(is_deleted, resJp.get("details.is_deleted"));
         assertEquals(created_at, resJp.get("details.created_at"));
     }
+
     @And("Verifies in the response body with id {string}, name {string}, description {string}, finding_category_id : {string}, created_at : {string}, category : {string} in Finding")
-    public void verifiesInTheResponseBodyWithIdNameDescriptionFinding_category_idCreated_atCategoryInFinding(String id, String name, String description , String finding_category_id, String created_at, String category) {
+    public void verifiesInTheResponseBodyWithIdNameDescriptionFinding_category_idCreated_atCategoryInFinding(String id, String name, String description, String finding_category_id, String created_at, String category) {
         JsonPath respJp = response.jsonPath();
         assertEquals(id, respJp.getString("lists[6].id"));
         assertEquals(name, respJp.getString("lists[6].name"));
@@ -544,6 +547,7 @@ public class APIStepDefinition {
     public void createsAnExpectedBodyWithIdNameDescriptionFinding_category_idCreated_atCategory(String id, String name, String description, String finding_category_id, String created_at, String category) {
         reqBodyJson = API_Utils.createABody(id, name, description, finding_category_id, created_at, category);
     }
+
     @And("Verifies in the response body with id {string}, name {string}, description {string}, finding_category_id : {string}, created_at : {string}, category : {string} in ExpenseHead.")
     public void verifiesInTheResponseBodyWithIdNameDescriptionFinding_category_idCreated_atCategory(String id, String name, String description, String finding_category_id, String created_at, String category) {
 
@@ -564,17 +568,14 @@ public class APIStepDefinition {
 
         JsonPath respJp = response.jsonPath();
 
-        Assert.assertEquals(respJp.getString(respJp.getString("stationary 1")),"stationary update");
+        Assert.assertEquals(respJp.getString(respJp.getString("stationary 1")), "stationary update");
 
 
-
-
-
-}
+    }
 
     @And("Sets query parametres as relivant id")
     public void setsQueryParametresAsRelivantId() {
-        reqBodyJson=API_Utils.createABody(addId);
+        reqBodyJson = API_Utils.createABody(addId);
 
     }
 
@@ -582,7 +583,7 @@ public class APIStepDefinition {
     public void ıtIsVerifiedThatTheIdInformationSentIsTheSameAsTheIdInThePatchRequestBody() {
         response = given().spec(HooksAPI.spec).
                 headers("Authorization", "Bearer " + HooksAPI.token)
-                .header("Accept","application/json")
+                .header("Accept", "application/json")
                 .contentType(ContentType.JSON)
                 .when()
                 .body(reqBodyJson.toString())
@@ -594,6 +595,15 @@ public class APIStepDefinition {
         expBodyJson.put("updateId", 22);
         Assert.assertEquals(expBodyJson.get("updateId"), resJP.get("updateId"));
 
+    }
+
+    @Then("Has been verified that the sent addId and replied {string} data are the same.")
+    public void hasBeenVerifiedThatTheSentAddIdAndRepliedDataAreTheSame(String changedData) {
+        JsonPath resJP = response.jsonPath();
+        String actualID=resJP.getString(changedData);
+        System.out.println("actualID = " + actualID);
+        System.out.println("addId = " + addId);
+        assertEquals("Unsuccessful change",actualID,addId);
     }
 }
 
