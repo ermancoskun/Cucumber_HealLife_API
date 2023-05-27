@@ -14,8 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static io.restassured.RestAssured.given;
-import static stepDefinitions.APIStepDefinition.fullPath;
-import static stepDefinitions.APIStepDefinition.reqBodyJson;
+import static stepDefinitions.APIStepDefinition.*;
 
 public class API_Utils {
 
@@ -195,6 +194,30 @@ public class API_Utils {
 
         return response;
     }
+
+    public static JSONObject createABody(int id ,String  exp_category, String description,String is_active,String is_deleted,String created_at ){
+        JSONObject jsonObject=new JSONObject();
+        jsonObject.put("id",id);
+        jsonObject.put(" exp_category", exp_category);
+        jsonObject.put("description",description);
+        jsonObject.put("is_active",is_active);
+        jsonObject.put("is_deleted",is_deleted);
+        jsonObject.put("created_at",created_at);
+        return jsonObject;
+    }
+    public static Response getRequestWithInvalidAuthorization(String endpoint) {
+
+        String invalidToken=HooksAPI.token+"invalid";
+        response = given().spec(HooksAPI.spec).
+                headers("Authorization", "Bearer " + invalidToken)
+                .contentType(ContentType.JSON)
+                .when()
+                .get(endpoint);
+        response.prettyPrint();
+
+        return response;
+    }
+
 
 }
 
