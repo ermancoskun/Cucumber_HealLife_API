@@ -479,5 +479,36 @@ public class APIStepDefinition {
 
 
     }
+    @Then("Creates an expected body with id {string}, exp_category {string},description {string} ,is_active {string}, is_deleted {string}, created_at {string}  in ExpenseHead.")
+    public void createsAnExpectedBodyWithIdExp_categoryDescriptionIs_activeIs_deletedCreated_atInExpenseHead(
+            String id, String exp_category, String description, String is_active, String is_deleted, String created_at) {
+        reqBodyJson = API_Utils.createABody(id, exp_category, description, is_active, is_deleted, created_at);
+      /*
+        {
+    "status": 200,
+    "message": "Success",
+    "Token_remaining_time": 25,
+    "details": {
+        "id": "5",
+        "exp_category": "Power Generator Fuel Charge",
+        "description": "They can utilise a variety of fuel options including natural gas, LPG and diesel.",
+        "is_active": "yes",
+        "is_deleted": "no",
+        "created_at": "2021-10-29 01:35:42"
+    }
+    }
+         */
+    }
+    @And("Verifies in the response body with id {string}, exp_category {string},description {string} , is_active {string}, is_deleted {string}, created_at {string}  in ExpenseHead.")
+    public void verifiesInTheResponseBodyWithIdExp_categoryDescriptionIs_activeIs_deletedCreated_atInExpenseHead
+            (String id, String exp_category, String description, String is_active, String is_deleted, String created_at) {
+        JsonPath resJp = response.jsonPath();
+        assertEquals(id, resJp.get("details.id"));
+        assertEquals(exp_category, resJp.get("details.exp_category"));
+        assertEquals(description, resJp.get("details.description"));
+        assertEquals(is_active, resJp.get("details.is_active"));
+        assertEquals(is_deleted, resJp.get("details.is_deleted"));
+        assertEquals(created_at, resJp.get("details.created_at"));
+    }
 }
 

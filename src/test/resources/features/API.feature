@@ -95,12 +95,6 @@ Feature: API Tests
   @API
   Scenario: [API_US14_TC01]-(1A)  As an administrator, I should be able to access the
   blood group list with valid authorization registered in the system via API connection.
-
-<<<<<<< HEAD
-
-
-    Scenario: [API_US15_TC01]-(1A) As an administrator, I should be able to access the relevant blood data by entering the id over the API connection .
-=======
     Given Api user sets "api/getBloodGroup" path parameters.
     And Sends GET request with valid Authorization
     Then Verifies that the returned status code is 200
@@ -125,7 +119,7 @@ Feature: API Tests
 
 
   Scenario: [API_US15_TC01]-(1A) As an administrator, I should be able to access the relevant blood data by entering the id over the API connection .
->>>>>>> main
+
       Given Api user sets "/api/getBloodGroupById" path parameters.
       Then Sets query parameters as id 1
       And Sends GET request with Body and valid Authorization
