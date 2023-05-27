@@ -556,5 +556,44 @@ public class APIStepDefinition {
         assertEquals(category, respJp.getString("lists[10].category"));
 
     }
+
+
+    @Then("Creat get request exp_category is updated be verified")
+    public void creatGetRequestExp_categoryIsUpdatedBeVerified() {
+
+
+        JsonPath respJp = response.jsonPath();
+
+        Assert.assertEquals(respJp.getString(respJp.getString("stationary 1")),"stationary update");
+
+
+
+
+
+}
+
+    @And("Sets query parametres as relivant id")
+    public void setsQueryParametresAsRelivantId() {
+        reqBodyJson=API_Utils.createABody(addId);
+
+    }
+
+    @Given("It is verified that the id information sent is the same as the id in the patch request body")
+    public void ıtIsVerifiedThatTheIdInformationSentIsTheSameAsTheIdInThePatchRequestBody() {
+        response = given().spec(HooksAPI.spec).
+                headers("Authorization", "Bearer " + HooksAPI.token)
+                .header("Accept","application/json")
+                .contentType(ContentType.JSON)
+                .when()
+                .body(reqBodyJson.toString())
+                .patch(fullPath);
+        response.prettyPrint();
+
+        JsonPath resJP = response.jsonPath();
+        expBodyJson = new JSONObject();
+        expBodyJson.put("updateId", 22);
+        Assert.assertEquals(expBodyJson.get("updateId"), resJP.get("updateId"));
+
+    }
 }
 
