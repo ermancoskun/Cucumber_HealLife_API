@@ -453,13 +453,10 @@ Feature: API Tests
     Then Verifies that the returned status code is 403
     Then Verifies that the response message is "failed"
 
-<<<<<<< HEAD
 
-   Scenario: [API_US22_TC01]-(2) Being able to update the expenditure information registered in the system via API connection as an administrator. I want..
-=======
   @wip
   Scenario: [API_US22_TC01]-(2) Being able to update the expenditure information registered in the system via API connection as an administrator. I want..
->>>>>>> main
+
     Given Api user sets "api/updateExpenseHead" path parameters.
     And Request body is:
     """
