@@ -565,6 +565,29 @@ public class APIStepDefinition {
         assertEquals(category, respJp.getString("lists[6].category"));
         //bu son satır mainde
     }
+    @And("Creates a request body with exp_category {string} ,description {string} , is_active {string}, is_deleted {string} in ExpenseHead.")
+    public void createsARequestBodyWithExp_categoryDescriptionIs_activeIs_deletedInExpenseHead(String exp_category, String description, String is_active, String is_deleted) {
+        reqBodyJson=new JSONObject();
+        reqBodyJson.put("exp_category", exp_category);
+        reqBodyJson.put("description",description);
+        reqBodyJson.put("is_active", is_active);
+        reqBodyJson.put("is_deleted", is_deleted);
+
+        System.out.println(reqBodyJson.toString());
+
+
+    }
+
+    @Then("Verifies in the response body with exp_category {string}, description {string}, is_active {string}, is_deleted {string} in ExpenseHead.")
+    public void verifiesInTheResponseBodyWithExp_categoryDescriptionIs_activeIs_deletedInExpenseHead(String exp_category, String description, String is_active, String is_deleted) {
+
+        JsonPath jsonPath = response.jsonPath();
+        assertEquals(exp_category, jsonPath.get("lists.exp_category[-1]"));
+        assertEquals(description,jsonPath.get("lists.description[-1]"));
+        assertEquals(is_active, jsonPath.get("lists.is_active[-1]"));
+        assertEquals(is_deleted, jsonPath.get("lists.is_deleted[-1]"));
+
+    }
 }
 
 
