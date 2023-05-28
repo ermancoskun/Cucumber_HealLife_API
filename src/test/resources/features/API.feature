@@ -60,6 +60,18 @@ Feature: API Tests
     Then Verifies that the response message is "Success"
     Then Verify that the datas are contained in the response body as "details.","id#name#description#finding_category_id#created_at#category","1#Stomach pain#Typhoid fever and paratyphoid fever have similar symptoms̵. People usually have a sustained fever (one that doesn’t come and go) that can be as high as 103–104°F (39–40°C).#2#2021-10-25 02:05:10#ill category 2"
 
+
+  Scenario: [API_US20_TC01]-(1A) As an administrator, I should be able to access the relevant expenditure data by entering the id over the API connection .
+
+      Given Api user sets "api/getExpenseHeadById" path parameters.
+      Then Sets query parameters as id 5
+      And Sends GET request with Body and valid Authorization
+      Then Verifies that the returned status code is 200
+      Then Verifies that the response message is "Success"
+
+  Scenario: [API_US20_TC01]-(1B) As an administrator, I should be able to access the relevant expenditure data by entering the id over the API connection .
+
+
   Scenario: [API_US20]-(TC01_A) As an administrator, I should be able to access the relevant expenditure data by entering the id over the API connection .
     Given Api user sets "api/getExpenseHeadById" path parameters.
     Then Sets query parameters as id 5
@@ -68,11 +80,16 @@ Feature: API Tests
     Then Verifies that the response message is "Success"
 
   Scenario: [API_US20]-(TC01_B) As an administrator, I should be able to access the relevant expenditure data by entering the id over the API connection .
+
     Given Api user sets "api/getExpenseHeadById" path parameters.
     Then Sets query parameters as id 5
     And  Sends GET request with Body with invalid Authorization
     Then Verifies that the returned status code is 200
     Then Verifies that the response message is "Success"
+
+
+
+  Scenario: [API_US20_TC01]-(1C) As an administrator, I should be able to access the relevant expenditure data by entering the id over the API connection .
 
 
   Scenario: [API_US20]-(TC01_C) As an administrator, I should be able to access the relevant expenditure data by entering the id over the API connection .
@@ -195,12 +212,7 @@ Feature: API Tests
     Then Api user sets "api/visitorsPurposeList" path parameters.
     Then Sends GET request valid Authorization
     Then Verifies the newly created purpose record via APi.
-#{
-#    "status": 200,
-#    "message": "Success",
-#    "Token_remaining_time": 378,
-#    "addId": 241
-#}
+
   @US
   Scenario: [API_US07_TC01]-(1A) Link as an administrator registered to the system via visitor I should be able to update the purpose information .
     Given Api user sets "api/visitorsPurposeAdd" path parameters.
@@ -343,6 +355,33 @@ Feature: API Tests
     Given Api user sets "api/deleteExpenseHead" path parameters.
     And Sends DELETE request with Body and valid Authorization
 
+
+  @US37
+  Scenario: [API_US37_TC01](1A) As an administrator, you can make a new finding via API connection . registration I want to be able to creat
+    Given Api user sets "api/addFinding" path parameters.
+    And Create a post body in finding with name "Humeyra U", description "headache" and finding_category_id "25" .
+    And Sends POST request with Body and valid Authorization
+    Then Verifies that the returned status code is 200
+    Then Verifies that the response message is "Success"
+
+  @US37
+  Scenario: [API_US37_TC01](1B) As an administrator, you can make a new finding via API connection . registration I want to be able to creat
+    Given Api user sets "api/addFinding" path parameters.
+    And Create a post body in finding with name "Hume", description "headache56" and finding_category_id "2" .
+    And Sends POST request with Body and invalid Authorization
+    Then Verifies that the returned status code is 403
+    Then Verifies that the response message is "failed"
+
+  @US37
+  Scenario: [API_US37_TC01](1C) As an administrator, you can make a new finding via API connection . registration I want to be able to creat
+    Given Api user sets "api/addFinding" path parameters.
+    And Create a post body in finding with name "Dogrulama", description "deneme" and finding_category_id "2" .
+    And Sends POST request with Body and valid Authorization
+    And Get AddId number.
+    Given Api user sets "api/getFindingById" path parameters.
+    And Sets query parameters as id addID
+    And Sends GET request with Body and valid Authorization
+    And Verifies in the response body with name "Dogrulama", description "deneme" and finding_category_id "2" .
 
   Scenario: [API_US23->TC02] /api/deleteExpenseHead to your endpoint invalid Status returned when sending a DELETE body containing authorization information or wrong data (id) the code is 403 and the message information in the response body is " failed " must be verified
     Given Api user sets "api/addExpenseHead" path parameters.
