@@ -58,7 +58,7 @@ Feature: API Tests
     Then Verifies in the response body with id "1", name "Stomach pain",description "Typhoid fever and paratyphoid fever have similar symptoms̵. People usually have a sustained fever (one that doesn’t come and go) that can be as high as 103–104°F (39–40°C)." , finding_category_id "2", created_at "2021-10-25 02:05:10", category "Typhidot (or Widal Test)"  in ExpenseHead.
 
 
-  Scenario: [API_US20]-(TC01_A) As an administrator, I should be able to access the relevant expenditure data by entering the id over the API connection .
+  Scenario: [API_US20_TC01]-(1A) As an administrator, I should be able to access the relevant expenditure data by entering the id over the API connection .
 
       Given Api user sets "api/getExpenseHeadById" path parameters.
       Then Sets query parameters as id 5
@@ -66,7 +66,7 @@ Feature: API Tests
       Then Verifies that the returned status code is 200
       Then Verifies that the response message is "Success"
 
-  Scenario: [API_US20]-(TC01_B) As an administrator, I should be able to access the relevant expenditure data by entering the id over the API connection .
+  Scenario: [API_US20_TC01]-(1B) As an administrator, I should be able to access the relevant expenditure data by entering the id over the API connection .
 
     Given Api user sets "api/getExpenseHeadById" path parameters.
     Then Sets query parameters as id 5
@@ -74,8 +74,8 @@ Feature: API Tests
     Then Verifies that the returned status code is 200
     Then Verifies that the response message is "Success"
 
-  @US20
-  Scenario: [API_US20]-(TC01_C) As an administrator, I should be able to access the relevant expenditure data by entering the id over the API connection .
+
+  Scenario: [API_US20_TC01]-(1C) As an administrator, I should be able to access the relevant expenditure data by entering the id over the API connection .
 
     Given Api user sets "api/getExpenseHeadById" path parameters.
     Then Creates an expected body with id 5, exp_category "Power Generator Fuel Charge",description "They can utilise a variety of fuel options including natural gas, LPG and diesel." ,is_active "yes", is_deleted "no", created_at "2021-10-29 01:35:42"  in ExpenseHead.
@@ -107,6 +107,41 @@ Feature: API Tests
     And Creates an expected body with id 29, is visitors_ purpose  "special work", description "special word details"", created_at ""2023-05-18 17:00:26"
     And Sends GET request valid Authorization
     And Verifies in the response body with id "29", is visitors_ purpose  "special work", description "special word details"", created_at ""2023-05-18 17:00:26""  must be verified .
+
+
+  Scenario: [API_US37_TC01](1A) As an administrator, you can make a new finding via API connection . registration I want to be able to creat
+    Given Api user sets "api/addFinding" path parameters.
+    And Create a post body in finding with name "Humeyra U", description "headache" and finding_category_id "25" .
+    And Sends POST request with Body and valid Authorization
+    Then Verifies that the returned status code is 200
+    Then Verifies that the response message is "Success"
+
+
+  Scenario: [API_US37_TC01](1B) As an administrator, you can make a new finding via API connection . registration I want to be able to creat
+    Given Api user sets "api/addFinding" path parameters.
+    And Create a post body in finding with name "Hume", description "headache56" and finding_category_id "2" .
+    And Sends POST request with Body and invalid Authorization
+    Then Verifies that the returned status code is 403
+    Then Verifies that the response message is "failed"
+
+  @US37
+  Scenario: [API_US37_TC01](1C) As an administrator, you can make a new finding via API connection . registration I want to be able to creat
+    Given Api user sets "api/addFinding" path parameters.
+    And Create a post body in finding with name "Dogrulama", description "deneme" and finding_category_id "2" .
+    And Sends POST request with Body and valid Authorization
+    And Get AddId number.
+    Given Api user sets "api/getFindingById" path parameters.
+    And Sets query parameters as id addID
+    And Sends GET request with Body and valid Authorization
+    And Verifies in the response body with name "Dogrulama", description "deneme" and finding_category_id "2" .
+
+
+
+
+
+
+
+
 
 
 

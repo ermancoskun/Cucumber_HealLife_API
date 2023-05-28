@@ -32,8 +32,11 @@ public class APIStepDefinition {
     public static Response response;
     public static String addId;
 
+    public static JsonPath respJS;
+
     int basariliStatusCode=200;
     String message;
+
 
 
     @Given("Api kullanicisi {string} path parametreleri set eder")
@@ -389,6 +392,36 @@ public class APIStepDefinition {
     @Then("Verifies that the returned status codee is {int}")
     public void verifiesThatTheReturnedStatusCodeeIs(int arg0) {
         Assert.assertTrue(message.contains("403"));
+
+    }
+
+    @And("Create a post body in finding with name {string}, description {string} and finding_category_id {string} .")
+    public void createAPostBodyInFindingWithNameDescriptionAndFinding_category_id(String name, String description, String finding_category_id) {
+    reqBodyJson=API_Utils.createABody(name,description,finding_category_id);
+
+    }
+
+    @And("Get AddId number.")
+    public void getAddIdNumber() {
+        JsonPath respJS = response.jsonPath();
+       addId=respJS.getString("addId");
+
+    }
+
+    @And("Sets query parameters as id addID")
+    public void setsQueryParametersAsIdAddID() {
+        reqBodyJson=new JSONObject();
+       reqBodyJson.put("id",addId);
+
+    }
+
+    @And("Verifies in the response body with name {string}, description {string} and finding_category_id {string} .")
+    public void verifiesInTheResponseBodyWithNameDescriptionAndFinding_category_id(String name, String description, String finding_category_id) {
+
+        respJS = response.jsonPath();
+        assertEquals(name, respJS.get("details.name"));
+        assertEquals(description, respJS.get("details.description") );
+        assertEquals(finding_category_id, respJS.get("details.finding_category_id") );
 
     }
 }

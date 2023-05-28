@@ -118,7 +118,7 @@ public class API_Utils {
         jsonObject.put("description",description);
         return jsonObject;
     }
-    public static JSONObject createABody(String name, String description, int finding_category_id ){
+    public static JSONObject createABody(String name, String description, String finding_category_id ){
         JSONObject jsonObject=new JSONObject();
         jsonObject.put("name",name);
         jsonObject.put("description",description);
