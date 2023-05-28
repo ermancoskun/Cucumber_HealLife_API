@@ -10,11 +10,9 @@ import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.hamcrest.Matchers;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Assert;
 import org.testng.asserts.SoftAssert;
-import pojos.Pojo_RegisterCustomer;
 import utilities.API_Utils;
 
 import static io.restassured.RestAssured.given;
@@ -33,6 +31,10 @@ public class APIStepDefinition {
 
     int basariliStatusCode = 200;
 
+
+    public static JsonPath respJS;
+
+
     String message;
 
 
@@ -45,10 +47,7 @@ public class APIStepDefinition {
 
         for (int i = 0; i < paths.length; i++) {
 
-
             String key = "pp" + (i + 1); // pp1 pp2 pp3
-
-
             String value = paths[i].trim();
 
             HooksAPI.spec.pathParam(key, value);
@@ -64,6 +63,7 @@ public class APIStepDefinition {
 
         System.out.println("fullPath = " + fullPath);
     }
+
 
     @Given("Api user sets {string} path parameters.")
     public void apiUserSetsPathParameters(String rawPaths) {
@@ -182,19 +182,19 @@ public class APIStepDefinition {
     }
 
 
-   @Then("Verifies that the returned status code is {int}")
+    @Then("Verifies that the returned status code is {int}")
     public void verifiesThatTheReturnedStatusCodeIs(int statusCode) {
         softAssert.assertEquals(response.getStatusCode(), statusCode, "Status code value is NOT " + statusCode);
     }
 
 
-   @Then("Verifies that the response message is {string}")
+    @Then("Verifies that the response message is {string}")
     public void verifiesThatTheResponseMessageIs(String message) {
 
         JsonPath respJS = response.jsonPath();
         softAssert.assertEquals(respJS.getString("message"), message, "Returned message is not true");
 
-}
+    }
 
     @And("Sets query parameters as id {int}")
     public void setsQueryParametersAsId(int id) {
@@ -230,9 +230,7 @@ public class APIStepDefinition {
     @And("Sends POST request with Body and invalid Authorization")
     public void sendsPOSTRequestWithBodyAndInvalidAuthorization() {
         String invalidToken = HooksAPI.token + "invalid";
-
-       response = given().headers("Authorization",
-
+        response = given().headers("Authorization",
                         "Bearer " + invalidToken,
                         "Content-Type",
                         ContentType.JSON,
@@ -380,18 +378,6 @@ public class APIStepDefinition {
     }
 
 
-    @Given("Get query is generated with valid information")
-    public void getQueryIsGeneratedWithValidInformation() {
-
-        response = given()
-                .spec(HooksAPI.spec)
-                .header("Authorization", "Bearer " + HooksAPI.token)
-                .contentType(ContentType.JSON)
-                .when()
-                .get(fullPath);
-    }
-
-
     @Then("Verifies in the response body with id {string}, name {string}, is_blood_group {string}, created_at {string}")
     public void verifiesInTheeResponseBodyWithIdNameIs_blood_groupCreated_at(String id, String name, String is_blood_group, String created_at) {
 
@@ -501,7 +487,6 @@ public class APIStepDefinition {
     public void ıtIsVerifiedThatTheInTheResponseBodyIsTheSameAsTheIdInTheDeleteRequestBody(String idKey) {
         JsonPath path = response.jsonPath();
         Assert.assertEquals(API_Utils.addId, path.getString(idKey));
-
     }
 
     @Then("Creates an expected body with id {string}, exp_category {string},description {string} ,is_active {string}, is_deleted {string}, created_at {string}  in ExpenseHead.")
@@ -577,18 +562,13 @@ public class APIStepDefinition {
 
     }
 
+
     @And("Creates body and Sends Patch request body valid Authorization with {string}, {string}, {string}")
     public void createsBodyAndSendsPatchRequestBodyValidAuthorizationWith(String id, String name, String
             is_blood_group) {
         reqBodyJson = API_Utils.createABody(1, "DirtBlood", "AB+");
     }
 
-
-    @And("Sets query parametres as relivant id")
-    public void setsQueryParametresAsRelivantId() {
-        reqBodyJson = API_Utils.createABody(addId);
-
-    }
 
     @Given("It is verified that the id information sent is the same as the id in the patch request body")
     public void ıtIsVerifiedThatTheIdInformationSentIsTheSameAsTheIdInThePatchRequestBody() {
@@ -607,15 +587,44 @@ public class APIStepDefinition {
         Assert.assertEquals(expBodyJson.get("updateId"), resJP.get("updateId"));
 
     }
+
+
+    @Then("Has been verified that the sent addId and replied {string} data are the same.")
+    public void hasBeenVerifiedThatTheSentAddIdAndRepliedDataAreTheSame(String changedData) {
+        JsonPath resJP = response.jsonPath();
+        String actualID = resJP.getString(changedData);
+        System.out.println("actualID = " + actualID);
+        System.out.println("addId = " + addId);
+        assertEquals("Unsuccessful change", actualID, addId);
+    }
+
     @And("Sets update body with response id")
     public void setsUpdateBodyWithResponseId() {
 
-      reqBodyJson = new JSONObject();
-        reqBodyJson .put("id", addId);
-        reqBodyJson .put("visitors_purpose","purpose update");
-        reqBodyJson .put("description","purpose update details");
+        reqBodyJson = new JSONObject();
+        reqBodyJson.put("id", addId);
+        reqBodyJson.put("visitors_purpose", "purpose update");
+        reqBodyJson.put("description", "purpose update details");
+    }
+
+
+    @Then("Verifies the newly created purpose record via APi.")
+    public void verifiesTheNewlyCreatedPurposeRecordViaAPi() {
+        response
+                .then()
+                .assertThat()
+                .body("lists.id", Matchers.hasItem(addId));
+
+
+        }
+    @And("Create a post body in finding with name {string}, description {string} and finding_category_id {string} .")
+    public void createAPostBodyInFindingWithNameDescriptionAndFinding_category_id (String name, String
+            description, String finding_category_id) {
+        reqBodyJson = API_Utils.createABody2(name, description, finding_category_id);
+
 
     }
+
 
     @And("Sends PATCH with request with Body and valid Authorization")
     public void sendsPATCHWithRequestWithBodyAndValidAuthorization() {
@@ -653,7 +662,30 @@ public class APIStepDefinition {
         reqBodyJson = new JSONObject();
         reqBodyJson.put("id", arg0);
     }
-}
+
+    @And("Sets query parameters as id addID")
+    public void setsQueryParametersAsIdAddID () {
+        reqBodyJson = new JSONObject();
+        reqBodyJson.put("id", addId);
+
+    }
+
+    @And("Verifies in the response body with name {string}, description {string} and finding_category_id {string} .")
+        public void verifiesInTheResponseBodyWithNameDescriptionAndFinding_category_id (String name, String
+        description, String finding_category_id){
+
+            respJS = response.jsonPath();
+            assertEquals(name, respJS.get("details.name"));
+            assertEquals(description, respJS.get("details.description"));
+            assertEquals(finding_category_id, respJS.get("details.finding_category_id"));
+
+
+        }
+    }
+
+
+
+
 
 
 
