@@ -616,5 +616,44 @@ public class APIStepDefinition {
         reqBodyJson .put("description","purpose update details");
 
     }
+
+    @And("Sends PATCH with request with Body and valid Authorization")
+    public void sendsPATCHWithRequestWithBodyAndValidAuthorization() {
+
+         JSONObject bilmemne=new JSONObject();
+         bilmemne.put("id",addId);
+         bilmemne.put("visitors_purpose","a");
+         bilmemne.put("description","b");
+
+        response = given().spec(HooksAPI.spec).
+                headers("Authorization", "Bearer " + HooksAPI.token)
+                .header("Accept", "application/json")
+                .contentType(ContentType.JSON)
+                .when()
+                .body(bilmemne.toString())
+                .patch(fullPath);
+        response.prettyPrint();
+
+    }
+
+
+    @And("Creates a request body with id {string} ,visitors_purpose {string} , description {string}")
+    public void createsARequestBodyWithIdVisitors_purposeDescription(String arg0, String arg1, String arg2) {
+        reqBodyJson = new JSONObject();
+        reqBodyJson.put("id", arg0);
+        reqBodyJson.put("visitors_purpose", arg1);
+        reqBodyJson.put("description", arg2);
+
+        System.out.println(reqBodyJson.toString());
+
+    }
+
+    @And("Creates a request body with id {string}")
+    public void createsARequestBodyWithId(String arg0) {
+        reqBodyJson = new JSONObject();
+        reqBodyJson.put("id", arg0);
+    }
 }
+
+
 
