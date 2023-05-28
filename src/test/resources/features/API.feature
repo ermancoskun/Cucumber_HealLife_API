@@ -139,7 +139,7 @@ Feature: API Tests
       #And Verify that the datas are contained in the response body as "details.","id,name,description,finding_category_id,created_at,category","12,Refractive Errors.,A refractive error is a very common eye disorder. It occurs when the eye cannot clearly focus the images from the outside world. The result of refractive errors is blurred vision, which is sometimes so severe that it causes visual impairment,6,2021-10-25 02:20:29,Eye Diseases"
     And Verifies in the response body with id "12", name "Refractive Errors.", description "A refractive error is a very common eye disorder. It occurs when the eye cannot clearly focus the images from the outside world. The result of refractive errors is blurred vision, which is sometimes so severe that it causes visual impairment", finding_category_id : "6", created_at : "2021-10-25 02:20:29", category : "Eye Diseases" in ExpenseHead.
 
-  @Nesy
+
   Scenario: [API_US34]-(1D) As an administrator I should be able to access the find list via the API link
     Given Api user sets "api/getFinding" path parameters.
     Then Creates an expected body with id "7", name "Rosacea", description "Rosacea (roe-ZAY-she-uh) is a common skin condition that causes blushing or flushing and visible blood vessels in your face. It may also produce small, pus-filled bumps. These signs and symptoms may flare up for weeks to months and then go away for a while.", finding_category_id : "3", created_at : "2023-05-26 09:36:06", category : "" .
@@ -149,12 +149,30 @@ Feature: API Tests
 
   Scenario: [API_US06]-(1A) A new visitor via API link as an administrator purpose registration I want to be able to create .
     Given Api user sets "api/visitorsPurposeAdd" path parameters.
+    And Request body is:
+    """
+  {
+    "visitors_purpose":"refakat",
+    "description":"ekstra refakatci ihtiyaci"
+  }
+    """
+    Then Sends POST request with Body and valid Authorization
+    Then Verifies that the returned status code is 200
+    Then Verifies that the response message is "Success"
 
-      #{
-      #    "visitors_purpose":"special work",
-      #    "description":"special word details"
-      #}'
 
+  Scenario: [API_US06]-(1B) A new visitor via API link as an administrator purpose registration I want to be able to create .
+    Given Api user sets "api/visitorsPurposeAdd" path parameters.
+    And Request body is:
+    """
+  {
+    "visitors_purpose":"ozel sebep",
+    "description":"ekstra ozel bir durum"
+  }
+    """
+    And Sends POST request with Body and invalid Authorization
+    Then Verifies that the returned status code is 403
+    Then Verifies that the response message is "failed"
 
   Scenario: [API_US15_TC01]-(2)As an administrator, I should be able to access the relevant blood data by entering the id over the API connection .
     Given Api user sets "api/getBloodGroupById" path parameters.
@@ -162,7 +180,27 @@ Feature: API Tests
     And Sends GET request with Body and valid Authorization
     And Verify that the datas are contained in the response body as "lists.","id#name#is_blood_group#created_at","1#B+#1#2021-10-25 01:54:10"
 
-
+  @Nesy
+  Scenario: [API_US06]-(1C) A new visitor via API link as an administrator purpose registration I want to be able to create .
+    Given Api user sets "api/visitorsPurposeAdd" path parameters.
+    And Request body is:
+    """
+  {
+    "visitors_purpose":"Special Help Need",
+    "description":"Special Help Need by Specialist"
+  }
+    """
+    Then Sends POST request with Body and valid Authorization
+    Then Save addid number
+    Then Api user sets "api/visitorsPurposeList" path parameters.
+    Then Sends GET request valid Authorization
+    Then Verifies the newly created purpose record via APi.
+#{
+#    "status": 200,
+#    "message": "Success",
+#    "Token_remaining_time": 378,
+#    "addId": 241
+#}
   @US
   Scenario: [API_US07_TC01]-(1A) Link as an administrator registered to the system via visitor I should be able to update the purpose information .
     Given Api user sets "api/visitorsPurposeAdd" path parameters.

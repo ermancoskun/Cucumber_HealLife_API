@@ -586,5 +586,14 @@ public class APIStepDefinition {
         reqBodyJson .put("visitors_purpose","purpose update");
         reqBodyJson .put("description","purpose update details");
     }
+
+
+    @Then("Verifies the newly created purpose record via APi.")
+    public void verifiesTheNewlyCreatedPurposeRecordViaAPi() {
+        response
+                .then()
+                .assertThat()
+                .body("lists.id", Matchers.hasItem(addId));
+    }
 }
 
