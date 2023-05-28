@@ -323,7 +323,7 @@ Feature: API Tests
     And Sends DELETE request with Body and valid Authorization
 
 
-
+  @US37
   Scenario: [API_US37_TC01](1A) As an administrator, you can make a new finding via API connection . registration I want to be able to creat
     Given Api user sets "api/addFinding" path parameters.
     And Create a post body in finding with name "Humeyra U", description "headache" and finding_category_id "25" .
@@ -331,7 +331,7 @@ Feature: API Tests
     Then Verifies that the returned status code is 200
     Then Verifies that the response message is "Success"
 
-
+  @US37
   Scenario: [API_US37_TC01](1B) As an administrator, you can make a new finding via API connection . registration I want to be able to creat
     Given Api user sets "api/addFinding" path parameters.
     And Create a post body in finding with name "Hume", description "headache56" and finding_category_id "2" .

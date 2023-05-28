@@ -577,11 +577,6 @@ public class APIStepDefinition {
 
 
 
-    @And("Sets query parametres as relivant id")
-    public void setsQueryParametresAsRelivantId() {
-        reqBodyJson = API_Utils.createABody(addId, description, finding_category_id);
-
-    }
 
     @Given("It is verified that the id information sent is the same as the id in the patch request body")
     public void ıtIsVerifiedThatTheIdInformationSentIsTheSameAsTheIdInThePatchRequestBody() {
@@ -622,7 +617,7 @@ public class APIStepDefinition {
 
     @And("Create a post body in finding with name {string}, description {string} and finding_category_id {string} .")
     public void createAPostBodyInFindingWithNameDescriptionAndFinding_category_id(String name, String description, String finding_category_id) {
-    reqBodyJson=API_Utils.createABody(name,description,finding_category_id);
+    reqBodyJson=API_Utils.createABody2(name,description,finding_category_id);
 
     }
 
