@@ -10,11 +10,9 @@ import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.hamcrest.Matchers;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Assert;
 import org.testng.asserts.SoftAssert;
-import pojos.Pojo_RegisterCustomer;
 import utilities.API_Utils;
 
 import static io.restassured.RestAssured.given;
@@ -33,7 +31,42 @@ public class APIStepDefinition {
 
     int basariliStatusCode = 200;
 
+
+    public static JsonPath respJS;
+
+
     String message;
+
+
+
+    @Given("Api kullanicisi {string} path parametreleri set eder")
+    public void api_kullanicisi_path_parametreleri_set_eder(String rawPaths) {
+
+        String [] paths = rawPaths.split("/"); // ["api","register"]
+
+        StringBuilder tempPath = new StringBuilder("/{");
+
+        for (int i = 0; i < paths.length ; i++) {
+
+            String key = "pp" + (i+1); // pp1 pp2 pp3
+            String value = paths[i].trim();
+
+            HooksAPI.spec.pathParam(key,value);
+
+            tempPath.append(key + "}/{");
+        }
+
+        tempPath.deleteCharAt(tempPath.lastIndexOf("{"));
+        tempPath.deleteCharAt(tempPath.lastIndexOf("/"));
+
+
+        fullPath = tempPath.toString(); // /{pp0}/{pp1}/{pp2}
+
+        System.out.println("fullPath = " + fullPath);
+    }
+
+
+
 
 
 
@@ -544,11 +577,6 @@ public class APIStepDefinition {
 
 
 
-    @And("Sets query parametres as relivant id")
-    public void setsQueryParametresAsRelivantId() {
-        reqBodyJson = API_Utils.createABody(addId);
-
-    }
 
     @Given("It is verified that the id information sent is the same as the id in the patch request body")
     public void ıtIsVerifiedThatTheIdInformationSentIsTheSameAsTheIdInThePatchRequestBody() {
@@ -585,6 +613,36 @@ public class APIStepDefinition {
         reqBodyJson .put("id", addId);
         reqBodyJson .put("visitors_purpose","purpose update");
         reqBodyJson .put("description","purpose update details");
+    }
+
+    @And("Create a post body in finding with name {string}, description {string} and finding_category_id {string} .")
+    public void createAPostBodyInFindingWithNameDescriptionAndFinding_category_id(String name, String description, String finding_category_id) {
+    reqBodyJson=API_Utils.createABody2(name,description,finding_category_id);
+
+    }
+
+    @And("Get AddId number.")
+    public void getAddIdNumber() {
+        JsonPath respJS = response.jsonPath();
+       addId=respJS.getString("addId");
+
+    }
+
+    @And("Sets query parameters as id addID")
+    public void setsQueryParametersAsIdAddID() {
+        reqBodyJson=new JSONObject();
+       reqBodyJson.put("id",addId);
+
+    }
+
+    @And("Verifies in the response body with name {string}, description {string} and finding_category_id {string} .")
+    public void verifiesInTheResponseBodyWithNameDescriptionAndFinding_category_id(String name, String description, String finding_category_id) {
+
+        respJS = response.jsonPath();
+        assertEquals(name, respJS.get("details.name"));
+        assertEquals(description, respJS.get("details.description") );
+        assertEquals(finding_category_id, respJS.get("details.finding_category_id") );
+
     }
 }
 

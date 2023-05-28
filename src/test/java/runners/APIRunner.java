@@ -16,7 +16,8 @@ import org.junit.runner.RunWith;
         features = "src/test/resources/features",
         glue = {"stepDefinitions", "hooks"},
 
-        tags = "@furkann",
+        tags = "@US37",
+
         dryRun = false
 
 )
