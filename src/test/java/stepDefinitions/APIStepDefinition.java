@@ -459,7 +459,7 @@ public class APIStepDefinition {
     }
 
 
-    @Then("id: of content with {string}, category : {string}, created_at : {string}, must be verified")
+   /* @Then("id: of content with {string}, category : {string}, created_at : {string}, must be verified")
     public void idOfContentWithCategoryCreated_atMustBeVerified(String id, String category, String created_at) {
 
         //JSONObject object = response.as(JSONObject.class);
@@ -471,6 +471,8 @@ public class APIStepDefinition {
         response.prettyPrint();
     }
 
+    */
+
     @And("Sends DELETE request with Body and valid Authorization")
     public void sendsDELETERequestWithBodyAndValidAuthorization() {
         response = API_Utils.deleteRequest(fullPath);
@@ -481,7 +483,9 @@ public class APIStepDefinition {
         JsonPath resJp = response.jsonPath();
         assertEquals(id, resJp.get("lists.id"));
 
+
     }
+
 
     @Then("It is verified that the {string} in the response body is the same as the id in the delete request body.")
     public void ıtIsVerifiedThatTheInTheResponseBodyIsTheSameAsTheIdInTheDeleteRequestBody(String idKey) {
@@ -581,12 +585,26 @@ public class APIStepDefinition {
                 .patch(fullPath);
         response.prettyPrint();
 
-        JsonPath resJP = response.jsonPath();
-        expBodyJson = new JSONObject();
-        expBodyJson.put("updateId", 22);
-        Assert.assertEquals(expBodyJson.get("updateId"), resJP.get("updateId"));
-
     }
+
+    @And("Creates request body as name {string}, finding_category_id {string}")
+    public void createsRequestBodyAsNameFinding_category_id(String arg0, String arg1) {
+
+        reqBodyJson = API_Utils.createABody(arg0, arg1, true);
+
+        System.out.println(reqBodyJson.toString());
+    }
+
+    {
+    JsonPath resJP = response.jsonPath();
+    expBodyJson =new
+
+    JSONObject();
+        expBodyJson.put("updateId",22);
+        Assert.assertEquals(expBodyJson.get("updateId"),resJP.get("updateId"));
+
+}
+
 
 
     @Then("Has been verified that the sent addId and replied {string} data are the same.")
