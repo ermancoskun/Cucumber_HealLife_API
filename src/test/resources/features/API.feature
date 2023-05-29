@@ -246,7 +246,7 @@ Feature: API Tests
   And Has been verified that the sent addIdd and replied "updateId" data are the same.
 
 
-
+  @US2
   Scenario: [API_US07_TC01]-(3) Link as an administrator registered to the system via visitor I should be able to update the purpose information .
     Given Api user sets "api/visitorsPurposeUpdate" path parameters.
     And Creates a request body with id "27" ,visitors_purpose "purpose update" , description "purpose update details"
@@ -257,7 +257,7 @@ Feature: API Tests
 
 
 
-  @US2
+
   Scenario: [API_US14_TC01]-(1A)  As an administrator, I should be able to access the blood group list with valid authorization registered in the system via API connection.
     Given Api user sets "api/getBloodGroup" path parameters.
     And Sends GET request with valid Authorization
