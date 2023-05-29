@@ -229,7 +229,7 @@ Feature: API Tests
     Then Verifies that the returned status code is 403
     Then Verifies that the response message is "failed"
 
-
+  @US2
   Scenario: [API_US07_TC01]-(2) Link as an administrator registered to the system via visitor I should be able to update the purpose information .
   Given Api user sets "api/visitorsPurposeAdd" path parameters.
   And Request body is:
@@ -246,7 +246,7 @@ Feature: API Tests
   And Has been verified that the sent addIdd and replied "updateId" data are the same.
 
 
-  @US2
+
   Scenario: [API_US07_TC01]-(3) Link as an administrator registered to the system via visitor I should be able to update the purpose information .
     Given Api user sets "api/visitorsPurposeUpdate" path parameters.
     And Creates a request body with id "27" ,visitors_purpose "purpose update" , description "purpose update details"
@@ -284,7 +284,7 @@ Feature: API Tests
     Given Api user sets "api/getBloodGroup" path parameters.
     And Sends GET request with valid Authorization
     Then Verify that the datas are contained in the response body as "lists[7].","id#name#is_blood_group#created_at","8#O+#1#2021-10-25 02:33:28"
-#    Then Verifies in the response body with id "8", name "O+", is_blood_group "1", created_at "2021-10-25 02:33:28"
+#   Then Verifies in the response body with id "8", name "O+", is_blood_group "1", created_at "2021-10-25 02:33:28"
 
 
 
@@ -354,7 +354,7 @@ Feature: API Tests
     And Sends DELETE request with Body and valid Authorization
 
 
-  @US37
+
   Scenario: [API_US37_TC01](1A) As an administrator, you can make a new finding via API connection . registration I want to be able to creat
     Given Api user sets "api/addFinding" path parameters.
     And Create a post body in finding with name "Humeyra U", description "headache" and finding_category_id "25" .
@@ -362,7 +362,7 @@ Feature: API Tests
     Then Verifies that the returned status code is 200
     Then Verifies that the response message is "Success"
 
-  @US37
+
   Scenario: [API_US37_TC01](1B) As an administrator, you can make a new finding via API connection . registration I want to be able to creat
     Given Api user sets "api/addFinding" path parameters.
     And Create a post body in finding with name "Hume", description "headache56" and finding_category_id "2" .
@@ -764,7 +764,7 @@ Feature: API Tests
     And Api user sets "api/getExpenseHead" path parameters.
     And Sends GET request valid Authorization
     Then Verifies in the response body with exp_category "business", description "business expense", is_active "yes", is_deleted "no" in ExpenseHead.
-@delete
+
   Scenario: [API_US18_TC01]-(3) It is verified that the delete ID information and the endpoint sent ID information are the same.
     Given Api user sets "api/addBloodGroup" path parameters.
     And Request body is:
@@ -779,7 +779,7 @@ Feature: API Tests
     And Sends DELETE request with Body and valid Authorization
     Then Has been verified that the sent addId and replied "deletedId" data are the same.
 
-
+  @delete
   Scenario: [API_US18_TC01]-(4) It is verified via API that the blood group record to be deleted via API is deleted.
     Given Api user sets "api/addBloodGroup" path parameters.
     And Request body is:

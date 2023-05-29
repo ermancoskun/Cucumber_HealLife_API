@@ -561,6 +561,7 @@ public class APIStepDefinition {
 
 
         JsonPath respJp = response.jsonPath();
+
         Assert.assertEquals(respJp.getString("details.exp_category"), "stationary update");
 
     }
@@ -591,13 +592,9 @@ public class APIStepDefinition {
         reqBodyJson = API_Utils.createABody(arg0, arg1, true);
 
         System.out.println(reqBodyJson.toString());
-    }
 
-    {
         JsonPath resJP = response.jsonPath();
-        expBodyJson = new
-
-                JSONObject();
+        expBodyJson = new  JSONObject();
         expBodyJson.put("updateId", 22);
         Assert.assertEquals(expBodyJson.get("updateId"), resJP.get("updateId"));
 
@@ -608,8 +605,6 @@ public class APIStepDefinition {
     public void hasBeenVerifiedThatTheSentAddIdAndRepliedDataAreTheSame(String changedData) {
         JsonPath resJP = response.jsonPath();
         String actualID = resJP.getString(changedData);
-        System.out.println("actualID = " + actualID);
-        System.out.println("addId = " + addId);
         assertEquals("Unsuccessful change", actualID, addId);
     }
 
