@@ -19,8 +19,12 @@ import org.junit.runner.RunWith;
 
 
 
-        tags = "@US" ,
+
+        tags = "@US2" ,
+
+
         dryRun = false
+
 
 )
 public class APIRunner {

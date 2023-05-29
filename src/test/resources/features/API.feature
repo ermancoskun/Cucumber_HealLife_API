@@ -231,10 +231,19 @@ Feature: API Tests
 
 
   Scenario: [API_US07_TC01]-(2) Link as an administrator registered to the system via visitor I should be able to update the purpose information .
-    Given Api user sets "api/visitorsPurposeUpdate" path parameters.
-    And Creates body and Sends Patch request body valid Authorization with 22
-    And Sends PATCH request with Body and valid Authorization
-    Given It is verified that the id information sent is the same as the id in the patch request body
+  Given Api user sets "api/visitorsPurposeAdd" path parameters.
+  And Request body is:
+   """
+  {
+    "visitors_purpose":"special work",
+    "description":"special word details"
+}
+    """
+  Then Sends POST request with Body and valid Authorization
+  Given Api user sets "api/visitorsPurposeUpdate" path parameters.
+  And Sets query parametres as relivant id
+  And  Sends PATCH request with Body and valid Authorization
+  And Has been verified that the sent addIdd and replied "updateId" data are the same.
 
 
 
@@ -248,7 +257,7 @@ Feature: API Tests
 
 
 
-
+  @US2
   Scenario: [API_US14_TC01]-(1A)  As an administrator, I should be able to access the blood group list with valid authorization registered in the system via API connection.
     Given Api user sets "api/getBloodGroup" path parameters.
     And Sends GET request with valid Authorization
@@ -510,30 +519,21 @@ Feature: API Tests
 
   @US25
   Scenario: [API_US22_TC01]-(3)Being able to update the expenditure information registered in the system via API connection as an administrator. I want..
-    Given Api user sets "api/updateExpenseHead" path parameters.
-    And Request body is:
-    """
-   {
-            "exp_category": "stationary 1",
-            "description": "stationary expense",
-            "is_active": "yes",
-            "is_deleted": "no"
-}
-    """
-    Then Sends POST request with Body and valid Authorization
     Given Api user sets "api/addExpenseHead" path parameters.
     And Request body is:
-    """
+   """
     {
-            "id": 22,
-            "exp_category": "stationary update",
+            "exp_category": "stationary",
             "description": "stationary expense",
             "is_active": "yes",
             "is_deleted": "no"
-}
+    }
     """
+    Then Sends POST request with Body and valid Authorization
+    Given Api user sets "api/updateExpenseHead" path parameters.
+    And new Request body is
     And  Sends PATCH request with Body and valid Authorization
-    And  Api user sets "api/getExpenseHead" path parameters.
+    And  Api user sets "api/getExpenseHeadById" path parameters.
     And Sets query parametres as relivant id
     And  Sends GET request with Body and valid Authorization
     Then Creat get request exp_category is updated be verified
@@ -682,6 +682,57 @@ Feature: API Tests
     Then Verifies that the response message is "failed"
 
 
+
+  Scenario:[API_US19->TC02] As an administrator to hospital expenses via API connection I should be able to reach.
+    Given Api user sets "api/getExpenseHead" path parameters.
+    Then Sets query parameters as id 5
+    Then Sends GET request with Body and valid Authorization
+    And Verify that the datas are contained in the response body as "lists.","id#exp_category#description#is_active#is_deleted#created_at","5#Power Generator Fuel Charge#They can utilise a variety of fuel options including natural gas, LPG and diesel.#yes#no#2021-10-29 01:35:42"
+
+  Scenario:[API_US19->TC03] As an administrator to hospital expenses via API connection I should be able to reach.
+    Given Api user sets "api/getExpenseHead" path parameters.
+    Then Sets query parameters as id 4
+    Then Sends GET request with Body and valid Authorization
+    And Verify that the datas are contained in the response body as "lists.","id#exp_category#description#is_active#is_deleted#created_at","4#Telephone Bill#Recently, some private insurance companies have begun to pay for patient-to-provider phone calls, especially when the calls are prolonged and when medical decisions are made. Nevertheless, you may be billed for the whole cost, or you may have to pay a co-pay.#yes#no#2021-10-29 01:36:02"
+
+
+  Scenario:[API_US38->TC01]-(1A) Registered to the system via API connection as an administrator I should be able to update the finding information .
+
+    Given Api user sets "api/updateFinding" path parameters.
+    Then Sets query parameters as id 1
+    And Sends PATCH request with Body and valid Authorization
+    Then Verifies that the returned status code is 200
+    Then Verifies that the response message is "Success"
+
+
+  Scenario:[API_US38->TC01]-(1B) Registered to the system via API connection as an administrator I should be able to update the finding information .
+
+  Given Api user sets "api/updateFinding" path parameters.
+  And Sets query parameters as id 123456
+  And Sends PATCH request with Body and invalid Authorization
+  Then Verifies that the returned status code is 403
+  Then Verifies that the response message is "failed"
+
+
+  Scenario:[API_US38->TC02] As an administrator to hospital expenses via API connection I should be able to reach .
+
+    Given Api user sets "api/updateFinding" path parameters.
+    Then Sets query parameters as id 19
+    And  Sends PATCH request with Body and valid Authorization
+    And Verifies in the response body with id "19"
+
+  @Abd
+  Scenario:[API_US38->TC03] As an administrator to hospital expenses via API connection I should be able to reach .
+    Given Api user sets "api/updateFinding" path parameters.
+    And Creates request body as name "mouth sore", finding_category_id "2"
+    And Sends PATCH request with Body and valid Authorization
+    And Save addid number
+    And Api user sets "api/updateFinding" path parameters.
+    And Sends GET request valid Authorization
+    And Verifies the newly created blood group record via APi.
+
+
+
   Scenario:[API_US19->TC02] As an administrator to hospital expenses via API connection I should be able to reach .
 
 
@@ -744,4 +795,5 @@ Feature: API Tests
     And Sets query parametres as relivant id
     Then Sends GET request with Body and valid Authorization
     Then Verifies that the returned status code is 403
+
 
