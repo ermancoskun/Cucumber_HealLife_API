@@ -510,30 +510,21 @@ Feature: API Tests
 
   @US25
   Scenario: [API_US22_TC01]-(3)Being able to update the expenditure information registered in the system via API connection as an administrator. I want..
-    Given Api user sets "api/updateExpenseHead" path parameters.
-    And Request body is:
-    """
-   {
-            "exp_category": "stationary 1",
-            "description": "stationary expense",
-            "is_active": "yes",
-            "is_deleted": "no"
-}
-    """
-    Then Sends POST request with Body and valid Authorization
     Given Api user sets "api/addExpenseHead" path parameters.
     And Request body is:
-    """
+   """
     {
-            "id": 22,
-            "exp_category": "stationary update",
+            "exp_category": "stationary",
             "description": "stationary expense",
             "is_active": "yes",
             "is_deleted": "no"
-}
+    }
     """
+    Then Sends POST request with Body and valid Authorization
+    Given Api user sets "api/updateExpenseHead" path parameters.
+    And new Request body is
     And  Sends PATCH request with Body and valid Authorization
-    And  Api user sets "api/getExpenseHead" path parameters.
+    And  Api user sets "api/getExpenseHeadById" path parameters.
     And Sets query parametres as relivant id
     And  Sends GET request with Body and valid Authorization
     Then Creat get request exp_category is updated be verified
