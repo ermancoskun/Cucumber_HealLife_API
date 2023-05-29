@@ -417,8 +417,8 @@ public class APIStepDefinition {
     @Given("Verify that the datas are contained in the response body as {string},{string},{string}")
     public void verify_that_the_datas_are_contained_in_the_response_body_as(String rspnBody, String
             data, String dataValue) {
-        String[] datasArr = data.split(",");
-        String[] dataValuesArr = dataValue.split(",");
+        String[] datasArr = data.split("#");
+        String[] dataValuesArr = dataValue.split("#");
 
         for (int i = 0; i < datasArr.length; i++) {
             response
@@ -681,7 +681,63 @@ public class APIStepDefinition {
 
 
         }
+
+
+    @And("Creates body and Sends Patch request body valid Authorization with {int}")
+    public void createsBodyAndSendsPatchRequestBodyValidAuthorizationWith(int arg0) {
+        reqBodyJson = API_Utils.createABody(arg0);
     }
+
+    @And("Creates a request body with id {string} ,description {string} ,visitors_purpose {string} in ExpenseHead.")
+    public void createsARequestBodyWithIdDescriptionVisitors_purposeInExpenseHead(String arg0, String arg1, String arg2) {
+
+            reqBodyJson = new JSONObject();
+            reqBodyJson.put("id", arg0);
+            reqBodyJson.put("description", arg1);
+            reqBodyJson.put("visitors_purpose", arg2);
+
+
+            System.out.println(reqBodyJson.toString());
+
+        }
+
+    @Then("Verifies in the response body with id {string} ,description {string} ,visitors_purpose {string} in ExpenseHead.")
+    public void verifiesInTheResponseBodyWithIdDescriptionVisitors_purposeInExpenseHead(String arg0, String arg1, String arg2) {
+
+
+            JsonPath jsonPath = response.jsonPath();
+            assertEquals(arg0, jsonPath.get("id"));
+            assertEquals(arg1, jsonPath.get("description"));
+            assertEquals(arg2, jsonPath.get("visitors_purpose"));
+
+
+        }
+
+    @Then("Sends PATCH request with Body and valid Authorizations")
+    public void sendsPATCHRequestWithBodyAndValidAuthorizations() {
+        JSONObject res=new JSONObject();
+        res.put("id","4");
+        res.put("visitors_purpose","purpose update4");
+
+        response = given()
+                .spec(HooksAPI.spec)
+                .headers("Authorization", "Bearer " + HooksAPI.token)
+                .contentType(ContentType.JSON)
+                .when()
+                .body(res.toString())
+                .patch(fullPath);
+        response.prettyPrint();
+    }
+
+    @Then("Verifies the newly created purpose record via APis.")
+    public void verifiesTheNewlyCreatedPurposeRecordViaAPis() {
+        response
+                .then()
+                .assertThat()
+                .body("lists.visitors_purpose", Matchers.hasItem("purpose update4"));
+    }
+}
+
 
 
 

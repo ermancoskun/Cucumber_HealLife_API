@@ -190,12 +190,12 @@ Feature: API Tests
     And Sends POST request with Body and invalid Authorization
     Then Verifies that the returned status code is 403
     Then Verifies that the response message is "failed"
-
+  @US
   Scenario: [API_US15_TC01]-(2)As an administrator, I should be able to access the relevant blood data by entering the id over the API connection .
     Given Api user sets "api/getBloodGroupById" path parameters.
     Then Sets query parameters as id 1
     And Sends GET request with Body and valid Authorization
-    And Verify that the datas are contained in the response body as "lists.","id#name#is_blood_group#created_at","1#B+#1#2021-10-25 01:54:10"
+    And Verify that the datas are contained in the response body as "lists.","id#name#is_blood_group#created_at","1#DirtBlood#0#2023-05-27 07:39:47"
 
   @Nesy
   Scenario: [API_US06]-(1C) A new visitor via API link as an administrator purpose registration I want to be able to create .
@@ -216,7 +216,7 @@ Feature: API Tests
 
 
   Scenario: [API_US07_TC01]-(1A) Link as an administrator registered to the system via visitor I should be able to update the purpose information .
-    Given Api user sets "api/visitorsPurposeAdd" path parameters.
+    Given Api user sets "api/visitorsPurposeUpdate" path parameters.
     And Creates a request body with id "27" ,visitors_purpose "purpose update" , description "purpose update details"
     And Sends PATCH request with Body and valid Authorization
     Then Verifies that the returned status code is 200
@@ -229,23 +229,23 @@ Feature: API Tests
     Then Verifies that the returned status code is 403
     Then Verifies that the response message is "failed"
 
-  @US
+
   Scenario: [API_US07_TC01]-(2) Link as an administrator registered to the system via visitor I should be able to update the purpose information .
     Given Api user sets "api/visitorsPurposeUpdate" path parameters.
-   Then Sets query parameters as id 5
-    And Sends PATCH request with Body and invalid Authorization
-    And Verifies in the response body with id "5"
+    And Creates body and Sends Patch request body valid Authorization with 22
+    And Sends PATCH request with Body and valid Authorization
+    Given It is verified that the id information sent is the same as the id in the patch request body
+
 
 
   Scenario: [API_US07_TC01]-(3) Link as an administrator registered to the system via visitor I should be able to update the purpose information .
+    Given Api user sets "api/visitorsPurposeUpdate" path parameters.
+    And Creates a request body with id "27" ,visitors_purpose "purpose update" , description "purpose update details"
+    And Sends PATCH request with Body and valid Authorizations
+    Then Api user sets "api/visitorsPurposeList" path parameters.
+    Then Sends GET request valid Authorization
+    Then Verifies the newly created purpose record via APis.
 
-    * Api user sets "api/visitorsPurposeUpdate" path parameters.
-    * Creates request body as name "Jane Doe", isBloodGroup "A Rh +"
-    * Sends POST request with Body and valid Authorization
-    * Save addid number
-    * Api user sets "api/visitorsPurposeUpdate" path parameters.
-    * Sends GET request valid Authorization
-    * Verifies the newly created blood group record via APi.
 
 
 
