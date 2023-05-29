@@ -558,7 +558,9 @@ public class APIStepDefinition {
 
         JsonPath respJp = response.jsonPath();
 
-        Assert.assertEquals(respJp.getString(respJp.getString("stationary 1")), "stationary update");
+
+
+        Assert.assertEquals(respJp.getString("details.exp_category"), "stationary update");
 
     }
 
@@ -616,9 +618,10 @@ public class APIStepDefinition {
                 .body("lists.id", Matchers.hasItem(addId));
 
 
-        }
+    }
+
     @And("Create a post body in finding with name {string}, description {string} and finding_category_id {string} .")
-    public void createAPostBodyInFindingWithNameDescriptionAndFinding_category_id (String name, String
+    public void createAPostBodyInFindingWithNameDescriptionAndFinding_category_id(String name, String
             description, String finding_category_id) {
         reqBodyJson = API_Utils.createABody2(name, description, finding_category_id);
 
@@ -629,10 +632,10 @@ public class APIStepDefinition {
     @And("Sends PATCH with request with Body and valid Authorization")
     public void sendsPATCHWithRequestWithBodyAndValidAuthorization() {
 
-         JSONObject bilmemne=new JSONObject();
-         bilmemne.put("id",addId);
-         bilmemne.put("visitors_purpose","a");
-         bilmemne.put("description","b");
+        JSONObject bilmemne = new JSONObject();
+        bilmemne.put("id", addId);
+        bilmemne.put("visitors_purpose", "a");
+        bilmemne.put("description", "b");
 
         response = given().spec(HooksAPI.spec).
                 headers("Authorization", "Bearer " + HooksAPI.token)
@@ -664,24 +667,52 @@ public class APIStepDefinition {
     }
 
     @And("Sets query parameters as id addID")
-    public void setsQueryParametersAsIdAddID () {
+    public void setsQueryParametersAsIdAddID() {
         reqBodyJson = new JSONObject();
         reqBodyJson.put("id", addId);
 
     }
 
     @And("Verifies in the response body with name {string}, description {string} and finding_category_id {string} .")
-        public void verifiesInTheResponseBodyWithNameDescriptionAndFinding_category_id (String name, String
-        description, String finding_category_id){
+    public void verifiesInTheResponseBodyWithNameDescriptionAndFinding_category_id(String name, String
+            description, String finding_category_id) {
 
-            respJS = response.jsonPath();
-            assertEquals(name, respJS.get("details.name"));
-            assertEquals(description, respJS.get("details.description"));
-            assertEquals(finding_category_id, respJS.get("details.finding_category_id"));
+        respJS = response.jsonPath();
+        assertEquals(name, respJS.get("details.name"));
+        assertEquals(description, respJS.get("details.description"));
+        assertEquals(finding_category_id, respJS.get("details.finding_category_id"));
 
 
-        }
     }
+
+
+    @And("Sets query parametres as relivant id")
+    public void setsQueryParametresAsRelivantId() {
+        reqBodyJson=new JSONObject();
+        reqBodyJson.put("id",API_Utils.addId);
+    }
+
+    @And("new Request body is")
+    public void newRequestBodyIs() {
+        String body ="{\n" +
+                "            \"id\": "+API_Utils.addId+",\n" +
+                "            \"exp_category\": \"stationary update\",\n" +
+                "            \"description\": \"stationary expense\",\n" +
+                "            \"is_active\": \"yes\",\n" +
+                "            \"is_deleted\": \"no\"\n" +
+                "} ";
+
+        reqBodyJson = new JSONObject(body);
+        System.out.println(reqBodyJson.toString());
+    }
+    @And("Creates body and Sends Patch request body valid Authorization with {string}, {string}, {string},{string},{string}")
+    public void createsBodyAndSendsPatchRequestValidAuthorizationWith(String id, String exp_category, String description, String is_active, String is_deleted) {
+        reqBodyJson = API_Utils.createABody(21, "stationary 1", "stationary expense", "yes", "no");
+
+    }
+}
+
+
 
 
 
