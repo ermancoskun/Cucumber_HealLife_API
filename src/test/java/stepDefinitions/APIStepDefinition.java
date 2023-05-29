@@ -563,7 +563,6 @@ public class APIStepDefinition {
         JsonPath respJp = response.jsonPath();
 
 
-
         Assert.assertEquals(respJp.getString("details.exp_category"), "stationary update");
 
     }
@@ -595,26 +594,19 @@ public class APIStepDefinition {
         reqBodyJson = API_Utils.createABody(arg0, arg1, true);
 
         System.out.println(reqBodyJson.toString());
+
+        JsonPath resJP = response.jsonPath();
+        expBodyJson = new  JSONObject();
+        expBodyJson.put("updateId", 22);
+        Assert.assertEquals(expBodyJson.get("updateId"), resJP.get("updateId"));
+
     }
-
-    {
-    JsonPath resJP = response.jsonPath();
-    expBodyJson =new
-
-    JSONObject();
-        expBodyJson.put("updateId",22);
-        Assert.assertEquals(expBodyJson.get("updateId"),resJP.get("updateId"));
-
-}
-
 
 
     @Then("Has been verified that the sent addId and replied {string} data are the same.")
     public void hasBeenVerifiedThatTheSentAddIdAndRepliedDataAreTheSame(String changedData) {
         JsonPath resJP = response.jsonPath();
         String actualID = resJP.getString(changedData);
-        System.out.println("actualID = " + actualID);
-        System.out.println("addId = " + addId);
         assertEquals("Unsuccessful change", actualID, addId);
     }
 
@@ -706,14 +698,14 @@ public class APIStepDefinition {
 
     @And("Sets query parametres as relivant id")
     public void setsQueryParametresAsRelivantId() {
-        reqBodyJson=new JSONObject();
-        reqBodyJson.put("id",API_Utils.addId);
+        reqBodyJson = new JSONObject();
+        reqBodyJson.put("id", API_Utils.addId);
     }
 
     @And("new Request body is")
     public void newRequestBodyIs() {
-        String body ="{\n" +
-                "            \"id\": "+API_Utils.addId+",\n" +
+        String body = "{\n" +
+                "            \"id\": " + API_Utils.addId + ",\n" +
                 "            \"exp_category\": \"stationary update\",\n" +
                 "            \"description\": \"stationary expense\",\n" +
                 "            \"is_active\": \"yes\",\n" +
@@ -723,6 +715,7 @@ public class APIStepDefinition {
         reqBodyJson = new JSONObject(body);
         System.out.println(reqBodyJson.toString());
     }
+
     @And("Creates body and Sends Patch request body valid Authorization with {string}, {string}, {string},{string},{string}")
     public void createsBodyAndSendsPatchRequestValidAuthorizationWith(String id, String exp_category, String description, String is_active, String is_deleted) {
         reqBodyJson = API_Utils.createABody(21, "stationary 1", "stationary expense", "yes", "no");
