@@ -213,35 +213,27 @@ Feature: API Tests
     Then Sends GET request valid Authorization
     Then Verifies the newly created purpose record via APi.
 
-  @US
+
+
   Scenario: [API_US07_TC01]-(1A) Link as an administrator registered to the system via visitor I should be able to update the purpose information .
     Given Api user sets "api/visitorsPurposeAdd" path parameters.
-    And Request body is:
-    """
-  {
-    "visitors_purpose":"deneme purpose",
-    "description":"deneme description"
-}
-    """
-    Then Sends POST request with Body and valid Authorization
-    Given Api user sets "api/visitorsPurposeUpdate" path parameters.
-    And Sets update body with response id
+    And Creates a request body with id "27" ,visitors_purpose "purpose update" , description "purpose update details"
     And Sends PATCH request with Body and valid Authorization
     Then Verifies that the returned status code is 200
     Then Verifies that the response message is "Success"
 
   Scenario: [API_US07_TC01]-(1B) Link as an administrator registered to the system via visitor I should be able to update the purpose information .
     Given Api user sets "api/visitorsPurposeUpdate" path parameters.
-    Then Sets query parameters as id 123456
-    And Sends POST request with Body and invalid Authorization
+    And Creates a request body with id "123456" ,visitors_purpose "alo" , description "aloo"
+    And Sends PATCH request with Body and invalid Authorization
     Then Verifies that the returned status code is 403
     Then Verifies that the response message is "failed"
 
-
+  @US
   Scenario: [API_US07_TC01]-(2) Link as an administrator registered to the system via visitor I should be able to update the purpose information .
     Given Api user sets "api/visitorsPurposeUpdate" path parameters.
-    Then Sets query parameters as id 5
-    And Sends POST request with Body and valid Authorization
+   Then Sets query parameters as id 5
+    And Sends PATCH request with Body and invalid Authorization
     And Verifies in the response body with id "5"
 
 
@@ -257,32 +249,29 @@ Feature: API Tests
 
 
 
-  Scenario: [API_US14_TC01]-(1A)  As an administrator, I should be able to access the
-  blood group list with valid authorization registered in the system via API connection.
+  Scenario: [API_US14_TC01]-(1A)  As an administrator, I should be able to access the blood group list with valid authorization registered in the system via API connection.
     Given Api user sets "api/getBloodGroup" path parameters.
     And Sends GET request with valid Authorization
     Then Verifies that the returned status code is 200
     Then Verifies that the response message is "Success"
 
 
-  Scenario:[API_US14_TC01]-(1B)  As an administrator, I should be able to access the blood group list with
-  invalid authorization registered in the system via API connection.
+  Scenario:[API_US14_TC01]-(1B)  As an administrator, I should be able to access the blood group list with invalid authorization registered in the system via API connection.
     Given Api user sets "api/getBloodGroup" path parameters.
     And  Sends GET request with invalid Authorization
     Then Verifies that the returned status code is 403
     Then Verifies that the response message is "failed"
 
   @US14
-  Scenario: [API_US14_TC01]-(1C)  As an administrator, I should be able to verify the
-  content of blood group list registered in the system via API connection.
+  Scenario: [API_US14_TC01]-(1C)  As an administrator, I should be able to verify the content of blood group list registered in the system via API connection.
     Given Api user sets "api/getBloodGroup" path parameters.
     And Sends GET request with valid Authorization
     Then Verify that the datas are contained in the response body as "lists[2].","id#name#is_blood_group#created_at","3#AB-#1#2021-10-25 02:32:41"
   #  Then Verifies in the response body with id "3", name "AB-", is_blood_group "1", created_at "2021-10-25 02:32:41"
 
 
-  Scenario: [API_US14_TC01]-(1D)  As an administrator, I should be able to verify
-  the content of blood group list registered in the system via API connection.
+
+  Scenario: [API_US14_TC01]-(1D)  As an administrator, I should be able to verify the content of blood group list registered in the system via API connection.
     Given Api user sets "api/getBloodGroup" path parameters.
     And Sends GET request with valid Authorization
     Then Verify that the datas are contained in the response body as "lists[7].","id#name#is_blood_group#created_at","8#O+#1#2021-10-25 02:33:28"
