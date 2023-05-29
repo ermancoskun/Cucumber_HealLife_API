@@ -1,8 +1,14 @@
 package stepDefinitions;
 
+import java.sql.*;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
+import utilities.ConfigReader;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +17,10 @@ import static org.junit.Assert.assertTrue;
 import static utilities.DB_Utils.*;
 
 public class DBStepDefinition {
+
+    ResultSet resultset;
+    Statement st;
+    Connection con;
     List<Object> UserEmailList= new ArrayList<>();
 
     @Given("Database connection established")
@@ -31,6 +41,232 @@ public class DBStepDefinition {
     @Then("Database connection is closed")
     public void database_connection_is_closed() {
             closeConnection();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    @Then("soutkkkk")
+    public void  soutkkkk() throws SQLException {
+
+        //createConnection();
+        // Database üzerinden appointment_queue tablosunda
+        // 2023 yilinda olusturulan iceriklerden mayis ayinda olusturulanlari listeleyip dogrulayiniz.
+        /*
+            SELECT date
+            FROM heallife_hospitaltraining.appointment_queue
+            WHERE date >= '2023-05-01'
+            AND date < '2023-06-01';
+
+            SELECT date
+            FROM heallife_hospitaltraining.appointment_queue
+            WHERE YEAR(date) = 2023
+            AND MONTH(date) = 5;
+         */
+
+
+
+        // Database üzerinden death_report tablosundaki
+        // ölüm tarihlerine göre en son ölen hastanin guardian_name bilgisinin Kane Stark oldugunu dogrulayiniz.
+        /*
+        SELECT guardian_name
+        FROM heallife_hospitaltraining.death_report
+        WHERE death_date =(
+        SELECT MAX(death_date)
+        FROM heallife_hospitaltraining.death_report );
+
+         */
+
+        // Database üzerinden patients tablosundaki
+        // en eski hastanin known_allergies bilgisinin "Fast food" oldugunu dogrulayin.
+        /*
+        SELECT known_allergies
+        FROM heallife_hospitaltraining.patients
+        WHERE created_at =(
+        SELECT MIN(created_at)
+        FROM heallife_hospitaltraining.patients );
+         */
+
+        // Database üzerinden birth_report tablosunda kardes olan bebekleri  listeleyip isimlerini dogrulayiniz.
+
+        /*
+        select father_name
+        FROM heallife_hospitaltraining.birth_report;
+         */
+
+        String query = "SELECT father_name FROM heallife_hospitaltraining.birth_report;";
+        System.out.println(query);
+
+        resultset=st.executeQuery(query);
+        System.out.println(resultset.getRow());
+        /*
+
+        while(resultset.next()){
+
+            for (int i = 0; i <resultset.getRow() ; i++) {
+                resultset.getInt(i+1);
+            }
+            System.out.println(iscilerTablosu.getInt(1) + " " +
+                    iscilerTablosu.getString(2) + " " +
+                    iscilerTablosu.getInt(3));
+        }
+
+
+         */
+
+
+
     }
 
 }

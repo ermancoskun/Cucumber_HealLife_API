@@ -313,7 +313,5 @@ Feature: API Tests
     * Sets query parameters as id 1
     * Sends GET request with Body and valid Authorization
     * Verify that the datas are contained in the response body as "details.","id,category,created_at","1,ill category 2,2023-05-25 09:33:53"
-
-
-
+    * Creates request body as datas : "id#isBloodGroup#1#2#3", values : "Jane Doe#A Rh +#1#2#3"
 

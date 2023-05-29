@@ -3,9 +3,9 @@ Feature: DB_Testing
   Scenario Outline: Email query of the user whose first_name and last_name are given
 
     Given Database connection established
-    And   From the Users table,"email" data of the user whose "<first_name>" and "<last_name>" information is entered are retrieved
-    Then  User's "<email>" data is verified
-    And   Database connection is closed
+    And From the Users table,"email" data of the user whose "<first_name>" and "<last_name>" information is entered are retrieved
+    Then User's "<email>" data is verified
+    And Database connection is closed
 
 
     Examples:
@@ -14,3 +14,17 @@ Feature: DB_Testing
 
 
 
+
+
+
+
+
+
+
+
+  @dfg
+  Scenario : [API_US16_TC01]-(1C)
+
+    Given Database connection established
+    When soutkkkk
+    Then Database connection is closed

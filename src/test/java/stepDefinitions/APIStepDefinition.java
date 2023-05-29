@@ -400,8 +400,8 @@ public class APIStepDefinition {
 
     @Given("Verify that the datas are contained in the response body as {string},{string},{string}")
     public void verify_that_the_datas_are_contained_in_the_response_body_as(String rspnBody, String data, String dataValue) {
-        String[] datasArr = data.split(",");
-        String[] dataValuesArr = dataValue.split(",");
+        String[] datasArr = data.split("#");
+        String[] dataValuesArr = dataValue.split("#");
 
         for (int i = 0; i < datasArr.length; i++) {
             response
@@ -446,6 +446,18 @@ public class APIStepDefinition {
 
 
     }
+    @Given("Creates request body as datas : {string}, values : {string}")
+    public void creates_request_body_as_datas_values(String data, String dataValue) {
+        String[] datasArr = data.split("#");
+        String[] dataValuesArr = dataValue.split("#");
+        JSONObject jsonObject=new JSONObject();
+
+        for (int i = 0; i < datasArr.length; i++) {
+            jsonObject.put(datasArr[i],dataValuesArr[i]);
+        }
+        System.out.println(jsonObject);
+    }
+
 }
 
 
