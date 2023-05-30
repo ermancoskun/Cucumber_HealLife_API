@@ -273,7 +273,9 @@ public class APIStepDefinition {
     }
 
 
-    @Then("id: of content with {string}, category : {string}, created_at : {string}, must be verified")
+
+   @Then("id: of content with {string}, category : {string}, created_at : {string}, must be verified")
+
     public void idOfContentWithCategoryCreated_atMustBeVerified(String id, String category, String created_at) {
 
         //JSONObject object = response.as(JSONObject.class);
