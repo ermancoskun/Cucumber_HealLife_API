@@ -442,11 +442,10 @@ Feature: API Tests
 
   @US16 @US16C
   Scenario: [API_US16_TC01]-(1C)
-  Via API of the new blood group record to be created created , via API should be verified .
+            Via API of the new blood group record to be created created , via API should be verified .
     * Api user sets "api/addBloodGroup" path parameters.
     * Creates request body as datas : "name#is_blood_group", values : "Jane Doe#A Rh +"
     * Sends POST request with Body and valid Authorization
-    * Save addid number
     * Api user sets "api/getBloodGroup" path parameters.
     * Sends GET request valid Authorization
     * Verifies the newly created blood group record via APi.

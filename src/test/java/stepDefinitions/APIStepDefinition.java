@@ -164,7 +164,7 @@ public class APIStepDefinition {
         response
                 .then()
                 .assertThat()
-                .body("lists.id", Matchers.hasItem(addId));
+                .body("lists.id", Matchers.hasItem(API_Utils.addId));
     }
 
 

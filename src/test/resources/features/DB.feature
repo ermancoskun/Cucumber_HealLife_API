@@ -12,28 +12,22 @@ Feature: DB_Testing
       | first_name |last_name|email|
       |  Admin     | User    |admin@gmail.com|
 
-  @
-  Scenario: DB_US10
 
-    Given Database connection established
-    When Creates query with "SELECT father_name FROM heallife_hospitaltraining.birth_report;"
-    Then Database connection is closed
-
-  @US06db @dg
+  @DB6 @dg
   Scenario: DB_US06
 
     * User sets the database connection
     * Creates query with "SELECT date FROM heallife_hospitaltraining.appointment_queue WHERE YEAR(date) = 2023 AND MONTH(date) = 5;"
-    * Verifies that it contains datas : "date" values : "2023-05" message : "false"
+    * Verifies that it CONTAINS datas : "date" values : "2023-05" message : "false"
     * Database connection is closed
-  @US16db @dg
+  @DB16 @dg
   Scenario: DB_US16
 
     * User sets the database connection
     * Creates query with "SELECT guardian_name FROM heallife_hospitaltraining.death_report WHERE death_date =( SELECT MAX(death_date)  FROM heallife_hospitaltraining.death_report );"
     * Verifies that datas : "guardian_name" values : "Kane Stark" message : "false"
     * Database connection is closed
-    @US26db @dg
+    @DB26 @dg
   Scenario: DB_US26
       * User sets the database connection
       * Creates query with "SELECT known_allergies FROM heallife_hospitaltraining.patients WHERE created_at =( SELECT MIN(created_at) FROM heallife_hospitaltraining.patients );"

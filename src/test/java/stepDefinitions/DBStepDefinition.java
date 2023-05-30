@@ -63,21 +63,33 @@ public class DBStepDefinition {
 
         String[] columnsArr = actualValueColumn.split("#");
         String[] valuesArr = expectedValue.split("#");
-        resultset.absolute(1);
-        for (int i = 0; i < columnsArr.length; i++) {
-            Assert.assertEquals(message,resultset.getString(columnsArr[i]), valuesArr[i]);
-        }
 
+        resultset.absolute(0);
+        for (int i = 0; i < columnsArr.length; i++) {
+
+            while (resultset.next()){
+                Assert.assertEquals(message,resultset.getString(columnsArr[i]), valuesArr[i]);
+            }
+        }
     }
 
-    @Given("Verifies that it contains datas : {string} values : {string} message : {string}")
+    @Given("Verifies that it CONTAINS datas : {string} values : {string} message : {string}")
     public void verifies_that_it_contains_datas_values_message(String actualValueColumn, String expectedValue, String message) throws SQLException {
+
+        // bu stepte CONTAINS asserti yapılıyor, assertEquals icin ayrı method var.
+
         String[] columnsArr = actualValueColumn.split("#");
         String[] valuesArr = expectedValue.split("#");
-        resultset.absolute(1);
-        for (int i = 0; i < columnsArr.length; i++) {
-            Assert.assertTrue(message,resultset.getString(columnsArr[i]).contains(valuesArr[i]));
-        }
 
+        resultset.absolute(0);
+        for (int i = 0; i < columnsArr.length; i++) {
+
+
+            while (resultset.next()){
+                Assert.assertTrue(message,resultset.getString(columnsArr[i]).contains(valuesArr[i]));
+            }
+
+
+        }
     }
 }
