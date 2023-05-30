@@ -2,10 +2,14 @@ package stepDefinitions;
 
 import java.sql.*;
 
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 import org.junit.Assert;
 import org.testng.asserts.SoftAssert;
+import utilities.API_Utils;
+import utilities.DB_Utils;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -84,12 +88,51 @@ public class DBStepDefinition {
         resultset.absolute(0);
         for (int i = 0; i < columnsArr.length; i++) {
 
-
             while (resultset.next()){
                 Assert.assertTrue(message,resultset.getString(columnsArr[i]).contains(valuesArr[i]));
             }
-
-
         }
     }
+
+    @And("Verify that the appointments made for the morning are less than the appointments for the afternoon")
+    public void verifyThatTheAppointmentsMadeForTheMorningAreLessThanTheAppointmentsForTheAfternoon() throws SQLException {
+        resultset.absolute(0);
+        resultset.next();
+        boolean control = resultset.getBoolean(1);
+        Assert.assertTrue(control);
+    }
+
+    @And("Verify the first five")
+    public void verifyTheFirstFive(List<Integer> list) throws SQLException {
+        resultset.absolute(0);
+
+        boolean control = true;
+        int index=0;
+        while (resultset.next()){
+            int data = resultset.getInt(1);
+
+            if (data != list.get(index)){
+                control = false;
+                break;
+            }
+            index++;
+        }
+        Assert.assertTrue(control);
+    }
+
+    @When("Creates execute query")
+    public void createsExecuteQuery(String query) {
+        DB_Utils.executeQuery(query);
+        resultset = DB_Utils.getResultset();
+    }
+
+
+    @When("Creates update query")
+    public void createsUpdateQuery(String query) throws SQLException {
+        DB_Utils.updateQuery(query);
+
+    }
+
+
+
 }
