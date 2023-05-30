@@ -417,7 +417,7 @@ Feature: API Tests
   and the message information in the response body is " Success " must be verified
 
     * Api user sets "api/addBloodGroup" path parameters.
-    * Creates request body as name "Jane Doe", isBloodGroup "A Rh +"
+    * Creates request body as datas : "name#is_blood_group" values : "Jane Doe#A Rh +"
     * Sends POST request with Body and valid Authorization
     * Verifies that the returned status code is 200
     * Verifies that the response message is "Success"
@@ -431,7 +431,7 @@ Feature: API Tests
   and the message information in the response body is " failed " must be verified
 
     * Api user sets "api/addBloodGroup" path parameters.
-    * Sets query parameters as id 9999
+    * Creates request body as datas : "id" values : "9999"
     * Sends POST request with Body and invalid Authorization
     * Verifies that the returned status code is 403
     * Verifies that the response message is "failed"
@@ -439,11 +439,10 @@ Feature: API Tests
 
   @US16 @US16C
   Scenario: [API_US16_TC01]-(1C)
-  Via API of the new blood group record to be created created , via API should be verified .
+            Via API of the new blood group record to be created created , via API should be verified .
     * Api user sets "api/addBloodGroup" path parameters.
-    * Creates request body as name "Jane Doe", isBloodGroup "A Rh +"
+    * Creates request body as datas : "name#is_blood_group" values : "Jane Doe#A Rh +"
     * Sends POST request with Body and valid Authorization
-    * Save addid number
     * Api user sets "api/getBloodGroup" path parameters.
     * Sends GET request valid Authorization
     * Verifies the newly created blood group record via APi.
@@ -456,7 +455,7 @@ Feature: API Tests
   and correct data (id) that the code is 200
   and the message information in the response body is " Success " must be verified
     * Api user sets "api/getFindingCategoryById" path parameters.
-    * Sets query parameters as id 1
+    * Creates request body as datas : "id" values : "1"
     * Sends GET request with Body and valid Authorization
     * Verifies that the returned status code is 200
     * Verifies that the response message is "Success"
@@ -469,17 +468,17 @@ Feature: API Tests
   and invalid data (id) the code is 403
   and the message information in the response body is " failed " must be verified
     * Api user sets "api/getFindingCategoryById" path parameters.
-    * Sets query parameters as id 9999
+    * Creates request body as datas : "id" values : "9999"
     * Sends GET request with Body with invalid Authorization
     * Verifies that the returned status code is 403
     * Verifies that the response message is "failed"
 
 
-  @dml
+  @US30 @US30C
   Scenario: [API_US30_TC01]-(1C)
   Inside the response body The data ( id, category , created_at ) must be validated.
     * Api user sets "api/getFindingCategoryById" path parameters.
-    * Sets query parameters as id 1
+    * Creates request body as datas : "id" values : "1"
     * Sends GET request with Body and valid Authorization
     * Verify that the datas are contained in the response body as "details.","id#category#created_at","1#ill category 2#2023-05-25 09:33:53"
 

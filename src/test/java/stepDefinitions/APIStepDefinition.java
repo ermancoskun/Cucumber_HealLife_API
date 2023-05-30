@@ -64,7 +64,7 @@ public class APIStepDefinition {
         response
                 .then()
                 .assertThat()
-                .body("lists.id", Matchers.hasItem(addId));
+                .body("lists.id", Matchers.hasItem(API_Utils.addId));
     }
 
 
@@ -274,7 +274,7 @@ public class APIStepDefinition {
 
 
 
-   @Then("id: of content with {string}, category : {string}, created_at : {string}, must be verified")
+    @Then("id: of content with {string}, category : {string}, created_at : {string}, must be verified")
 
     public void idOfContentWithCategoryCreated_atMustBeVerified(String id, String category, String created_at) {
 
@@ -523,8 +523,19 @@ public class APIStepDefinition {
         assertEquals("Unsuccessful change", actualID, API_Utils.addId);
 
     }
-}
 
+    @Given("Creates request body as datas : {string} values : {string}")
+    public void creates_request_body_as_datas_values(String data, String dataValue) {
+        String[] datasArr = data.split("#");
+        String[] dataValuesArr = dataValue.split("#");
+        reqBodyJson=new JSONObject();
+
+        for (int i = 0; i < datasArr.length; i++) {
+            reqBodyJson.put(datasArr[i],dataValuesArr[i]);
+        }
+        System.out.println(reqBodyJson);
+    }
+}
 
 
 
