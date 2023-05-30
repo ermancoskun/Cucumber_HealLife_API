@@ -119,20 +119,4 @@ public class DBStepDefinition {
         }
         Assert.assertTrue(control);
     }
-
-    @When("Creates execute query")
-    public void createsExecuteQuery(String query) {
-        DB_Utils.executeQuery(query);
-        resultset = DB_Utils.getResultset();
-    }
-
-
-    @When("Creates update query")
-    public void createsUpdateQuery(String query) throws SQLException {
-        DB_Utils.updateQuery(query);
-
-    }
-
-
-
 }
