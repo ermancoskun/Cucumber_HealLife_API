@@ -273,7 +273,9 @@ public class APIStepDefinition {
     }
 
 
+
    @Then("id: of content with {string}, category : {string}, created_at : {string}, must be verified")
+
     public void idOfContentWithCategoryCreated_atMustBeVerified(String id, String category, String created_at) {
 
         //JSONObject object = response.as(JSONObject.class);
@@ -518,11 +520,10 @@ public class APIStepDefinition {
     public void hasBeenVerifiedThatTheSentAddIddAndRepliedDataAreTheSame(String arg0) {
         JsonPath resJP = response.jsonPath();
         String actualID = resJP.getString(arg0);
-        assertEquals("Unsuccessful change", actualID, addId);
+        assertEquals("Unsuccessful change", actualID, API_Utils.addId);
 
     }
 }
-
 
 
 
