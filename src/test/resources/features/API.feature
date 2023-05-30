@@ -63,11 +63,11 @@ Feature: API Tests
 
   Scenario: [API_US20_TC01]-(1A) As an administrator, I should be able to access the relevant expenditure data by entering the id over the API connection .
 
-      Given Api user sets "api/getExpenseHeadById" path parameters.
-      Then Sets query parameters as id 5
-      And Sends GET request with Body and valid Authorization
-      Then Verifies that the returned status code is 200
-      Then Verifies that the response message is "Success"
+    Given Api user sets "api/getExpenseHeadById" path parameters.
+    Then Sets query parameters as id 5
+    And Sends GET request with Body and valid Authorization
+    Then Verifies that the returned status code is 200
+    Then Verifies that the response message is "Success"
 
   Scenario: [API_US20_TC01]-(1B) As an administrator, I should be able to access the relevant expenditure data by entering the id over the API connection .
 
@@ -87,9 +87,6 @@ Feature: API Tests
     Then Verifies that the returned status code is 200
     Then Verifies that the response message is "Success"
 
-
-
-  Scenario: [API_US20_TC01]-(1C) As an administrator, I should be able to access the relevant expenditure data by entering the id over the API connection .
 
 
   Scenario: [API_US20]-(TC01_C) As an administrator, I should be able to access the relevant expenditure data by entering the id over the API connection .
@@ -122,7 +119,7 @@ Feature: API Tests
     Then Verifies that the returned status code is 403
     Then Verifies that the response message is "failed"
 
-
+  @US2
   Scenario: [API_US15_TC01]-(1A) As an administrator, I should be able to access the relevant blood data by entering the id over the API connection .
     Given Api user sets "api/getBloodGroupById" path parameters.
     Then Sets query parameters as id 1
@@ -130,7 +127,7 @@ Feature: API Tests
     Then Verifies that the returned status code is 200
     Then Verifies that the response message is "Success"
 
-
+  @US2
   Scenario: [API_US15_TC01]-(1B)As an administrator, I should be able to access the relevant blood data by entering the id over the API connection .
     Given Api user sets "api/getBloodGroupById" path parameters.
     And Sets query parameters as id 123456
@@ -190,7 +187,7 @@ Feature: API Tests
     And Sends POST request with Body and invalid Authorization
     Then Verifies that the returned status code is 403
     Then Verifies that the response message is "failed"
-  @US
+  @US2
   Scenario: [API_US15_TC01]-(2)As an administrator, I should be able to access the relevant blood data by entering the id over the API connection .
     Given Api user sets "api/getBloodGroupById" path parameters.
     Then Sets query parameters as id 1
@@ -214,14 +211,14 @@ Feature: API Tests
     Then Verifies the newly created purpose record via APi.
 
 
-
+  @US2
   Scenario: [API_US07_TC01]-(1A) Link as an administrator registered to the system via visitor I should be able to update the purpose information .
     Given Api user sets "api/visitorsPurposeUpdate" path parameters.
     And Creates a request body with id "27" ,visitors_purpose "purpose update" , description "purpose update details"
     And Sends PATCH request with Body and valid Authorization
     Then Verifies that the returned status code is 200
     Then Verifies that the response message is "Success"
-
+  @US2
   Scenario: [API_US07_TC01]-(1B) Link as an administrator registered to the system via visitor I should be able to update the purpose information .
     Given Api user sets "api/visitorsPurposeUpdate" path parameters.
     And Creates a request body with id "123456" ,visitors_purpose "alo" , description "aloo"
@@ -231,22 +228,22 @@ Feature: API Tests
 
   @US2
   Scenario: [API_US07_TC01]-(2) Link as an administrator registered to the system via visitor I should be able to update the purpose information .
-  Given Api user sets "api/visitorsPurposeAdd" path parameters.
-  And Request body is:
+    Given Api user sets "api/visitorsPurposeAdd" path parameters.
+    And Request body is:
    """
   {
     "visitors_purpose":"special work",
     "description":"special word details"
 }
     """
-  Then Sends POST request with Body and valid Authorization
-  Given Api user sets "api/visitorsPurposeUpdate" path parameters.
-  And Sets query parametres as relivant id
-  And  Sends PATCH request with Body and valid Authorization
-  And Has been verified that the sent addIdd and replied "updateId" data are the same.
+    Then Sends POST request with Body and valid Authorization
+    Given Api user sets "api/visitorsPurposeUpdate" path parameters.
+    And Sets query parametres as relivant id
+    And  Sends PATCH request with Body and valid Authorization
+    And Has been verified that the sent addIdd and replied "updateId" data are the same.
 
 
-
+  @US2
   Scenario: [API_US07_TC01]-(3) Link as an administrator registered to the system via visitor I should be able to update the purpose information .
     Given Api user sets "api/visitorsPurposeUpdate" path parameters.
     And Creates a request body with id "27" ,visitors_purpose "purpose update" , description "purpose update details"
@@ -317,7 +314,7 @@ Feature: API Tests
     Given Sends GET request valid Authorization
     And Verifies that the returned status code is 200
     And Verifies that the response message is "Success"
-@furkann
+  @furkann
   Scenario: [API_US29->TC02] /api/getFindingCategory to your endpoint invalid A GET Request with authorization information status when sent that the code is 403 and the response the message information is " failed " must be verified
     Given Api user sets "api/getFindingCategory" path parameters.
     Then Sends GET request invalid Authorization
@@ -375,7 +372,7 @@ Feature: API Tests
     Given Api user sets "api/addFinding" path parameters.
     And Create a post body in finding with name "Dogrulama", description "deneme" and finding_category_id "2" .
     And Sends POST request with Body and valid Authorization
-    And Get AddId number.
+    And Save addid number
     Given Api user sets "api/getFindingById" path parameters.
     And Sets query parameters as id addID
     And Sends GET request with Body and valid Authorization
@@ -420,7 +417,7 @@ Feature: API Tests
   and the message information in the response body is " Success " must be verified
 
     * Api user sets "api/addBloodGroup" path parameters.
-    * Creates request body as datas : "name#is_blood_group", values : "Jane Doe#A Rh +"
+    * Creates request body as datas : "name#is_blood_group" values : "Jane Doe#A Rh +"
     * Sends POST request with Body and valid Authorization
     * Verifies that the returned status code is 200
     * Verifies that the response message is "Success"
@@ -434,7 +431,7 @@ Feature: API Tests
   and the message information in the response body is " failed " must be verified
 
     * Api user sets "api/addBloodGroup" path parameters.
-    * Creates request body as datas : "id", values : "9999"
+    * Creates request body as datas : "id" values : "9999"
     * Sends POST request with Body and invalid Authorization
     * Verifies that the returned status code is 403
     * Verifies that the response message is "failed"
@@ -444,7 +441,7 @@ Feature: API Tests
   Scenario: [API_US16_TC01]-(1C)
             Via API of the new blood group record to be created created , via API should be verified .
     * Api user sets "api/addBloodGroup" path parameters.
-    * Creates request body as datas : "name#is_blood_group", values : "Jane Doe#A Rh +"
+    * Creates request body as datas : "name#is_blood_group" values : "Jane Doe#A Rh +"
     * Sends POST request with Body and valid Authorization
     * Api user sets "api/getBloodGroup" path parameters.
     * Sends GET request valid Authorization
@@ -458,7 +455,7 @@ Feature: API Tests
   and correct data (id) that the code is 200
   and the message information in the response body is " Success " must be verified
     * Api user sets "api/getFindingCategoryById" path parameters.
-    * Creates request body as datas : "id", values : "1"
+    * Creates request body as datas : "id" values : "1"
     * Sends GET request with Body and valid Authorization
     * Verifies that the returned status code is 200
     * Verifies that the response message is "Success"
@@ -471,7 +468,7 @@ Feature: API Tests
   and invalid data (id) the code is 403
   and the message information in the response body is " failed " must be verified
     * Api user sets "api/getFindingCategoryById" path parameters.
-    * Creates request body as datas : "id", values : "9999"
+    * Creates request body as datas : "id" values : "9999"
     * Sends GET request with Body with invalid Authorization
     * Verifies that the returned status code is 403
     * Verifies that the response message is "failed"
@@ -481,7 +478,7 @@ Feature: API Tests
   Scenario: [API_US30_TC01]-(1C)
   Inside the response body The data ( id, category , created_at ) must be validated.
     * Api user sets "api/getFindingCategoryById" path parameters.
-    * Creates request body as datas : "id", values : "1"
+    * Creates request body as datas : "id" values : "1"
     * Sends GET request with Body and valid Authorization
     * Verify that the datas are contained in the response body as "details.","id#category#created_at","1#ill category 2#2023-05-25 09:33:53"
 
@@ -706,11 +703,11 @@ Feature: API Tests
 
   Scenario:[API_US38->TC01]-(1B) Registered to the system via API connection as an administrator I should be able to update the finding information .
 
-  Given Api user sets "api/updateFinding" path parameters.
-  And Sets query parameters as id 123456
-  And Sends PATCH request with Body and invalid Authorization
-  Then Verifies that the returned status code is 403
-  Then Verifies that the response message is "failed"
+    Given Api user sets "api/updateFinding" path parameters.
+    And Sets query parameters as id 123456
+    And Sends PATCH request with Body and invalid Authorization
+    Then Verifies that the returned status code is 403
+    Then Verifies that the response message is "failed"
 
 
   Scenario:[API_US38->TC02] As an administrator to hospital expenses via API connection I should be able to reach .

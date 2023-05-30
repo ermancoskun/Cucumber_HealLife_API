@@ -13,7 +13,7 @@ Feature: DB_Testing
       |  Admin     | User    |admin@gmail.com|
 
 
-  @DB6 @dg
+  @DB06 @dg
   Scenario: DB_US06
 
     * User sets the database connection
