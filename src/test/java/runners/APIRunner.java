@@ -15,10 +15,8 @@ import org.junit.runner.RunWith;
         },
         features = "src/test/resources/features",
         glue = {"stepDefinitions", "hooks"},
-        tags = "@db10",
+        tags = "@US16 or @US30" ,
         dryRun = false
-
-
 
 
 )
