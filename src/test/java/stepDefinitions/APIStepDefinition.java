@@ -18,19 +18,18 @@ import utilities.API_Utils;
 import static io.restassured.RestAssured.given;
 import static org.junit.Assert.assertEquals;
 
-
 public class APIStepDefinition {
-    SoftAssert softAssert = new SoftAssert();
-    public static String fullPath;
+  SoftAssert softAssert = new SoftAssert();
+public static String fullPath;
 
-    public static JSONObject reqBodyJson;
-    public static JSONObject expBodyJson;
-    public static Response response;
-    public static String addId;
-    public static JsonPath respJS;
+public static JSONObject reqBodyJson;
+public static JSONObject expBodyJson;
+public static Response response;
+public static String addId;
+public static JsonPath respJS;
 
-    @Given("Api user sets {string} path parameters.")
-    public void apiUserSetsPathParameters(String rawPaths) {
+@Given("Api user sets {string} path parameters.")
+public void apiUserSetsPathParameters(String rawPaths) {
 
         // api/opdList
         String[] paths = rawPaths.split("/"); // [ "api","register"]
@@ -38,149 +37,149 @@ public class APIStepDefinition {
         StringBuilder tempPath = new StringBuilder("/{");
 
         for (int i = 0; i < paths.length; i++) {
-            String key = "pp" + i; //pp0 pp1 pp2
-            String value = paths[i].trim(); //solunda sagında bosluk varsa silmek icibn trim kulandık
-            HooksAPI.spec.pathParam(key, value);
-            tempPath.append(key + "}/{");
-            System.out.println("value = " + value);
+        String key = "pp" + i; //pp0 pp1 pp2
+        String value = paths[i].trim(); //solunda sagında bosluk varsa silmek icibn trim kulandık
+        HooksAPI.spec.pathParam(key, value);
+        tempPath.append(key + "}/{");
+        System.out.println("value = " + value);
         }
 
         tempPath.deleteCharAt(tempPath.lastIndexOf("{"));
         tempPath.deleteCharAt(tempPath.lastIndexOf("/"));
 
         fullPath = tempPath.toString();
-    }
+        }
 
 
-    @Given("Creates request body as name {string}, isBloodGroup {string}")
-    public void creates_a_request_body_as_name_is_blood_group(String name, String bloodGroup) {
+@Given("Creates request body as name {string}, isBloodGroup {string}")
+public void creates_a_request_body_as_name_is_blood_group(String name, String bloodGroup) {
         reqBodyJson = API_Utils.createABody(name, bloodGroup, true);
         System.out.println(reqBodyJson.toString());
-    }
+        }
 
 
-    @Given("Verifies the newly created blood group record via APi.")
-    public void verifies_the_newly_created_blood_group_record_via_api() {
+@Given("Verifies the newly created blood group record via APi.")
+public void verifies_the_newly_created_blood_group_record_via_api() {
         response
-                .then()
-                .assertThat()
-                .body("lists.id", Matchers.hasItem(API_Utils.addId));
-    }
+        .then()
+        .assertThat()
+        .body("lists.id", Matchers.hasItem(API_Utils.addId));
+        }
 
 
-    @Then("Verifies that the returned status code is {int}")
-    public void verifiesThatTheReturnedStatusCodeIs(int statusCode) {
+@Then("Verifies that the returned status code is {int}")
+public void verifiesThatTheReturnedStatusCodeIs(int statusCode) {
         softAssert.assertEquals(response.getStatusCode(), statusCode, "Status code value is NOT " + statusCode);
-    }
+        }
 
 
-    @Then("Verifies that the response message is {string}")
-    public void verifiesThatTheResponseMessageIs(String message) {
+@Then("Verifies that the response message is {string}")
+public void verifiesThatTheResponseMessageIs(String message) {
 
         JsonPath respJS = response.jsonPath();
         softAssert.assertEquals(respJS.getString("message"), message, "Returned message is not true");
 
-    }
+        }
 
-    @And("Sets query parameters as id {int}")
-    public void setsQueryParametersAsId(int id) {
+@And("Sets query parameters as id {int}")
+public void setsQueryParametersAsId(int id) {
         reqBodyJson = API_Utils.createABody(id);
-    }
+        }
 
-    @And("Sends GET request with Body and valid Authorization")
-    public void sendsGETRequestWithBodyAndValidAuthorization() {
+@And("Sends GET request with Body and valid Authorization")
+public void sendsGETRequestWithBodyAndValidAuthorization() {
         response = API_Utils.getRequestWithBody(fullPath, reqBodyJson);
-    }
+        }
 
-    @And("Sends GET request with Body with invalid Authorization")
-    public void sendsGETRequestWithBodyWithInvalidAuthorization() {
+@And("Sends GET request with Body with invalid Authorization")
+public void sendsGETRequestWithBodyWithInvalidAuthorization() {
         String invalidToken = "H3h3VhOQvXU8Ql83V6kgSeKQ6hREZk";
         String invalidToken2 = "ZBRqKnnTiE9iSdHVCdMPbaP44dClmz";
         System.out.println(fullPath);
         response = given()
-                .spec(HooksAPI.spec)
-                .header("Authorization", "Bearer " + "ZBRqKnnTiE9iSdHVCdMPbaP44dClmz")
-                .contentType(ContentType.JSON)
-                .when()
-                .body(reqBodyJson.toString())
-                .get(fullPath);
+        .spec(HooksAPI.spec)
+        .header("Authorization", "Bearer " + "ZBRqKnnTiE9iSdHVCdMPbaP44dClmz")
+        .contentType(ContentType.JSON)
+        .when()
+        .body(reqBodyJson.toString())
+        .get(fullPath);
         response.prettyPrint();
-    }
+        }
 
-    @Given("Sends POST request with Body and valid Authorization")
-    public void sends_post_request_with_body_and_valid_authorization() {
+@Given("Sends POST request with Body and valid Authorization")
+public void sends_post_request_with_body_and_valid_authorization() {
 
         response = API_Utils.postRequest(fullPath, reqBodyJson);
-    }
+        }
 
-    @And("Sends POST request with Body and invalid Authorization")
-    public void sendsPOSTRequestWithBodyAndInvalidAuthorization() {
+@And("Sends POST request with Body and invalid Authorization")
+public void sendsPOSTRequestWithBodyAndInvalidAuthorization() {
         String invalidToken = HooksAPI.token + "invalid";
         response = given().headers("Authorization",
-                        "Bearer " + invalidToken,
-                        "Content-Type",
-                        ContentType.JSON,
-                        "Accept",
-                        ContentType.JSON).spec(HooksAPI.spec).contentType(ContentType.JSON)
-                .when().body(reqBodyJson.toString())
-                .post(fullPath);
+        "Bearer " + invalidToken,
+        "Content-Type",
+        ContentType.JSON,
+        "Accept",
+        ContentType.JSON).spec(HooksAPI.spec).contentType(ContentType.JSON)
+        .when().body(reqBodyJson.toString())
+        .post(fullPath);
         response.prettyPrint();
 
-    }
+        }
 
-    @And("Sends PATCH request with Body and valid Authorization")
-    public void sendsPATCHRequestWithBodyAndValidAuthorization() {
+@And("Sends PATCH request with Body and valid Authorization")
+public void sendsPATCHRequestWithBodyAndValidAuthorization() {
 
         response = API_Utils.patchRequest(fullPath, reqBodyJson);
-    }
+        }
 
-    @And("Sends PATCH request with Body and invalid Authorization")
-    public void sendsPATCHRequestWithBodyAndInvalidAuthorization() {
+@And("Sends PATCH request with Body and invalid Authorization")
+public void sendsPATCHRequestWithBodyAndInvalidAuthorization() {
         JSONObject reqbodys = new JSONObject();
         reqbodys.put("id", 77);
         response = given()
-                .spec(HooksAPI.spec)
-                .headers("Authorization", "Bearer " + "adasdasdasdasdasdasd")
-                .contentType(ContentType.JSON)
-                // .header("Accept","application/json")
-                .when().body(reqbodys.toString())
-                .get(fullPath);
+        .spec(HooksAPI.spec)
+        .headers("Authorization", "Bearer " + "adasdasdasdasdasdasd")
+        .contentType(ContentType.JSON)
+        // .header("Accept","application/json")
+        .when().body(reqbodys.toString())
+        .get(fullPath);
         response.prettyPrint();
-    }
+        }
 
-    @And("Sends DELETE request with Body and invalid Authorization")
-    public void sendsDELETERequestWithBodyAndInvalidAuthorization() {
+@And("Sends DELETE request with Body and invalid Authorization")
+public void sendsDELETERequestWithBodyAndInvalidAuthorization() {
         String invalidToken = "JQRvVtb9uMWEaS4sth5Hj8HsA2Pvkh";
         JSONObject object = new JSONObject();
         object.put("id", addId);
         response = RestAssured.given().spec(HooksAPI.spec).
-                headers("Authorization", "Bearer " + invalidToken)
-                .contentType(ContentType.JSON)
-                .when()
-                .body(object.toString())
-                .delete(fullPath);
+        headers("Authorization", "Bearer " + invalidToken)
+        .contentType(ContentType.JSON)
+        .when()
+        .body(object.toString())
+        .delete(fullPath);
         response.prettyPrint();
         Assert.assertEquals(403, response.getStatusCode());
-    }
+        }
 
-    @And("Save addid number")
-    public void save_addid_number() {
+@And("Save addid number")
+public void save_addid_number() {
         JsonPath respJP = response.jsonPath();
         addId = respJP.getString("addId");
         System.out.println("addId = " + addId);
-    }
+        }
 
 
-    @And("Sends GET request with invalid Authorization")
-    public void sendsGETRequestWithInvalidAuthorization() {
+@And("Sends GET request with invalid Authorization")
+public void sendsGETRequestWithInvalidAuthorization() {
         response = API_Utils.getRequestWithInvalidAuthorization(fullPath);
 
 
-    }
+        }
 
-    //And Creates a request body with exp_category "business" ,description "business expense" , is_active "yes", is_deleted "no" in ExpenseHead.
-    @And("Creates a request body with exp_category {string} ,description {string} , is_active {string}, is_deleted {string} in ExpenseHead.")
-    public void createsARequestBodyWithExp_categoryDescriptionIs_activeIs_deletedInExpenseHead(String exp_category, String description, String is_active, String is_deleted) {
+//And Creates a request body with exp_category "business" ,description "business expense" , is_active "yes", is_deleted "no" in ExpenseHead.
+@And("Creates a request body with exp_category {string} ,description {string} , is_active {string}, is_deleted {string} in ExpenseHead.")
+public void createsARequestBodyWithExp_categoryDescriptionIs_activeIs_deletedInExpenseHead(String exp_category, String description, String is_active, String is_deleted) {
         reqBodyJson = new JSONObject();
         reqBodyJson.put("exp_category", exp_category);
         reqBodyJson.put("description", description);
@@ -189,10 +188,10 @@ public class APIStepDefinition {
 
         System.out.println(reqBodyJson.toString());
 
-    }
+        }
 
-    @Then("Verifies in the response body with exp_category {string}, description {string}, is_active {string}, is_deleted {string} in ExpenseHead.")
-    public void verifiesInTheResponseBodyWithExp_categoryDescriptionIs_activeIs_deletedInExpenseHead(String exp_category, String description, String is_active, String is_deleted) {
+@Then("Verifies in the response body with exp_category {string}, description {string}, is_active {string}, is_deleted {string} in ExpenseHead.")
+public void verifiesInTheResponseBodyWithExp_categoryDescriptionIs_activeIs_deletedInExpenseHead(String exp_category, String description, String is_active, String is_deleted) {
 
         JsonPath jsonPath = response.jsonPath();
         assertEquals(exp_category, jsonPath.get("lists.exp_category[-1]"));
@@ -200,54 +199,54 @@ public class APIStepDefinition {
         assertEquals(is_active, jsonPath.get("lists.is_active[-1]"));
         assertEquals(is_deleted, jsonPath.get("lists.is_deleted[-1]"));
 
-    }
+        }
 
 
-    @And("Sends GET request with valid Authorization")
-    public void sendsGETRequestWithValidAuthorization() {
+@And("Sends GET request with valid Authorization")
+public void sendsGETRequestWithValidAuthorization() {
         response = API_Utils.getRequest(fullPath);
-    }
+        }
 
-    @And("Sends GET request valid Authorization")
-    public void sendsGETRequestValidAuthorization() {
+@And("Sends GET request valid Authorization")
+public void sendsGETRequestValidAuthorization() {
         response = API_Utils.getRequest(fullPath);
-    }
+        }
 
 
-    @And("Sends GET request invalid Authorization")
-    public void sendsGETRequestInvalidAuthorization() {
+@And("Sends GET request invalid Authorization")
+public void sendsGETRequestInvalidAuthorization() {
         String invalidToken = HooksAPI.token + "invalid";
         response = given()
-                .spec(HooksAPI.spec)
-                .headers("Authorization", "Bearer " + invalidToken)
-                .contentType(ContentType.JSON)
-                .when()
-                .get(fullPath);
+        .spec(HooksAPI.spec)
+        .headers("Authorization", "Bearer " + invalidToken)
+        .contentType(ContentType.JSON)
+        .when()
+        .get(fullPath);
         response.prettyPrint();
-    }
+        }
 
 
 
-    @Given("Verify that the datas are contained in the response body as {string},{string},{string}")
-    public void verify_that_the_datas_are_contained_in_the_response_body_as(String rspnBody, String
-            data, String dataValue) {
+@Given("Verify that the datas are contained in the response body as {string},{string},{string}")
+public void verify_that_the_datas_are_contained_in_the_response_body_as(String rspnBody, String
+        data, String dataValue) {
         String[] datasArr = data.split("#");
         String[] dataValuesArr = dataValue.split("#");
 
         for (int i = 0; i < datasArr.length; i++) {
-            response
-                    .then()
-                    .assertThat()
-                    .body(rspnBody + datasArr[i], Matchers.equalTo(dataValuesArr[i]));
-            System.out.println(datasArr[i]);
-            System.out.println(dataValuesArr[i]);
+        response
+        .then()
+        .assertThat()
+        .body(rspnBody + datasArr[i], Matchers.equalTo(dataValuesArr[i]));
+        System.out.println(datasArr[i]);
+        System.out.println(dataValuesArr[i]);
         }
-    }
+        }
 
 
-    @And("Verifies in the response body with id {string}, is visitors_purpose  {string}, description {string}, created_at {string}  must be verified .")
-    public void verifiesInTheResponseBodyWithIdIsVisitors_purposeDescriptionCreated_atMustBeVerified(String
-                                                                                                             id, String visitors_purpose, String description, String created_at) {
+@And("Verifies in the response body with id {string}, is visitors_purpose  {string}, description {string}, created_at {string}  must be verified .")
+public void verifiesInTheResponseBodyWithIdIsVisitors_purposeDescriptionCreated_atMustBeVerified(String
+        id, String visitors_purpose, String description, String created_at) {
         JsonPath resJp = response.jsonPath();
         assertEquals(id, resJp.get("lists[6].id"));
         assertEquals(visitors_purpose, resJp.get("lists[6].visitors_purpose"));
@@ -255,28 +254,28 @@ public class APIStepDefinition {
         assertEquals(created_at, resJp.get("lists[6].created_at"));
 
 
-    }
+        }
 
-    @And("Verifies in the responsee body with id {string}, is visitors_ purpose  {string}, description {string}, created_at {string}  must be verified .")
-    public void verifiesInTheResponseeBodyWithIdIsVisitors_PurposeDescriptionCreated_atMustBeVerified
-            (String id, String visitors_purpose, String description, String created_at) {
+@And("Verifies in the responsee body with id {string}, is visitors_ purpose  {string}, description {string}, created_at {string}  must be verified .")
+public void verifiesInTheResponseeBodyWithIdIsVisitors_PurposeDescriptionCreated_atMustBeVerified
+        (String id, String visitors_purpose, String description, String created_at) {
         JsonPath resJp = response.jsonPath();
         assertEquals(id, resJp.get("lists[14].id"));
         assertEquals(visitors_purpose, resJp.get("lists[14].visitors_purpose"));
         assertEquals(description, resJp.get("lists[14].description"));
         assertEquals(created_at, resJp.get("lists[14].created_at"));
-    }
+        }
 
-    @And("Request body is:")
-    public void requestBodyIs(String body) {
+@And("Request body is:")
+public void requestBodyIs(String body) {
         reqBodyJson = new JSONObject(body);
-    }
+        }
 
 
 
-    @Then("id: of content with {string}, category : {string}, created_at : {string}, must be verified")
+@Then("id: of content with {string}, category : {string}, created_at : {string}, must be verified")
 
-    public void idOfContentWithCategoryCreated_atMustBeVerified(String id, String category, String created_at) {
+public void idOfContentWithCategoryCreated_atMustBeVerified(String id, String category, String created_at) {
 
         //JSONObject object = response.as(JSONObject.class);
         JsonPath path = response.jsonPath();
@@ -285,27 +284,27 @@ public class APIStepDefinition {
         //Assert.assertNotEquals(category,path.get("lists["+dinamikId+"].category"));
         //Assert.assertNotEquals(created_at,path.get("lists["+dinamikId+"].created_at"));
         response.prettyPrint();
-    }
+        }
 
 
 
-    @And("Sends DELETE request with Body and valid Authorization")
-    public void sendsDELETERequestWithBodyAndValidAuthorization() {
+@And("Sends DELETE request with Body and valid Authorization")
+public void sendsDELETERequestWithBodyAndValidAuthorization() {
         response = API_Utils.deleteRequest(fullPath);
-    }
+        }
 
-    @And("Verifies in the response body with id {string}")
-    public void verifiesInTheResponseBodyWithId(String id) {
+@And("Verifies in the response body with id {string}")
+public void verifiesInTheResponseBodyWithId(String id) {
         JsonPath resJp = response.jsonPath();
         assertEquals(id, resJp.get("lists.id"));
 
 
-    }
+        }
 
 
-    @Then("Creates an expected body with id {string}, exp_category {string},description {string} ,is_active {string}, is_deleted {string}, created_at {string}  in ExpenseHead.")
-    public void createsAnExpectedBodyWithIdExp_categoryDescriptionIs_activeIs_deletedCreated_atInExpenseHead(
-            String id, String exp_category, String description, String is_active, String is_deleted, String created_at) {
+@Then("Creates an expected body with id {string}, exp_category {string},description {string} ,is_active {string}, is_deleted {string}, created_at {string}  in ExpenseHead.")
+public void createsAnExpectedBodyWithIdExp_categoryDescriptionIs_activeIs_deletedCreated_atInExpenseHead(
+        String id, String exp_category, String description, String is_active, String is_deleted, String created_at) {
         reqBodyJson = API_Utils.createABody(id, exp_category, description, is_active, is_deleted, created_at);
       /*
         {
@@ -322,11 +321,11 @@ public class APIStepDefinition {
     }
     }
          */
-    }
+        }
 
-    @And("Verifies in the response body with id {string}, exp_category {string},description {string} , is_active {string}, is_deleted {string}, created_at {string}  in ExpenseHead.")
-    public void verifiesInTheResponseBodyWithIdExp_categoryDescriptionIs_activeIs_deletedCreated_atInExpenseHead
-            (String id, String exp_category, String description, String is_active, String is_deleted, String created_at) {
+@And("Verifies in the response body with id {string}, exp_category {string},description {string} , is_active {string}, is_deleted {string}, created_at {string}  in ExpenseHead.")
+public void verifiesInTheResponseBodyWithIdExp_categoryDescriptionIs_activeIs_deletedCreated_atInExpenseHead
+        (String id, String exp_category, String description, String is_active, String is_deleted, String created_at) {
         JsonPath resJp = response.jsonPath();
         assertEquals(id, resJp.get("details.id"));
         assertEquals(exp_category, resJp.get("details.exp_category"));
@@ -334,10 +333,10 @@ public class APIStepDefinition {
         assertEquals(is_active, resJp.get("details.is_active"));
         assertEquals(is_deleted, resJp.get("details.is_deleted"));
         assertEquals(created_at, resJp.get("details.created_at"));
-    }
+        }
 
-    @And("Verifies in the response body with id {string}, name {string}, description {string}, finding_category_id : {string}, created_at : {string}, category : {string} in Finding")
-    public void verifiesInTheResponseBodyWithIdNameDescriptionFinding_category_idCreated_atCategoryInFinding(String id, String name, String description, String finding_category_id, String created_at, String category) {
+@And("Verifies in the response body with id {string}, name {string}, description {string}, finding_category_id : {string}, created_at : {string}, category : {string} in Finding")
+public void verifiesInTheResponseBodyWithIdNameDescriptionFinding_category_idCreated_atCategoryInFinding(String id, String name, String description, String finding_category_id, String created_at, String category) {
         JsonPath respJp = response.jsonPath();
         assertEquals(id, respJp.getString("lists[6].id"));
         assertEquals(name, respJp.getString("lists[6].name"));
@@ -346,15 +345,15 @@ public class APIStepDefinition {
         assertEquals(created_at, respJp.getString("lists[6].created_at"));
         assertEquals(category, respJp.getString("lists[6].category"));
         //bu son satır mainde
-    }
+        }
 
-    @Then("Creates an expected body with id {string}, name {string}, description {string}, finding_category_id : {string}, created_at : {string}, category : {string} .")
-    public void createsAnExpectedBodyWithIdNameDescriptionFinding_category_idCreated_atCategory(String id, String name, String description, String finding_category_id, String created_at, String category) {
+@Then("Creates an expected body with id {string}, name {string}, description {string}, finding_category_id : {string}, created_at : {string}, category : {string} .")
+public void createsAnExpectedBodyWithIdNameDescriptionFinding_category_idCreated_atCategory(String id, String name, String description, String finding_category_id, String created_at, String category) {
         reqBodyJson = API_Utils.createABody(id, name, description, finding_category_id, created_at, category);
-    }
+        }
 
-    @And("Verifies in the response body with id {string}, name {string}, description {string}, finding_category_id : {string}, created_at : {string}, category : {string} in ExpenseHead.")
-    public void verifiesInTheResponseBodyWithIdNameDescriptionFinding_category_idCreated_atCategory(String id, String name, String description, String finding_category_id, String created_at, String category) {
+@And("Verifies in the response body with id {string}, name {string}, description {string}, finding_category_id : {string}, created_at : {string}, category : {string} in ExpenseHead.")
+public void verifiesInTheResponseBodyWithIdNameDescriptionFinding_category_idCreated_atCategory(String id, String name, String description, String finding_category_id, String created_at, String category) {
 
         JsonPath respJp = response.jsonPath();
         assertEquals(id, respJp.getString("lists[10].id"));
@@ -364,40 +363,40 @@ public class APIStepDefinition {
         assertEquals(created_at, respJp.getString("lists[10].created_at"));
         assertEquals(category, respJp.getString("lists[10].category"));
 
-    }
+        }
 
-    @Then("Creat get request exp_category is updated be verified")
-    public void creatGetRequestExp_categoryIsUpdatedBeVerified() {
+@Then("Creat get request exp_category is updated be verified")
+public void creatGetRequestExp_categoryIsUpdatedBeVerified() {
 
 
         JsonPath respJp = response.jsonPath();
 
         Assert.assertEquals(respJp.getString("details.exp_category"), "stationary update");
 
-    }
+        }
 
-    @And("Creates body and Sends Patch request body valid Authorization with {string}, {string}, {string}")
-    public void createsBodyAndSendsPatchRequestBodyValidAuthorizationWith(String id, String name, String
-            is_blood_group) {
+@And("Creates body and Sends Patch request body valid Authorization with {string}, {string}, {string}")
+public void createsBodyAndSendsPatchRequestBodyValidAuthorizationWith(String id, String name, String
+        is_blood_group) {
         reqBodyJson = API_Utils.createABody(1, "DirtBlood", "AB+");
-    }
+        }
 
 
-    @Given("It is verified that the id information sent is the same as the id in the patch request body")
-    public void ıtIsVerifiedThatTheIdInformationSentIsTheSameAsTheIdInThePatchRequestBody() {
+@Given("It is verified that the id information sent is the same as the id in the patch request body")
+public void ıtIsVerifiedThatTheIdInformationSentIsTheSameAsTheIdInThePatchRequestBody() {
         response = given().spec(HooksAPI.spec).
-                headers("Authorization", "Bearer " + HooksAPI.token)
-                .header("Accept", "application/json")
-                .contentType(ContentType.JSON)
-                .when()
-                .body(reqBodyJson.toString())
-                .patch(fullPath);
+        headers("Authorization", "Bearer " + HooksAPI.token)
+        .header("Accept", "application/json")
+        .contentType(ContentType.JSON)
+        .when()
+        .body(reqBodyJson.toString())
+        .patch(fullPath);
         response.prettyPrint();
 
-    }
+        }
 
-    @And("Creates request body as name {string}, finding_category_id {string}")
-    public void createsRequestBodyAsNameFinding_category_id(String arg0, String arg1) {
+@And("Creates request body as name {string}, finding_category_id {string}")
+public void createsRequestBodyAsNameFinding_category_id(String arg0, String arg1) {
 
         reqBodyJson = API_Utils.createABody(arg0, arg1, true);
 
@@ -408,36 +407,36 @@ public class APIStepDefinition {
         expBodyJson.put("updateId", 22);
         Assert.assertEquals(expBodyJson.get("updateId"), resJP.get("updateId"));
 
-    }
+        }
 
 
-    @Then("Has been verified that the sent addId and replied {string} data are the same.")
-    public void hasBeenVerifiedThatTheSentAddIdAndRepliedDataAreTheSame(String changedData) {
+@Then("Has been verified that the sent addId and replied {string} data are the same.")
+public void hasBeenVerifiedThatTheSentAddIdAndRepliedDataAreTheSame(String changedData) {
         JsonPath resJP = response.jsonPath();
         String actualID = resJP.getString(changedData);
         assertEquals("Unsuccessful change", actualID, addId);
-    }
+        }
 
 
-    @Then("Verifies the newly created purpose record via APi.")
-    public void verifiesTheNewlyCreatedPurposeRecordViaAPi() {
+@Then("Verifies the newly created purpose record via APi.")
+public void verifiesTheNewlyCreatedPurposeRecordViaAPi() {
         response
-                .then()
-                .assertThat()
-                .body("lists.id", Matchers.hasItem(addId));
+        .then()
+        .assertThat()
+        .body("lists.id", Matchers.hasItem(addId));
 
 
-    }
+        }
 
-    @And("Create a post body in finding with name {string}, description {string} and finding_category_id {string} .")
-    public void createAPostBodyInFindingWithNameDescriptionAndFinding_category_id(String name, String
-            description, String finding_category_id) {
+@And("Create a post body in finding with name {string}, description {string} and finding_category_id {string} .")
+public void createAPostBodyInFindingWithNameDescriptionAndFinding_category_id(String name, String
+        description, String finding_category_id) {
         reqBodyJson = API_Utils.createABody2(name, description, finding_category_id);
-    }
+        }
 
 
-    @And("Creates a request body with id {string} ,visitors_purpose {string} , description {string}")
-    public void createsARequestBodyWithIdVisitors_purposeDescription(String arg0, String arg1, String arg2) {
+@And("Creates a request body with id {string} ,visitors_purpose {string} , description {string}")
+public void createsARequestBodyWithIdVisitors_purposeDescription(String arg0, String arg1, String arg2) {
         reqBodyJson = new JSONObject();
         reqBodyJson.put("id", arg0);
         reqBodyJson.put("visitors_purpose", arg1);
@@ -445,101 +444,94 @@ public class APIStepDefinition {
 
         System.out.println(reqBodyJson.toString());
 
-    }
+        }
 
 
-    @And("Sets query parameters as id addID")
-    public void setsQueryParametersAsIdAddID() {
+@And("Sets query parameters as id addID")
+public void setsQueryParametersAsIdAddID() {
         reqBodyJson = new JSONObject();
         reqBodyJson.put("id", addId);
 
-    }
+        }
 
-    @And("Verifies in the response body with name {string}, description {string} and finding_category_id {string} .")
-    public void verifiesInTheResponseBodyWithNameDescriptionAndFinding_category_id(String name, String
-            description, String finding_category_id) {
+@And("Verifies in the response body with name {string}, description {string} and finding_category_id {string} .")
+public void verifiesInTheResponseBodyWithNameDescriptionAndFinding_category_id(String name, String
+        description, String finding_category_id) {
 
         respJS = response.jsonPath();
         assertEquals(name, respJS.get("details.name"));
         assertEquals(description, respJS.get("details.description"));
         assertEquals(finding_category_id, respJS.get("details.finding_category_id"));
-    }
+        }
 
 
-    @Then("Sends PATCH request with Body and valid Authorizations")
-    public void sendsPATCHRequestWithBodyAndValidAuthorizations() {
+@Then("Sends PATCH request with Body and valid Authorizations")
+public void sendsPATCHRequestWithBodyAndValidAuthorizations() {
         JSONObject res = new JSONObject();
         res.put("id", "4");
         res.put("visitors_purpose", "purpose update4");
 
         response = given()
-                .spec(HooksAPI.spec)
-                .headers("Authorization", "Bearer " + HooksAPI.token)
-                .contentType(ContentType.JSON)
-                .when()
-                .body(res.toString())
-                .patch(fullPath);
+        .spec(HooksAPI.spec)
+        .headers("Authorization", "Bearer " + HooksAPI.token)
+        .contentType(ContentType.JSON)
+        .when()
+        .body(res.toString())
+        .patch(fullPath);
         response.prettyPrint();
-    }
+        }
 
-    @Then("Verifies the newly created purpose record via APis.")
-    public void verifiesTheNewlyCreatedPurposeRecordViaAPis() {
+@Then("Verifies the newly created purpose record via APis.")
+public void verifiesTheNewlyCreatedPurposeRecordViaAPis() {
         response
-                .then()
-                .assertThat()
-                .body("lists.visitors_purpose", Matchers.hasItem("purpose update4"));
-    }
+        .then()
+        .assertThat()
+        .body("lists.visitors_purpose", Matchers.hasItem("purpose update4"));
+        }
 
-    @And("Sets query parametres as relivant id")
-    public void setsQueryParametresAsRelivantId() {
+@And("Sets query parametres as relivant id")
+public void setsQueryParametresAsRelivantId() {
         reqBodyJson = new JSONObject();
         reqBodyJson.put("id", API_Utils.addId);
-    }
+        }
 
-    @And("new Request body is")
-    public void newRequestBodyIs() {
+@And("new Request body is")
+public void newRequestBodyIs() {
         String body = "{\n" +
-                "            \"id\": " + API_Utils.addId + ",\n" +
-                "            \"exp_category\": \"stationary update\",\n" +
-                "            \"description\": \"stationary expense\",\n" +
-                "            \"is_active\": \"yes\",\n" +
-                "            \"is_deleted\": \"no\"\n" +
-                "} ";
+        "            \"id\": " + API_Utils.addId + ",\n" +
+        "            \"exp_category\": \"stationary update\",\n" +
+        "            \"description\": \"stationary expense\",\n" +
+        "            \"is_active\": \"yes\",\n" +
+        "            \"is_deleted\": \"no\"\n" +
+        "} ";
 
         reqBodyJson = new JSONObject(body);
         System.out.println(reqBodyJson.toString());
-    }
+        }
 
-    @And("Creates body and Sends Patch request body valid Authorization with {string}, {string}, {string},{string},{string}")
-    public void createsBodyAndSendsPatchRequestValidAuthorizationWith(String id, String exp_category, String description, String is_active, String is_deleted) {
+@And("Creates body and Sends Patch request body valid Authorization with {string}, {string}, {string},{string},{string}")
+public void createsBodyAndSendsPatchRequestValidAuthorizationWith(String id, String exp_category, String description, String is_active, String is_deleted) {
         reqBodyJson = API_Utils.createABody(21, "stationary 1", "stationary expense", "yes", "no");
 
-    }
+        }
 
-    @And("Has been verified that the sent addIdd and replied {string} data are the same.")
-    public void hasBeenVerifiedThatTheSentAddIddAndRepliedDataAreTheSame(String arg0) {
+@And("Has been verified that the sent addIdd and replied {string} data are the same.")
+public void hasBeenVerifiedThatTheSentAddIddAndRepliedDataAreTheSame(String arg0) {
         JsonPath resJP = response.jsonPath();
         String actualID = resJP.getString(arg0);
         assertEquals("Unsuccessful change", actualID, API_Utils.addId);
 
-    }
+        }
 
-    @Given("Creates request body as datas : {string} values : {string}")
-    public void creates_request_body_as_datas_values(String data, String dataValue) {
+@Given("Creates request body as datas : {string} values : {string}")
+public void creates_request_body_as_datas_values(String data, String dataValue) {
         String[] datasArr = data.split("#");
         String[] dataValuesArr = dataValue.split("#");
         reqBodyJson=new JSONObject();
 
         for (int i = 0; i < datasArr.length; i++) {
-            reqBodyJson.put(datasArr[i],dataValuesArr[i]);
+        reqBodyJson.put(datasArr[i],dataValuesArr[i]);
         }
         System.out.println(reqBodyJson);
-    }
-}
-
-
-
-
-
-
-
+        }
+        }
