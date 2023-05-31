@@ -117,6 +117,21 @@ Feature: DB_Testing
     * It should be verified that multiple data entries can be made
     * Database connection is closed
 
+  @wip1
+  Scenario: DB_US07 Verify that the bed with created_at = 2021-10-25 03:34:25 in the bed table from the database is active.
+
+    * User sets the database connection
+    * Creates query with "SELECT * FROM heallife_hospitaltraining.bed WHERE created_at='2021-10-25 03:34:25' and is_active='yes';"
+    * Verifies that datas : "created_at" values : "2021-10-25 03:34:25" message : "false"
+    * Database connection is closed
+
+
+  Scenario: DB_US27 List the account_title data of the contents with qualification=MS, specialization= Neurology in the staff table through the database by ordering them in alphabetical order.
+    * User sets the database connection
+    * Creates query with "SELECT account_title FROM heallife_hospitaltraining.staff where qualification='MS' and specialization='Neurology'group by account_title order by account_title asc;"
+    * Database connection is closed
+
+
 
 
 
