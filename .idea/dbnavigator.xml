@@ -20,11 +20,7 @@
     <last-used-providers />
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
-    <open-files>
-      <object connection-id="d46f01e4-b3be-4bb2-b041-6feb26cfbab3" object-ref="schemas/heallife_hospitaltraining/tables/department" />
-      <object connection-id="d46f01e4-b3be-4bb2-b041-6feb26cfbab3" object-ref="schemas/heallife_hospitaltraining/tables/appointment" />
-      <object connection-id="d46f01e4-b3be-4bb2-b041-6feb26cfbab3" object-ref="schemas/heallife_hospitaltraining/tables/events" />
-    </open-files>
+    <open-files />
   </component>
   <component name="DBNavigator.Project.DatasetFilterManager">
     <filter-actions connection-id="d46f01e4-b3be-4bb2-b041-6feb26cfbab3" dataset="heallife_hospitaltraining.appointment" active-filter-id="2b197bb0-f806-4359-b5be-1698ab119f76">
@@ -38,7 +34,7 @@
         <condition column="father_name" operator="=" value="Mahesh" active="true" />
       </filter>
       <filter id="6782baf2-6606-4b69-8eb4-16ea26f47cc5" name="Filter" temporary="false" custom-name="false" type="custom">
-        <condition><![CDATA[weight >= 2.5;]]></condition>
+        <condition>weight &gt;= 2.5;</condition>
       </filter>
     </filter-actions>
     <filter-actions connection-id="d46f01e4-b3be-4bb2-b041-6feb26cfbab3" dataset="heallife_hospitaltraining.visitors_book" active-filter-id="3f7cf912-a905-48df-92f8-8154c5cde5c1">
