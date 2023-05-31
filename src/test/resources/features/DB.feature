@@ -1,7 +1,4 @@
 Feature: DB_Testing
-
-<<<<<<< HEAD
-=======
   Scenario Outline: Email query of the user whose first_name and last_name are given
 
     Given Database connection established
