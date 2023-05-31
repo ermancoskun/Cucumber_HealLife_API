@@ -15,7 +15,7 @@ Feature: DB_Testing
       | Admin      | User      | admin@gmail.com |
 
 
->>>>>>> main
+
   @DB06 @dg
   Scenario: DB_US06
     * User sets the database connection
