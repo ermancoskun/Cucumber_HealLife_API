@@ -29,7 +29,7 @@ Feature: DB_Testing
 
   @DB26 @dg
   Scenario: DB_US26
-<<<<<<< HEAD
+
       * User sets the database connection
       * Creates query with "SELECT known_allergies FROM heallife_hospitaltraining.patients WHERE created_at =( SELECT MIN(created_at) FROM heallife_hospitaltraining.patients );"
       * Verifies that datas : "known_allergies" values : "Fast food" message : "false"
@@ -141,10 +141,52 @@ Feature: DB_Testing
   Scenario: DB_US27 List the account_title data of the contents with qualification=MS, specialization= Neurology in the staff table through the database by ordering them in alphabetical order.
     * User sets the database connection
     * Creates query with "SELECT account_title FROM heallife_hospitaltraining.staff where qualification='MS' and specialization='Neurology'group by account_title order by account_title asc;"
+     * Database connection is closed
+
+
+@HUM
+  Scenario: DB_US03 Verify that the live examination request of the patient with patient_id = 20 in the appointment table on the database is open.
+    * User sets the database connection
+    * Creates query with "SELECT live_consult FROM heallife_hospitaltraining.appointment where patient_id = 20;"
+    * Verifies that datas : "live_consult" values : "yes" message : "false"
+    * Database connection is closed
+
+  @HUM
+  Scenario: DB_US13 List and verify the charge_type_id numbers of the contents whose name information starts with "P" in the charge_categories table over the database, without repetition. (6 , 7)
+    * User sets the database connection
+    * Creates query with "SELECT distinct charge_type_id   FROM heallife_hospitaltraining.charge_categories WHERE name  LIKE 'P%' "
+    * Verifies that datas : "charge_type_id#charge_type_id" values : "6#7" message : "false"
+     * Database connection is closed
+
+
+  @HUM
+  Scenario: DB_US23 Check that the other information of the data whose address information is "Andheri, Mumbai" in the medicine_supplier table on the database is correct.
+    * User sets the database connection
+    * Creates query with "SELECT * FROM heallife_hospitaltraining.medicine_supplier where address='Andheri, Mumbai'; "
+    * Verifies that datas : "address" values : "Andheri, Mumbai" message : "false"
     * Database connection is closed
 
 
+ Scenario: DB_US02 Verify that an appointment can be made by entering the necessary information into the hospital system via the database.
+
+   * User sets the database connection
+   * Creates update query with "INSERT INTO heallife_hospitaltraining.appointment (id , patient_id , date , doctor , message) VALUES ('987', '98', '2023-05-01 13:00', '38' , 'migren');"
+   * Creates query with "SELECT * FROM heallife_hospitaltraining.appointment;"
+   * Verifies that datas : "id#patient_id#date#doctor#message" values : "987#98#'2023-05-01 13:00'#38#'migren'" message : "false"
+   * Database connection is closed
 
 
 
+  Scenario: DB_US12 List the id numbers whose institution is certain in the blood_donor_cycle table via Databese. And verify that id=17 is in the list.
+    * User sets the database connection
+    * Creates query with "SELECT * FROM heallife_hospitaltraining.blood_donor_cycle WHERE institutions !='';"
+    * Verifies that it CONTAINS datas : "id" values : "17" message : "false"
+    * Database connection is closed
+
+
+  Scenario: DB_US22 Verify that the language information of the data whose short_code is "yi" in the languages table is "Yiddish" through the database.
+    * User sets the database connection
+    * Creates query with "SELECT language FROM heallife_hospitaltraining.languages where short_code='yi';"
+    * Verifies that datas : "language" values : "Yiddish'" message : "false"
+    * Database connection is closed
 
