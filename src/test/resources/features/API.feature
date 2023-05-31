@@ -344,7 +344,7 @@ Feature: API Tests
     Given Api user sets "api/addFinding" path parameters.
     And Create a post body in finding with name "Dogrulama", description "deneme" and finding_category_id "2" .
     And Sends POST request with Body and valid Authorization
-    And Get AddId number.
+    And Save addid number
     Given Api user sets "api/getFindingById" path parameters.
     And Sets query parameters as id addID
     And Sends GET request with Body and valid Authorization
