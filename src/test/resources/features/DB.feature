@@ -1,7 +1,4 @@
 Feature: DB_Testing
-
-<<<<<<< HEAD
-=======
   Scenario Outline: Email query of the user whose first_name and last_name are given
 
     Given Database connection established
@@ -32,6 +29,20 @@ Feature: DB_Testing
 
   @DB26 @dg
   Scenario: DB_US26
+<<<<<<< HEAD
+      * User sets the database connection
+      * Creates query with "SELECT known_allergies FROM heallife_hospitaltraining.patients WHERE created_at =( SELECT MIN(created_at) FROM heallife_hospitaltraining.patients );"
+      * Verifies that datas : "known_allergies" values : "Fast food" message : "false"
+      * Database connection is closed
+
+@abd
+  Scenario: DB_US08
+
+    Given User sets the database connection
+    Then Creates query with "SELECT name FROM heallife_hospitaltraining.bed where bed_group_id=4 and is_active ='no';"
+    Then Verifies that datas : "name" values : "105"
+    Then Database connection is closed
+
     * User sets the database connection
     * Creates query with "SELECT known_allergies FROM heallife_hospitaltraining.patients WHERE created_at =( SELECT MIN(created_at) FROM heallife_hospitaltraining.patients );"
     * Verifies that datas : "known_allergies" values : "Fast food" message : "false"
@@ -111,11 +122,28 @@ Feature: DB_Testing
   Scenario: DB_US24 It should be verified that multiple data entries can be made to the nurse_note table through the database.
 
     * User sets the database connection
-    * Creates update query with "INSERT INTO heallife_hospitaltraining.nurse_note (date, ipd_id, staff_id, note, comment, updated_at) VALUES ('2022-05-01', 1, 15, 'deneme text', 'new comment', '2023-05-30 20:50');"
+    * Creates update query with "INSERT INTO heallife_hospitaltraining.nurse_note (date, ipd_id, staff_id, note, comment, updated_at) VALUES ('2022-05-01 12:00', 1, 15, 'bu bir deneme notudur', 'yorum', '2023-05-30 20:50'), ('2022-05-01', 1, 15, 'deneme text', 'new comment', '2023-05-30 20:50');"
     * Creates query with "SELECT * FROM heallife_hospitaltraining.nurse_note;"
     # * Verifies that it CONTAINS datas : "note" values : "deneme text" message : "false"
     * It should be verified that multiple data entries can be made
+    * Creates update query with "DELETE FROM heallife_hospitaltraining.nurse_note ORDER BY id DESC LIMIT 2;"
     * Database connection is closed
+
+  @wip1
+  Scenario: DB_US07 Verify that the bed with created_at = 2021-10-25 03:34:25 in the bed table from the database is active.
+
+    * User sets the database connection
+    * Creates query with "SELECT * FROM heallife_hospitaltraining.bed WHERE created_at='2021-10-25 03:34:25' and is_active='yes';"
+    * Verifies that datas : "created_at" values : "2021-10-25 03:34:25" message : "false"
+    * Database connection is closed
+
+
+  Scenario: DB_US27 List the account_title data of the contents with qualification=MS, specialization= Neurology in the staff table through the database by ordering them in alphabetical order.
+    * User sets the database connection
+    * Creates query with "SELECT account_title FROM heallife_hospitaltraining.staff where qualification='MS' and specialization='Neurology'group by account_title order by account_title asc;"
+    * Database connection is closed
+
+
 
 
 
