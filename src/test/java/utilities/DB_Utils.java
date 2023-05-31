@@ -27,9 +27,14 @@ public class DB_Utils {
     }
 
 
-    public static void updateQuery(String query) throws SQLException {
+    public static void updateQuery(String query) {
 
-        int st =  statement.executeUpdate(query);
+        int st = 0;
+        try {
+            st = getStatement().executeUpdate(query);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
         System.out.println(st);
 
