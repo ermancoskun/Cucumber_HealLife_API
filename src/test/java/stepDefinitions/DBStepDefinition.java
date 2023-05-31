@@ -69,7 +69,6 @@ public class DBStepDefinition {
             resultset.absolute(i);
             Assert.assertEquals(message,resultset.getString(columnsArr[i-1]), valuesArr[i-1]);
         }
-
     }
 
     @Given("Verifies that it CONTAINS datas : {string} values : {string} message : {string}")
@@ -97,10 +96,13 @@ public class DBStepDefinition {
 
     @Given("Verifies that datas belowed")
     public void verifies_that_datas_belowed(List<String> allList) throws SQLException {
+
         List<Object> actualDepList= getColumnData(query,"department_name");
         List<Object> actualDateList=getColumnData(query,"created_at");
         Map<Object,Object> actualMap=new HashMap<>();
         Map<Object,Object> expMap=new HashMap<>();
+
+
         System.out.println("actualDepList = " + actualDepList);
         System.out.println("actualDateList = " + actualDateList);
         System.out.println("allList = " + allList);
@@ -108,8 +110,9 @@ public class DBStepDefinition {
             actualMap.put(actualDepList.get(i),actualDateList.get(i));
             expMap.put(allList.get(i),allList.get(i+1));
         }
-        resultset.absolute(1);
-        Assert.assertEquals("something went wrong",expMap,actualMap);
+
+      resultset.absolute(1);
+       Assert.assertEquals("something went wrong",expMap,actualMap);
 
     }
 
@@ -141,10 +144,9 @@ public class DBStepDefinition {
     }
 
     @Given("Creates update query with {string}")
+
     public void creates_update_query_with(String query) throws SQLException {
-
         DB_Utils.updateQuery(query);
-
     }
 
     @Given("It should be verified that multiple data entries can be made")
@@ -160,6 +162,7 @@ public class DBStepDefinition {
         }
         Assert.assertTrue(control);
     }
+    }
 
 
-}
+
