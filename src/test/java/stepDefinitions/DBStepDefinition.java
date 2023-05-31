@@ -119,4 +119,26 @@ public class DBStepDefinition {
         }
         Assert.assertTrue(control);
     }
+
+    @Given("Creates update query with {string}")
+    public void creates_update_query_with(String query) {
+
+        DB_Utils.updateQuery(query);
+
+    }
+
+    @Given("It should be verified that multiple data entries can be made")
+    public void ıt_should_be_verified_that_multiple_data_entries_can_be_made() throws SQLException {
+        resultset.absolute(0);
+        boolean control = false;
+        while (resultset.next()){
+
+            if (resultset.getString("note").equals("deneme text")){
+                control = true;
+                break;
+            }
+        }
+        Assert.assertTrue(control);
+    }
+
 }

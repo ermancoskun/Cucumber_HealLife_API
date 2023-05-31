@@ -55,4 +55,14 @@ Feature: DB_Testing
       | 120 |
     * Database connection is closed
 
+  Scenario: DB_US24 It should be verified that multiple data entries can be made to the nurse_note table through the database.
+
+    * User sets the database connection
+    * Creates update query with "INSERT INTO heallife_hospitaltraining.nurse_note (date, ipd_id, staff_id, note, comment, updated_at) VALUES ('2022-05-01', 1, 15, 'deneme text', 'new comment', '2023-05-30 20:50');"
+    * Creates query with "SELECT * FROM heallife_hospitaltraining.nurse_note;"
+    # * Verifies that it CONTAINS datas : "note" values : "deneme text" message : "false"
+    * It should be verified that multiple data entries can be made
+    * Database connection is closed
+
+
 
