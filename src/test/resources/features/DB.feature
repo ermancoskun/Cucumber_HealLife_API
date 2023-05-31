@@ -1,5 +1,21 @@
 Feature: DB_Testing
 
+<<<<<<< HEAD
+=======
+  Scenario Outline: Email query of the user whose first_name and last_name are given
+
+    Given Database connection established
+    And From the Users table,"email" data of the user whose "<first_name>" and "<last_name>" information is entered are retrieved
+    Then User's "<email>" data is verified
+    And Database connection is closed
+
+
+    Examples:
+      | first_name | last_name | email           |
+      | Admin      | User      | admin@gmail.com |
+
+
+>>>>>>> main
   @DB06 @dg
   Scenario: DB_US06
     * User sets the database connection
@@ -72,4 +88,35 @@ Feature: DB_Testing
       | Radiology,2021-10-25 00:53:27          |
       | Reception,021-10-25 00:53:46           |
     * Database connection is closed
+
+  Scenario: DB_US04 In the appointment table on the database, verify that the appointments made for the morning are less than the appointments for the afternoon.
+
+    * User sets the database connection
+    * Creates query with "SELECT IF(ogleden_once_sayisi < ogleden_sonra_sayisi, 'true', 'false') AS sonuc FROM ( SELECT (SELECT COUNT(*) FROM heallife_hospitaltraining.appointment WHERE TIME(date) < '12:00:00') AS ogleden_once_sayisi,(SELECT COUNT(*) FROM heallife_hospitaltraining.appointment WHERE TIME(date) >= '12:00:00') AS ogleden_sonra_sayisi) AS counts;"
+    * Verify that the appointments made for the morning are less than the appointments for the afternoon
+    * Database connection is closed
+
+  Scenario: DB_US14 Sort the data in the charges table via the database from smallest to largest, and verify the first 5 (100, 100,100,110,120).
+
+    * User sets the database connection
+    * Creates query with "SELECT standard_charge FROM heallife_hospitaltraining.charges ORDER BY standard_charge ASC LIMIT 5;"
+    * Verify the first five
+      | 100 |
+      | 100 |
+      | 100 |
+      | 110 |
+      | 120 |
+    * Database connection is closed
+
+  Scenario: DB_US24 It should be verified that multiple data entries can be made to the nurse_note table through the database.
+
+    * User sets the database connection
+    * Creates update query with "INSERT INTO heallife_hospitaltraining.nurse_note (date, ipd_id, staff_id, note, comment, updated_at) VALUES ('2022-05-01', 1, 15, 'deneme text', 'new comment', '2023-05-30 20:50');"
+    * Creates query with "SELECT * FROM heallife_hospitaltraining.nurse_note;"
+    # * Verifies that it CONTAINS datas : "note" values : "deneme text" message : "false"
+    * It should be verified that multiple data entries can be made
+    * Database connection is closed
+
+
+
 
