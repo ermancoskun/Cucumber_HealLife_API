@@ -164,7 +164,7 @@ public class DBStepDefinition {
         boolean control = false;
         while (resultset.next()){
 
-            if (resultset.getString("note").equals("deneme text")){
+            if (resultset.getString("note").equals("deneme text") & resultset.getString("comment").equals("new comment")){
                 control = true;
                 break;
             }
