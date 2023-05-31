@@ -134,7 +134,7 @@ Feature: API Tests
     And Sends GET request invalid Authorization
     Then Verifies that the returned status code is 403
     Then Verifies that the response message is "failed"
-
+  @Nesy
   Scenario: [API_US34]-(1C) As an administrator I should be able to access the find list via the API link
     Given Api user sets "api/getFinding" path parameters.
     #Then Creates an expected body with id "12", name "Refractive Errors.", description "A refractive error is a very common eye disorder. It occurs when the eye cannot clearly focus the images from the outside world. The result of refractive errors is blurred vision, which is sometimes so severe that it causes visual impairment", finding_category_id : "6", created_at : "2021-10-25 02:20:29", category : "Eye Diseases" in ExpenseHead.

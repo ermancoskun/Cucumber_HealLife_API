@@ -183,7 +183,7 @@ Feature: DB_Testing
     * Verifies that it CONTAINS datas : "id" values : "17" message : "false"
     * Database connection is closed
 
-  @Nesy
+
   Scenario: DB_US22 Verify that the language information of the data whose short_code is "yi" in the languages table is "Yiddish" through the database.
     * User sets the database connection
     * Creates query with "SELECT language FROM heallife_hospitaltraining.languages where short_code='yi';"
