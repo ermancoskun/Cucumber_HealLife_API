@@ -167,5 +167,26 @@ Feature: DB_Testing
     * Database connection is closed
 
 
+ Scenario: DB_US02 Verify that an appointment can be made by entering the necessary information into the hospital system via the database.
 
+   * User sets the database connection
+   * Creates update query with "INSERT INTO heallife_hospitaltraining.appointment (id , patient_id , date , doctor , message) VALUES ('987', '98', '2023-05-01 13:00', '38' , 'migren');"
+   * Creates query with "SELECT * FROM heallife_hospitaltraining.appointment;"
+   * Verifies that datas : "id#patient_id#date#doctor#message" values : "987#98#'2023-05-01 13:00'#38#'migren'" message : "false"
+   * Database connection is closed
+
+
+
+  Scenario: DB_US12 List the id numbers whose institution is certain in the blood_donor_cycle table via Databese. And verify that id=17 is in the list.
+    * User sets the database connection
+    * Creates query with "SELECT * FROM heallife_hospitaltraining.blood_donor_cycle WHERE institutions !='';"
+    * Verifies that it CONTAINS datas : "id" values : "17" message : "false"
+    * Database connection is closed
+
+
+  Scenario: DB_US22 Verify that the language information of the data whose short_code is "yi" in the languages table is "Yiddish" through the database.
+    * User sets the database connection
+    * Creates query with "SELECT language FROM heallife_hospitaltraining.languages where short_code='yi';"
+    * Verifies that datas : "language" values : "Yiddish'" message : "false"
+    * Database connection is closed
 
