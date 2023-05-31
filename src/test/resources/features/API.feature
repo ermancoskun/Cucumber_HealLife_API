@@ -194,7 +194,7 @@ Feature: API Tests
     And Sends GET request with Body and valid Authorization
     And Verify that the datas are contained in the response body as "lists.","id#name#is_blood_group#created_at","1#DirtBlood#0#2023-05-27 07:39:47"
 
-  @Nesy
+
   Scenario: [API_US06]-(1C) A new visitor via API link as an administrator purpose registration I want to be able to create .
     Given Api user sets "api/visitorsPurposeAdd" path parameters.
     And Request body is:
