@@ -15,10 +15,9 @@ import org.junit.runner.RunWith;
         },
         features = "src/test/resources/features",
         glue = {"stepDefinitions", "hooks"},
-
-
-        tags = "@Nesy",
+        tags = "@US16 or @US30" ,
         dryRun = false
+
 
 )
 public class APIRunner {
