@@ -32,6 +32,20 @@ Feature: DB_Testing
 
   @DB26 @dg
   Scenario: DB_US26
+<<<<<<< HEAD
+      * User sets the database connection
+      * Creates query with "SELECT known_allergies FROM heallife_hospitaltraining.patients WHERE created_at =( SELECT MIN(created_at) FROM heallife_hospitaltraining.patients );"
+      * Verifies that datas : "known_allergies" values : "Fast food" message : "false"
+      * Database connection is closed
+
+@abd
+  Scenario: DB_US08
+
+    Given User sets the database connection
+    Then Creates query with "SELECT name FROM heallife_hospitaltraining.bed where bed_group_id=4 and is_active ='no';"
+    Then Verifies that datas : "name" values : "105"
+    Then Database connection is closed
+
     * User sets the database connection
     * Creates query with "SELECT known_allergies FROM heallife_hospitaltraining.patients WHERE created_at =( SELECT MIN(created_at) FROM heallife_hospitaltraining.patients );"
     * Verifies that datas : "known_allergies" values : "Fast food" message : "false"
@@ -116,6 +130,7 @@ Feature: DB_Testing
     # * Verifies that it CONTAINS datas : "note" values : "deneme text" message : "false"
     * It should be verified that multiple data entries can be made
     * Database connection is closed
+
 
 
 
