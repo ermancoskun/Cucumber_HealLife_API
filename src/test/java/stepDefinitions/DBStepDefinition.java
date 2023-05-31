@@ -88,6 +88,15 @@ public class DBStepDefinition {
         }
     }
 
+
+    @Then("Verifies that datas : {string} values : {string}")
+    public void verifiesThatDatasValues(String name, String value) throws SQLException {
+
+        resultset.absolute(1);
+        System.out.println(resultset.getString(name));
+        Assert.assertEquals(value,resultset.getString(name));
+    }
+
     @Given("Verifies that the result number of query is {int}")
     public void verifies_that_the_result_number_of_query_is(int sayi) throws Exception {
         int actualData= DB_Utils.getRowCount();
@@ -159,6 +168,7 @@ public class DBStepDefinition {
         }
         Assert.assertTrue(control);
     }
+
 
 
 }
