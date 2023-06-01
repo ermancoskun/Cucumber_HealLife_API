@@ -1,18 +1,5 @@
 Feature: DB_Testing
 
-  Scenario Outline: Email query of the user whose first_name and last_name are given
-
-    Given Database connection established
-    And From the Users table,"email" data of the user whose "<first_name>" and "<last_name>" information is entered are retrieved
-    Then User's "<email>" data is verified
-    And Database connection is closed
-
-
-    Examples:
-      | first_name | last_name | email           |
-      | Admin      | User      | admin@gmail.com |
-
-
   @DB06 @dg
   Scenario: DB_US06
     * User sets the database connection
@@ -282,13 +269,30 @@ Feature: DB_Testing
     * Database connection is closed
 
 
-  Scenario: DB_US02 Verify that an appointment can be made by entering the necessary information into the hospital system via the database.
+ Scenario: DB_US02 Verify that an appointment can be made by entering the necessary information into the hospital system via the database.
+
+   * User sets the database connection
+   * Creates update query with "INSERT INTO heallife_hospitaltraining.appointment (id , patient_id , date , doctor , message) VALUES ('987', '98', '2023-05-01 13:00', '38' , 'migren');"
+   * Creates query with "SELECT * FROM heallife_hospitaltraining.appointment;"
+   * Verifies that datas : "id#patient_id#date#doctor#message" values : "987#98#'2023-05-01 13:00'#38#'migren'" message : "false"
+   * Database connection is closed
+
+  Scenario: DB_US01 Verify that the patient with patient_id = 1 in the ambulance call table on the database has been dispatched 2 times by the ambulance whose driver is Smith.
     * User sets the database connection
-    * Creates update query with "INSERT INTO heallife_hospitaltraining.appointment (id , patient_id , date , doctor , message) VALUES ('987', '98', '2023-05-01 13:00', '38' , 'migren');"
-    * Creates query with "SELECT * FROM heallife_hospitaltraining.appointment;"
-    * Verifies that datas : "id#patient_id#date#doctor#message" values : "987#98#'2023-05-01 13:00'#38#'migren'" message : "false"
+    * Creates query with "select patient_id, driver from heallife_hospitaltraining.ambulance_call where patient_id=1 and driver = 'Smith';"
+    * Verify that number of result is two
     * Database connection is closed
 
+  Scenario: DB_US21 List the IDs of the X-RAY laboratories from the laboratories in the lab table. Verify that the largest of the ids is (3) by the database.
+    * User sets the database connection
+    * Creates query with "SELECT max(id) AS max_id FROM heallife_hospitaltraining.lab WHERE lab_name LIKE '%X-RAY%';"
+    * Verify that max id is three
+    * Database connection is closed
+
+  Scenario: DB_US11 Verify on the database that the donor_name of the donor with id= 7 in the blood_donor table is Maria, date_of_birth=2001-03-02, gender=Female, father_name=Jhonson, address=England.
+    * User sets the database connection
+    * Creates query with "select * from heallife_hospitaltraining.blood_donor where id=7;"
+    * Verifies that datas : "donor_name#date_of_birth#gender#father_name#address" values : "Maria#2001-03-02#Female#Jhonson#England" message : "invalid data"
 
   Scenario: DB_US12 List the id numbers whose institution is certain in the blood_donor_cycle table via Databese. And verify that id=17 is in the list.
     * User sets the database connection
@@ -302,5 +306,6 @@ Feature: DB_Testing
     * Creates query with "SELECT language FROM heallife_hospitaltraining.languages where short_code='yi';"
     * Verifies that datas : "language" values : "Yiddish'" message : "false"
     * Database connection is closed
+
 
 
