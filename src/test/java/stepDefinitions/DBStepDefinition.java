@@ -193,6 +193,61 @@ public class DBStepDefinition {
 
 
     }
+    @Given("Verify gender and mail information of patients whose patient name contains {string}")
+    public void verify_gender_and_mail_information_of_patients_whose_patient_name_contains(String string) throws SQLException {
+        resultset.absolute(0);
+
+        List<String> patientsList = new ArrayList<>();
+        while (resultset.next()) {
+            patientsList.add(resultset.getString("gender"));
+            patientsList.add(resultset.getString("email"));
+        }
+        System.out.println(patientsList);
+
+        Assert.assertTrue(patientsList.contains("Female"));//[Female, reshu@gmail.com, Male, umair@gmail.com]
+        Assert.assertTrue(patientsList.contains("reshu@gmail.com"));
+        Assert.assertTrue(patientsList.contains("Male"));
+        Assert.assertTrue(patientsList.contains("umair@gmail.com"));
+    }
+    @Given("Verify that the patient IDs below selected as offline as the payment type")
+    public void verify_that_the_patient_i_ds_below_selected_as_offline_as_the_payment_type(List<Integer> list) throws SQLException {
+        resultset.absolute(0);
+
+        boolean control = true;
+        int index = 0;
+        while (resultset.next()) {
+            int data = resultset.getInt(1);
+
+            if (data != list.get(index)) {
+                control = false;
+                break;
+            }
+            index++;
+        }
+        Assert.assertTrue(control);
+    }
+
+    @Given("Add a new record to the consultant_register table")
+    public void add_a_new_record_to_the_consultant_register_table() throws SQLException {
+
+        try {
+            String sql = "INSERT INTO consultant_register (id, ipd_id, date, ins_date, instruction, cons_doctor, created_at) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?)";
+            Connection connection= getConnection();
+            PreparedStatement preparedStatement= connection.prepareStatement(sql);
+            preparedStatement.setString(1,"101");
+            preparedStatement.setString(2,"101");
+            preparedStatement.setString(3,"2023-06-04 15:06:03");
+            preparedStatement.setString(4,"2023-05-16");
+            preparedStatement.setString(5,"new req");
+            preparedStatement.setString(6,"2");
+            preparedStatement.setString(7,"2023-06-01 19:46:03");
+            preparedStatement.close();
+            System.out.println("data added");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
 
 
