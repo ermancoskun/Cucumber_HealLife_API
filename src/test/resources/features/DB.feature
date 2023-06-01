@@ -43,33 +43,6 @@ Feature: DB_Testing
     Then Verifies that datas : "driver_name" values : "bayram erguven"
     Then Database connection is closed
 
-
-  Scenario: ??
-    * User sets the database connection
-    * Creates query with "SELECT known_allergies FROM heallife_hospitaltraining.patients WHERE created_at =( SELECT MIN(created_at) FROM heallife_hospitaltraining.patients );"
-    * Verifies that datas : "known_allergies" values : "Fast food" message : "false"
-    * Database connection is closed
-
-
-  Scenario: DB_US10 List the sibling babies in the birth_report table on the database and verify their names.
-    * User sets the database connection
-    * Creates query with "select * from heallife_hospitaltraining.birth_report where father_name = 'Mahesh'"
-    * Verifies that datas : "child_name#child_name#child_name" values : "Rohit#Reyana#child" message : "Was not siblings"
-    * Database connection is closed
-
-  Scenario: DB_US20 Verify that data can be deleted from the events table via the database.
-    * User sets the database connection
-    * Creates query with ""
-    * Verifies that datas : "" values : "" message : ""
-    * Database connection is closed
-
-  Scenario: DB_US30 Verify that the name of the visitor who came to visit Maria Fernandis from the data in the visitors_book table on the database is Jhon.
-    * User sets the database connection
-    * Creates query with "select * from heallife_hospitaltraining.visitors_book where name = 'Jhon' and related_to = 'Maria Fernandis (4) (OPDN24)'"
-    * Verifies that datas : "name" values : "Jhon" message : "false"
-    * Database connection is closed
-
-
   Scenario: DB_US04 In the appointment table on the database, verify that the appointments made for the morning are less than the appointments for the afternoon.
     * User sets the database connection
     * Creates query with "SELECT IF(ogleden_once_sayisi < ogleden_sonra_sayisi, 'true', 'false') AS sonuc FROM ( SELECT (SELECT COUNT(*) FROM heallife_hospitaltraining.appointment WHERE TIME(date) < '12:00:00') AS ogleden_once_sayisi,(SELECT COUNT(*) FROM heallife_hospitaltraining.appointment WHERE TIME(date) >= '12:00:00') AS ogleden_sonra_sayisi) AS counts;"
@@ -88,7 +61,6 @@ Feature: DB_Testing
     * Database connection is closed
 
   Scenario: DB_US24 It should be verified that multiple data entries can be made to the nurse_note table through the database.
-
     * User sets the database connection
     * Creates update query with "INSERT INTO heallife_hospitaltraining.nurse_note (date, ipd_id, staff_id, note, comment, updated_at) VALUES ('2022-05-01 12:00', 1, 15, 'bu bir deneme notudur', 'yorum', '2023-05-30 20:50'), ('2022-05-01', 1, 15, 'deneme text', 'new comment', '2023-05-30 20:50');"
     * Creates query with "SELECT * FROM heallife_hospitaltraining.nurse_note;"
@@ -156,32 +128,6 @@ Feature: DB_Testing
     * Verifies that datas : "name" values : "Jhon" message : "false"
     * Database connection is closed
 
-
-
-  Scenario: DB_US04 In the appointment table on the database, verify that the appointments made for the morning are less than the appointments for the afternoon.
-    * User sets the database connection
-    * Creates query with "SELECT IF(ogleden_once_sayisi < ogleden_sonra_sayisi, 'true', 'false') AS sonuc FROM ( SELECT (SELECT COUNT(*) FROM heallife_hospitaltraining.appointment WHERE TIME(date) < '12:00:00') AS ogleden_once_sayisi,(SELECT COUNT(*) FROM heallife_hospitaltraining.appointment WHERE TIME(date) >= '12:00:00') AS ogleden_sonra_sayisi) AS counts;"
-    * Verify that the appointments made for the morning are less than the appointments for the afternoon
-    * Database connection is closed
-
-  Scenario: DB_US14 Sort the data in the charges table via the database from smallest to largest, and verify the first 5 (100, 100,100,110,120).
-    * User sets the database connection
-    * Creates query with "SELECT standard_charge FROM heallife_hospitaltraining.charges ORDER BY standard_charge ASC LIMIT 5;"
-    * Verify the first five
-      | 100 |
-      | 100 |
-      | 100 |
-      | 110 |
-      | 120 |
-    * Database connection is closed
-
-  Scenario: DB_US24 It should be verified that multiple data entries can be made to the nurse_note table through the database.
-    * User sets the database connection
-    * Creates update query with "INSERT INTO heallife_hospitaltraining.nurse_note (date, ipd_id, staff_id, note, comment, updated_at) VALUES ('2022-05-01', 1, 15, 'deneme text', 'new comment', '2023-05-30 20:50');"
-    * Creates query with "SELECT * FROM heallife_hospitaltraining.nurse_note;"
-    # * Verifies that it CONTAINS datas : "note" values : "deneme text" message : "false"
-    * It should be verified that multiple data entries can be made
-    * Database connection is closed
 
   @HUM
   Scenario: DB_US03 Verify that the live examination request of the patient with patient_id = 20 in the appointment table on the database is open.
