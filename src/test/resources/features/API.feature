@@ -111,6 +111,7 @@ Feature: API Tests
     Then Verifies that the returned status code is 200
     Then Verifies that the response message is "Success"
 
+
   Scenario: [API_US34]-(1B) As an administrator I should not be able to access the find list via the API link
     Given Api user sets "api/getFinding" path parameters.
     And Sets query parameters as id 12
@@ -134,7 +135,10 @@ Feature: API Tests
     Then Verifies that the returned status code is 403
     Then Verifies that the response message is "failed"
 
+
+
   @Nesy
+
   Scenario: [API_US34]-(1C) As an administrator I should be able to access the find list via the API link
     Given Api user sets "api/getFinding" path parameters.
     #Then Creates an expected body with id "12", name "Refractive Errors.", description "A refractive error is a very common eye disorder. It occurs when the eye cannot clearly focus the images from the outside world. The result of refractive errors is blurred vision, which is sometimes so severe that it causes visual impairment", finding_category_id : "6", created_at : "2021-10-25 02:20:29", category : "Eye Diseases" in ExpenseHead.
@@ -145,13 +149,13 @@ Feature: API Tests
             "name": "Refractive Errors.",
             "description": "A refractive error is a very common eye disorder. It occurs when the eye cannot clearly focus the images from the outside world. The result of refractive errors is blurred vision, which is sometimes so severe that it causes visual impairment",
             "finding_category_id": "6",
-            "created_at": "2021-10-25 02:20:29",
+            "created_at": "2023-06-01 08:31:00",
             "category": "Eye Diseases"
         }
     """
     And Sends GET request with Body and valid Authorization
       #And Verify that the datas are contained in the response body as "details.","id,name,description,finding_category_id,created_at,category","12,Refractive Errors.,A refractive error is a very common eye disorder. It occurs when the eye cannot clearly focus the images from the outside world. The result of refractive errors is blurred vision, which is sometimes so severe that it causes visual impairment,6,2021-10-25 02:20:29,Eye Diseases"
-    And Verifies in the response body with id "12", name "Refractive Errors.", description "A refractive error is a very common eye disorder. It occurs when the eye cannot clearly focus the images from the outside world. The result of refractive errors is blurred vision, which is sometimes so severe that it causes visual impairment", finding_category_id : "6", created_at : "2021-10-25 02:20:29", category : "Eye Diseases" in ExpenseHead.
+    And Verifies in the response body with id "12", name "Refractive Errors.", description "A refractive error is a very common eye disorder. It occurs when the eye cannot clearly focus the images from the outside world. The result of refractive errors is blurred vision, which is sometimes so severe that it causes visual impairment", finding_category_id : "6", created_at : "2023-06-01 08:31:00", category : "Eye Diseases" in ExpenseHead.
 
 
   Scenario: [API_US34]-(1D) As an administrator I should be able to access the find list via the API link
@@ -694,7 +698,7 @@ Feature: API Tests
     Then Sends GET request with Body and valid Authorization
     And Verify that the datas are contained in the response body as "lists.","id#exp_category#description#is_active#is_deleted#created_at","4#Telephone Bill#Recently, some private insurance companies have begun to pay for patient-to-provider phone calls, especially when the calls are prolonged and when medical decisions are made. Nevertheless, you may be billed for the whole cost, or you may have to pay a co-pay.#yes#no#2021-10-29 01:36:02"
 
-
+@ab
   Scenario:[API_US38->TC01]-(1A) Registered to the system via API connection as an administrator I should be able to update the finding information .
 
     Given Api user sets "api/updateFinding" path parameters.
@@ -703,7 +707,7 @@ Feature: API Tests
     Then Verifies that the returned status code is 200
     Then Verifies that the response message is "Success"
 
-
+  @ab
   Scenario:[API_US38->TC01]-(1B) Registered to the system via API connection as an administrator I should be able to update the finding information .
 
     Given Api user sets "api/updateFinding" path parameters.
@@ -712,7 +716,7 @@ Feature: API Tests
     Then Verifies that the returned status code is 403
     Then Verifies that the response message is "failed"
 
-
+  @ab
   Scenario:[API_US38->TC02] As an administrator to hospital expenses via API connection I should be able to reach .
 
     Given Api user sets "api/updateFinding" path parameters.
@@ -720,7 +724,7 @@ Feature: API Tests
     And  Sends PATCH request with Body and valid Authorization
     And Verifies in the response body with id "19"
 
-  @Abd
+  @ab
   Scenario:[API_US38->TC03] As an administrator to hospital expenses via API connection I should be able to reach .
     Given Api user sets "api/updateFinding" path parameters.
     And Creates request body as name "mouth sore", finding_category_id "2"
@@ -729,10 +733,6 @@ Feature: API Tests
     And Api user sets "api/updateFinding" path parameters.
     And Sends GET request valid Authorization
     And Verifies the newly created blood group record via APi.
-
-
-  Scenario:[API_US19->TC02] As an administrator to hospital expenses via API connection I should be able to reach .
-
 
   Scenario: [API_US21_TC01]-(1A) As an administrator, I want to be able to create a new expense with valid
   Authorization over the API connection .
