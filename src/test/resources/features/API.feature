@@ -691,7 +691,7 @@ Feature: API Tests
     Then Sends GET request with Body and valid Authorization
     And Verify that the datas are contained in the response body as "lists.","id#exp_category#description#is_active#is_deleted#created_at","4#Telephone Bill#Recently, some private insurance companies have begun to pay for patient-to-provider phone calls, especially when the calls are prolonged and when medical decisions are made. Nevertheless, you may be billed for the whole cost, or you may have to pay a co-pay.#yes#no#2021-10-29 01:36:02"
 
-
+@ab
   Scenario:[API_US38->TC01]-(1A) Registered to the system via API connection as an administrator I should be able to update the finding information .
 
     Given Api user sets "api/updateFinding" path parameters.
@@ -700,7 +700,7 @@ Feature: API Tests
     Then Verifies that the returned status code is 200
     Then Verifies that the response message is "Success"
 
-
+  @ab
   Scenario:[API_US38->TC01]-(1B) Registered to the system via API connection as an administrator I should be able to update the finding information .
 
     Given Api user sets "api/updateFinding" path parameters.
@@ -709,7 +709,7 @@ Feature: API Tests
     Then Verifies that the returned status code is 403
     Then Verifies that the response message is "failed"
 
-
+  @ab
   Scenario:[API_US38->TC02] As an administrator to hospital expenses via API connection I should be able to reach .
 
     Given Api user sets "api/updateFinding" path parameters.
@@ -717,7 +717,7 @@ Feature: API Tests
     And  Sends PATCH request with Body and valid Authorization
     And Verifies in the response body with id "19"
 
-  @Abd
+  @ab
   Scenario:[API_US38->TC03] As an administrator to hospital expenses via API connection I should be able to reach .
     Given Api user sets "api/updateFinding" path parameters.
     And Creates request body as name "mouth sore", finding_category_id "2"
@@ -729,7 +729,6 @@ Feature: API Tests
 
 
 
-  Scenario:[API_US19->TC02] As an administrator to hospital expenses via API connection I should be able to reach .
 
 
   Scenario: [API_US21_TC01]-(1A) As an administrator, I want to be able to create a new expense with valid
