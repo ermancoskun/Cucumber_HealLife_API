@@ -7,6 +7,7 @@ Feature: DB_Testing
     * Verifies that it CONTAINS datas : "date" values : "2023-05" message : "false"
     * Database connection is closed
 
+
   @DB16 @dg
   Scenario: DB_US16
     * User sets the database connection
@@ -339,4 +340,21 @@ Feature: DB_Testing
     * Database connection is closed
 
 
+  Scenario: DB_US05 In the appointment_payment table through the database, verify that the patient IDs selected as "offline" as the payment type are: (1,2,3,16,17,18,20,21,24,25,31).
+    * User sets the database connection
+    * Creates query with ""
+
+    * Database connection is closed
+
+  Scenario: DB_US15 It should be verified that a new record can be added to the consultant_register table via the database.
+    * User sets the database connection
+    * Creates query with ""
+
+    * Database connection is closed
+
+  Scenario: DB_US25 Verify the gender and email information of the patients whose patient_name information contains "Jain" in the patients table on the database.
+    * User sets the database connection
+    * Creates query with ""
+
+    * Database connection is closed
 
