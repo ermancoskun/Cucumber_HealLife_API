@@ -63,7 +63,6 @@ public class DBStepDefinition {
 
     @Given("Verifies that datas : {string} values : {string} message : {string}")
     public void verifies_that_datas_values_message(String actualValueColumn, String expectedValue, String message) throws SQLException {
-
         String[] columnsArr = actualValueColumn.split("#");
         String[] valuesArr = expectedValue.split("#");
         for (int i = 1; i <= columnsArr.length; i++) {
@@ -82,7 +81,6 @@ public class DBStepDefinition {
 
         resultset.absolute(0);
         for (int i = 0; i < columnsArr.length; i++) {
-
             while (resultset.next()) {
                 Assert.assertTrue(message, resultset.getString(columnsArr[i]).contains(valuesArr[i]));
             }
