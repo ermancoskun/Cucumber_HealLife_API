@@ -223,3 +223,11 @@ Feature: DB_Testing
     * Verify gender and mail information of patients whose patient name contains "Jain"
     * Database connection is closed
 
+  Scenario: DB_US17 It should be verified that the department_name and created_at information of the contents in the department table via the database match.
+    *  User sets the database connection
+    *  Verify from the database that the contents of the department table match the "department_name" and "created_at"  "OT" "2021-10-25 00:50:49" information
+    *  Database connection is closed
+
+
+
+

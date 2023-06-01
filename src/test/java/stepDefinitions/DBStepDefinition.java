@@ -248,6 +248,30 @@ public class DBStepDefinition {
             throw new RuntimeException(e);
         }
     }
+
+    @Then("Verify from the database that the contents of the department table match the {string} and {string}  {string} {string} information")
+    public void verifyFromTheDatabaseThatTheContentsOfTheDepartmentTableMatchTheAndInformation(String actDepartment_name, String actCreated_at, String expDepartmen_name, String expCreated_at) throws SQLException {
+
+
+        String departmenQuery = "select department_name,created_at from heallife_hospitaltraining.department;";
+
+        try {
+            DB_Utils.createConnection();
+            resultset = DB_Utils.getStatement().executeQuery(departmenQuery);
+            resultset.absolute(0);
+            resultset.next();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+
+        }
+        System.out.println(resultset.getString("department_name"));
+        System.out.println(resultset.getString("created_at"));
+
+        Assert.assertEquals("", expDepartmen_name, resultset.getString("department_name"));
+        Assert.assertEquals("", expCreated_at, resultset.getString("created_at"));
+    }
+
 }
 
 
