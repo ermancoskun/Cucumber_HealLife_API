@@ -20,7 +20,7 @@ import static utilities.DB_Utils.*;
 
 public class DBStepDefinition {
 
-    ResultSet resultset;
+    public  static ResultSet resultset;
     Statement statement;
     Connection connection;
     String query;
@@ -91,7 +91,6 @@ public class DBStepDefinition {
 
     @Then("Verifies that datas : {string} values : {string}")
     public void verifiesThatDatasValues(String name, String value) throws SQLException {
-
         resultset.absolute(1);
         System.out.println(resultset.getString(name));
         Assert.assertEquals(value,resultset.getString(name));
@@ -105,10 +104,13 @@ public class DBStepDefinition {
 
     @Given("Verifies that datas belowed")
     public void verifies_that_datas_belowed(List<String> allList) throws SQLException {
-      List<Object> actualDepList= getColumnData(query,"department_name");
-      List<Object> actualDateList=getColumnData(query,"created_at");
-      Map<Object,Object> actualMap=new HashMap<>();
-      Map<Object,Object> expMap=new HashMap<>();
+
+        List<Object> actualDepList= getColumnData(query,"department_name");
+        List<Object> actualDateList=getColumnData(query,"created_at");
+        Map<Object,Object> actualMap=new HashMap<>();
+        Map<Object,Object> expMap=new HashMap<>();
+
+
         System.out.println("actualDepList = " + actualDepList);
         System.out.println("actualDateList = " + actualDateList);
         System.out.println("allList = " + allList);
@@ -116,6 +118,7 @@ public class DBStepDefinition {
             actualMap.put(actualDepList.get(i),actualDateList.get(i));
             expMap.put(allList.get(i),allList.get(i+1));
         }
+
       resultset.absolute(1);
        Assert.assertEquals("something went wrong",expMap,actualMap);
 
@@ -149,10 +152,9 @@ public class DBStepDefinition {
     }
 
     @Given("Creates update query with {string}")
-    public void creates_update_query_with(String query) {
 
+    public void creates_update_query_with(String query) throws SQLException {
         DB_Utils.updateQuery(query);
-
     }
 
     @Given("It should be verified that multiple data entries can be made")
@@ -161,14 +163,14 @@ public class DBStepDefinition {
         boolean control = false;
         while (resultset.next()){
 
-            if (resultset.getString("note").equals("deneme text")){
+            if (resultset.getString("note").equals("deneme text") & resultset.getString("comment").equals("new comment")){
                 control = true;
                 break;
             }
         }
         Assert.assertTrue(control);
     }
+    }
 
 
 
-}

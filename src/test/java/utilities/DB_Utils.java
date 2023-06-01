@@ -1,5 +1,7 @@
 package utilities;
 
+import stepDefinitions.DBStepDefinition;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,7 +12,7 @@ public class DB_Utils {
 
     static Connection connection;
     private static Statement statement;
-    private static ResultSet resultSet;
+    private static ResultSet resultSet= DBStepDefinition.resultset;
 
 
     public static void createConnection()  {
