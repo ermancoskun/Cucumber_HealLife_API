@@ -20,7 +20,9 @@
     <last-used-providers />
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
-    <open-files />
+    <open-files>
+      <object connection-id="d46f01e4-b3be-4bb2-b041-6feb26cfbab3" object-ref="schemas/heallife_hospitaltraining/tables/events" />
+    </open-files>
   </component>
   <component name="DBNavigator.Project.DatasetFilterManager">
     <filter-actions connection-id="d46f01e4-b3be-4bb2-b041-6feb26cfbab3" dataset="heallife_hospitaltraining.appointment" active-filter-id="2b197bb0-f806-4359-b5be-1698ab119f76">
