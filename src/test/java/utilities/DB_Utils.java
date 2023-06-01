@@ -264,4 +264,8 @@ public class DB_Utils {
         }
         return columns;
     }
+
+    public void PreparedStatement (){
+
+    }
 }

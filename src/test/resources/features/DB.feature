@@ -198,22 +198,44 @@ Feature: DB_Testing
     * Verifies that datas : "language" values : "Yiddish" message : "false"
     * Database connection is closed
 
-
+  @db05
   Scenario: DB_US05 In the appointment_payment table through the database, verify that the patient IDs selected as "offline" as the payment type are: (1,2,3,16,17,18,20,21,24,25,31).
     * User sets the database connection
-    * Creates query with ""
-
+    * Creates query with "SELECT appointment_id FROM heallife_hospitaltraining.appointment_payment WHERE payment_type = 'offline';"
+    * Verify that the patient IDs below selected as offline as the payment type
+      | 1  |
+      | 2  |
+      | 3  |
+      | 16 |
+      | 17 |
+      | 18 |
+      | 20 |
+      | 21 |
+      | 24 |
+      | 25 |
+      | 31 |
     * Database connection is closed
 
+  @db15
   Scenario: DB_US15 It should be verified that a new record can be added to the consultant_register table via the database.
     * User sets the database connection
-    * Creates query with ""
-
+    * Add a new record to the consultant_register table
+    * Creates query with "SELECT * FROM heallife_hospitaltraining.consultant_register"
+    * Verifies that datas : "ipd_id" values : "8" message : ""
     * Database connection is closed
 
+  @db25
   Scenario: DB_US25 Verify the gender and email information of the patients whose patient_name information contains "Jain" in the patients table on the database.
     * User sets the database connection
-    * Creates query with ""
-
+    * Creates query with "select patient_name, gender, email from heallife_hospitaltraining.patients where patient_name LIKE ('%Jain%');"
+    * Verify gender and mail information of patients whose patient name contains "Jain"
     * Database connection is closed
+
+  Scenario: DB_US17 It should be verified that the department_name and created_at information of the contents in the department table via the database match.
+    *  User sets the database connection
+    *  Verify from the database that the contents of the department table match the "department_name" and "created_at"  "OT" "2021-10-25 00:50:49" information
+    *  Database connection is closed
+
+
+
 
