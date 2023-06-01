@@ -14,9 +14,9 @@ import org.junit.runner.RunWith;
         },
         features = "src/test/resources/features",
         glue = {"stepDefinitions"},
+        tags = "@ays",
+        dryRun = false
 
-        tags = "",
-        dryRun = true
 
 )
 public class DBRunner {
