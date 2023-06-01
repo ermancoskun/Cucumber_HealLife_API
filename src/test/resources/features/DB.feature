@@ -1,20 +1,5 @@
 Feature: DB_Testing
 
-<<<<<<< HEAD
-=======
-  Scenario Outline: Email query of the user whose first_name and last_name are given
-
-    Given Database connection established
-    And From the Users table,"email" data of the user whose "<first_name>" and "<last_name>" information is entered are retrieved
-    Then User's "<email>" data is verified
-    And Database connection is closed
-
-
-    Examples:
-      | first_name | last_name | email           |
-      | Admin      | User      | admin@gmail.com |
-
-
 
   @DB06 @dg
   Scenario: DB_US06
@@ -117,6 +102,21 @@ Feature: DB_Testing
     * It should be verified that multiple data entries can be made
     * Database connection is closed
 
+  @said
+  Scenario: DB_US01 Verify that the patient with patient_id = 1 in the ambulance call table on the database has been dispatched 2 times by the ambulance whose driver is Smith.
 
+    * User sets the database connection
+    * Creates query with "select patient_id, driver from heallife_hospitaltraining.ambulance_call where patient_id=1 and driver = 'Smith';"
+    * Verify that number of result is two
+    * Database connection is closed
 
+  Scenario: DB_US21 List the IDs of the X-RAY laboratories from the laboratories in the lab table. Verify that the largest of the ids is (3) by the database.
+    * User sets the database connection
+    * Creates query with "SELECT max(id) AS max_id FROM heallife_hospitaltraining.lab WHERE lab_name LIKE '%X-RAY%';"
+    * Verify that max id is three
+    * Database connection is closed
 
+  Scenario: DB_US11 Verify on the database that the donor_name of the donor with id= 7 in the blood_donor table is Maria, date_of_birth=2001-03-02, gender=Female, father_name=Jhonson, address=England.
+    * User sets the database connection
+    * Creates query with "select * from heallife_hospitaltraining.blood_donor where id=7;"
+    * Verifies that datas : "donor_name#date_of_birth#gender#father_name#address" values : "Maria#2001-03-02#Female#Jhonson#England" message : "invalid data"
