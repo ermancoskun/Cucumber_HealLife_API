@@ -20,7 +20,9 @@
     <last-used-providers />
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
-    <open-files />
+    <open-files>
+      <object connection-id="d46f01e4-b3be-4bb2-b041-6feb26cfbab3" object-ref="schemas/heallife_hospitaltraining/tables/events" />
+    </open-files>
   </component>
   <component name="DBNavigator.Project.DatasetFilterManager">
     <filter-actions connection-id="d46f01e4-b3be-4bb2-b041-6feb26cfbab3" dataset="heallife_hospitaltraining.appointment" active-filter-id="2b197bb0-f806-4359-b5be-1698ab119f76">
@@ -34,7 +36,7 @@
         <condition column="father_name" operator="=" value="Mahesh" active="true" />
       </filter>
       <filter id="6782baf2-6606-4b69-8eb4-16ea26f47cc5" name="Filter" temporary="false" custom-name="false" type="custom">
-        <condition>weight &gt;= 2.5;</condition>
+        <condition><![CDATA[weight >= 2.5;]]></condition>
       </filter>
     </filter-actions>
     <filter-actions connection-id="d46f01e4-b3be-4bb2-b041-6feb26cfbab3" dataset="heallife_hospitaltraining.visitors_book" active-filter-id="3f7cf912-a905-48df-92f8-8154c5cde5c1">
@@ -46,6 +48,7 @@
     <filter-actions connection-id="d46f01e4-b3be-4bb2-b041-6feb26cfbab3" dataset="heallife_hospitaltraining.events" active-filter-id="EMPTY_FILTER">
       <filter id="1383b582-d296-47ee-8c90-d38630086b27" name="Filter 1" temporary="false" custom-name="false" type="basic" join-type="AND" />
     </filter-actions>
+    <filter-actions connection-id="d46f01e4-b3be-4bb2-b041-6feb26cfbab3" dataset="heallife_hospitaltraining.nurse_note" active-filter-id="" />
     <filter-actions connection-id="d46f01e4-b3be-4bb2-b041-6feb26cfbab3" dataset="heallife_hospitaltraining.ambulance_call" active-filter-id="605c2727-977d-4c7e-b69e-e134701ffd1d">
       <filter id="605c2727-977d-4c7e-b69e-e134701ffd1d" name="1 &amp; Smith" temporary="false" custom-name="false" type="basic" join-type="AND">
         <condition column="patient_id" operator="=" value="1" active="true" />

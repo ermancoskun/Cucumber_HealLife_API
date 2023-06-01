@@ -21,7 +21,7 @@ import static utilities.DB_Utils.*;
 
 public class DBStepDefinition {
 
-    ResultSet resultset;
+    public  static ResultSet resultset;
     Statement statement;
     Connection connection;
     String query;
@@ -92,7 +92,6 @@ public class DBStepDefinition {
 
     @Then("Verifies that datas : {string} values : {string}")
     public void verifiesThatDatasValues(String name, String value) throws SQLException {
-
         resultset.absolute(1);
         System.out.println(resultset.getString(name));
         Assert.assertEquals(value, resultset.getString(name));
