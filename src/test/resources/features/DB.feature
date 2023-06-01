@@ -18,12 +18,21 @@ Feature: DB_Testing
   @DB26 @dg
   Scenario: DB_US26
 
+
+      * User sets the database connection
+      * Creates query with "SELECT known_allergies FROM heallife_hospitaltraining.patients WHERE created_at =( SELECT MIN(created_at) FROM heallife_hospitaltraining.patients );"
+      * Verifies that datas : "known_allergies" values : "Fast food" message : "false"
+      * Database connection is closed
+
+
+
+
     * User sets the database connection
     * Creates query with "SELECT known_allergies FROM heallife_hospitaltraining.patients WHERE created_at =( SELECT MIN(created_at) FROM heallife_hospitaltraining.patients );"
     * Verifies that datas : "known_allergies" values : "Fast food" message : "false"
     * Database connection is closed
 
-  @abd
+
   Scenario: DB_US08
 
     Given User sets the database connection
@@ -31,6 +40,28 @@ Feature: DB_Testing
     Then Verifies that datas : "name" values : "105"
     Then Database connection is closed
 
+
+  Scenario: DB_US18
+
+    Given User sets the database connection
+    Then  Creates query with "SELECT created_at FROM discharge_card WHERE opd_details_id > 11 AND opd_details_id < 31;"
+    Then Verifies that datas : "created_at" values : "2021-10-28 04:48:56"
+    Then Database connection is closed
+
+  @abd
+ Scenario: DB_28
+   Given User sets the database connection
+   Then  Creates query with "SELECT * FROM vehicles WHERE driver_name = 'bayram erguven' AND driver_licence = 'b' ORDER BY manufacture_year ASC LIMIT 1;"
+   Then Verifies that datas : "driver_name" values : "bayram erguven"
+   Then Database connection is closed
+
+
+
+
+
+
+
+  Scenario: ??
     * User sets the database connection
     * Creates query with "SELECT known_allergies FROM heallife_hospitaltraining.patients WHERE created_at =( SELECT MIN(created_at) FROM heallife_hospitaltraining.patients );"
     * Verifies that datas : "known_allergies" values : "Fast food" message : "false"
