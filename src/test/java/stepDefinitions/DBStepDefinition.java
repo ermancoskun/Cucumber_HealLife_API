@@ -99,8 +99,8 @@ public class DBStepDefinition {
 
     @Given("Verifies that the result number of query is {int}")
     public void verifies_that_the_result_number_of_query_is(int sayi) throws Exception {
-        int actualData = DB_Utils.getRowCount();
-        Assert.assertEquals("Wrong number", sayi, actualData);
+        int actualRowNumber = DB_Utils.getRowCount();
+        Assert.assertEquals("Wrong number", sayi, actualRowNumber);
     }
 
     @Given("Verifies that datas belowed")
@@ -235,13 +235,13 @@ public class DBStepDefinition {
                     "VALUES (?, ?, ?, ?, ?, ?, ?)";
             Connection connection= getConnection();
             PreparedStatement preparedStatement= connection.prepareStatement(sql);
-            preparedStatement.setString(1,"101");
-            preparedStatement.setString(2,"101");
-            preparedStatement.setString(3,"2023-06-04 15:06:03");
-            preparedStatement.setString(4,"2023-05-16");
-            preparedStatement.setString(5,"new req");
-            preparedStatement.setString(6,"2");
-            preparedStatement.setString(7,"2023-06-01 19:46:03");
+            preparedStatement.setString(1,"1");
+            preparedStatement.setString(2,"8");
+            preparedStatement.setString(3,"null");
+            preparedStatement.setString(4,"null");
+            preparedStatement.setString(5,"null");
+            preparedStatement.setString(6,"null");
+            preparedStatement.setString(7,"null");
             preparedStatement.close();
             System.out.println("data added");
         } catch (SQLException e) {
