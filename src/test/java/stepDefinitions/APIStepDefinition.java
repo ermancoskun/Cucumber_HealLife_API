@@ -51,12 +51,6 @@ public class APIStepDefinition {
     }
 
 
-    @Given("Creates request body as name {string}, isBloodGroup {string}")
-    public void creates_a_request_body_as_name_is_blood_group(String name, String bloodGroup) {
-        reqBodyJson = API_Utils.createABody(name, bloodGroup, true);
-        System.out.println(reqBodyJson.toString());
-    }
-
 
     @Given("Verifies the newly created blood group record via APi.")
     public void verifies_the_newly_created_blood_group_record_via_api() {

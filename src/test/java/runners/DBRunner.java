@@ -14,7 +14,7 @@ import org.junit.runner.RunWith;
         },
         features = "src/test/resources/features",
         glue = {"stepDefinitions"},
-        tags = "@db15",
+        tags = "@nes2",
         dryRun = false
 
 

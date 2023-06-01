@@ -21,29 +21,13 @@ import static utilities.DB_Utils.*;
 
 public class DBStepDefinition {
 
-    public  static ResultSet resultset;
+    public static ResultSet resultset;
     Statement statement;
     Connection connection;
     String query;
     SoftAssert softAssert = new SoftAssert();
     List<Object> UserEmailList = new ArrayList<>();
 
-    @Given("Database connection established")
-    public void database_connection_established() {
-        createConnection();
-    }
-
-    @Given("From the Users table,{string} data of the user whose {string} and {string} information is entered are retrieved")
-    public void from_the_users_table_data_of_the_user_whose_and_information_is_entered_are_retrieved(String email, String firstName, String lastName) {
-        String query = "SELECT email FROM u480337000_tlb_training.users where first_name='" + firstName + "' and last_name= '" + lastName + "';";
-        UserEmailList = getColumnData(query, email);
-    }
-
-    @Then("User's {string} data is verified")
-    public void user_s_data_is_verified(String email) {
-        assertTrue(UserEmailList.get(0).equals(email));
-
-    }
 
     @Then("Database connection is closed")
     public void database_connection_is_closed() {
@@ -63,7 +47,6 @@ public class DBStepDefinition {
 
     @Given("Verifies that datas : {string} values : {string} message : {string}")
     public void verifies_that_datas_values_message(String actualValueColumn, String expectedValue, String message) throws SQLException {
-
         String[] columnsArr = actualValueColumn.split("#");
         String[] valuesArr = expectedValue.split("#");
         for (int i = 1; i <= columnsArr.length; i++) {
@@ -82,7 +65,6 @@ public class DBStepDefinition {
 
         resultset.absolute(0);
         for (int i = 0; i < columnsArr.length; i++) {
-
             while (resultset.next()) {
                 Assert.assertTrue(message, resultset.getString(columnsArr[i]).contains(valuesArr[i]));
             }
@@ -103,25 +85,6 @@ public class DBStepDefinition {
         Assert.assertEquals("Wrong number", sayi, actualRowNumber);
     }
 
-    @Given("Verifies that datas belowed")
-    public void verifies_that_datas_belowed(List<String> allList) throws SQLException {
-
-        List<Object> actualDepList = getColumnData(query, "department_name");
-        List<Object> actualDateList = getColumnData(query, "created_at");
-        Map<Object, Object> actualMap = new HashMap<>();
-        Map<Object, Object> expMap = new HashMap<>();
-
-        System.out.println("actualDepList = " + actualDepList);
-        System.out.println("actualDateList = " + actualDateList);
-        System.out.println("allList = " + allList);
-        for (int i = 0; i < actualDepList.size() - 1; i = i + 2) {
-            actualMap.put(actualDepList.get(i), actualDateList.get(i));
-            expMap.put(allList.get(i), allList.get(i + 1));
-            resultset.absolute(1);
-            Assert.assertEquals("something went wrong", expMap, actualMap);
-        }
-
-    }
 
 
     @And("Verify that the appointments made for the morning are less than the appointments for the afternoon")
@@ -193,6 +156,7 @@ public class DBStepDefinition {
 
 
     }
+
     @Given("Verify gender and mail information of patients whose patient name contains {string}")
     public void verify_gender_and_mail_information_of_patients_whose_patient_name_contains(String string) throws SQLException {
         resultset.absolute(0);
@@ -209,6 +173,7 @@ public class DBStepDefinition {
         Assert.assertTrue(patientsList.contains("Male"));
         Assert.assertTrue(patientsList.contains("umair@gmail.com"));
     }
+
     @Given("Verify that the patient IDs below selected as offline as the payment type")
     public void verify_that_the_patient_i_ds_below_selected_as_offline_as_the_payment_type(List<Integer> list) throws SQLException {
         resultset.absolute(0);
@@ -233,15 +198,15 @@ public class DBStepDefinition {
         try {
             String sql = "INSERT INTO consultant_register (id, ipd_id, date, ins_date, instruction, cons_doctor, created_at) " +
                     "VALUES (?, ?, ?, ?, ?, ?, ?)";
-            Connection connection= getConnection();
-            PreparedStatement preparedStatement= connection.prepareStatement(sql);
-            preparedStatement.setString(1,"1");
-            preparedStatement.setString(2,"8");
-            preparedStatement.setString(3,"null");
-            preparedStatement.setString(4,"null");
-            preparedStatement.setString(5,"null");
-            preparedStatement.setString(6,"null");
-            preparedStatement.setString(7,"null");
+            Connection connection = getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, "1");
+            preparedStatement.setString(2, "8");
+            preparedStatement.setString(3, "null");
+            preparedStatement.setString(4, "null");
+            preparedStatement.setString(5, "null");
+            preparedStatement.setString(6, "null");
+            preparedStatement.setString(7, "null");
             preparedStatement.close();
             System.out.println("data added");
         } catch (SQLException e) {
