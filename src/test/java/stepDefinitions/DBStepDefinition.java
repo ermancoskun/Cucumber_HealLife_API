@@ -193,6 +193,62 @@ public class DBStepDefinition {
 
 
     }
+    @Given("Verify gender and mail information of patients whose patient name contains {string}")
+    public void verify_gender_and_mail_information_of_patients_whose_patient_name_contains(String string) throws SQLException {
+        resultset.absolute(0);
+
+        List<String> patientsList = new ArrayList<>();
+        while (resultset.next()) {
+            patientsList.add(resultset.getString("gender"));
+            patientsList.add(resultset.getString("email"));
+        }
+        System.out.println(patientsList);
+
+        Assert.assertTrue(patientsList.contains("Female"));//[Female, reshu@gmail.com, Male, umair@gmail.com]
+        Assert.assertTrue(patientsList.contains("reshu@gmail.com"));
+        Assert.assertTrue(patientsList.contains("Male"));
+        Assert.assertTrue(patientsList.contains("umair@gmail.com"));
+    }
+    @Given("Verify that the patient IDs below selected as offline as the payment type")
+    public void verify_that_the_patient_i_ds_below_selected_as_offline_as_the_payment_type(List<Integer> list) throws SQLException {
+        resultset.absolute(0);
+
+        boolean control = true;
+        int index = 0;
+        while (resultset.next()) {
+            int data = resultset.getInt(1);
+
+            if (data != list.get(index)) {
+                control = false;
+                break;
+            }
+            index++;
+        }
+        Assert.assertTrue(control);
+    }
+
+    @Given("Add a new record to the consultant_register table")
+    public void add_a_new_record_to_the_consultant_register_table() throws SQLException {
+
+        try {
+            String sql = "INSERT INTO consultant_register (id, ipd_id, date, ins_date, instruction, cons_doctor, created_at) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?)";
+            Connection connection= getConnection();
+            PreparedStatement preparedStatement= connection.prepareStatement(sql);
+            preparedStatement.setString(1,"1");
+            preparedStatement.setString(2,"8");
+            preparedStatement.setString(3,"null");
+            preparedStatement.setString(4,"null");
+            preparedStatement.setString(5,"null");
+            preparedStatement.setString(6,"null");
+            preparedStatement.setString(7,"null");
+            preparedStatement.close();
+            System.out.println("data added");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Then("Verify from the database that the contents of the department table match the {string} and {string}  {string} {string} information")
     public void verifyFromTheDatabaseThatTheContentsOfTheDepartmentTableMatchTheAndInformation(String actDepartment_name, String actCreated_at, String expDepartmen_name, String expCreated_at) throws SQLException {
 
@@ -215,7 +271,6 @@ public class DBStepDefinition {
         Assert.assertEquals("", expDepartmen_name, resultset.getString("department_name"));
         Assert.assertEquals("", expCreated_at, resultset.getString("created_at"));
     }
-
 
 }
 
