@@ -136,9 +136,13 @@ public class DB_Utils {
 
     // This method returns the number fo row in a table in the database
     public static int getRowCount() throws Exception {
-        resultSet.last();
-        int rowCount = resultSet.getRow();
-        return rowCount;
+        if (resultSet != null) {
+            resultSet.last();
+            int rowCount = resultSet.getRow();
+            return rowCount;
+        } else {
+            return 0;
+        }
     }
     /**
      * @return returns a single cell value. If the results in multiple rows and/or

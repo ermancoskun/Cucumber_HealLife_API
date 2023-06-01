@@ -99,8 +99,8 @@ public class DBStepDefinition {
 
     @Given("Verifies that the result number of query is {int}")
     public void verifies_that_the_result_number_of_query_is(int sayi) throws Exception {
-        int actualData = DB_Utils.getRowCount();
-        Assert.assertEquals("Wrong number", sayi, actualData);
+        int actualRowNumber = DB_Utils.getRowCount();
+        Assert.assertEquals("Wrong number", sayi, actualRowNumber);
     }
 
     @Given("Verifies that datas belowed")
