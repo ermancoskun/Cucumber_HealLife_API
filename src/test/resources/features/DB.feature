@@ -17,16 +17,6 @@ Feature: DB_Testing
 
   @DB26 @dg
   Scenario: DB_US26
-
-
-      * User sets the database connection
-      * Creates query with "SELECT known_allergies FROM heallife_hospitaltraining.patients WHERE created_at =( SELECT MIN(created_at) FROM heallife_hospitaltraining.patients );"
-      * Verifies that datas : "known_allergies" values : "Fast food" message : "false"
-      * Database connection is closed
-
-
-
-
     * User sets the database connection
     * Creates query with "SELECT known_allergies FROM heallife_hospitaltraining.patients WHERE created_at =( SELECT MIN(created_at) FROM heallife_hospitaltraining.patients );"
     * Verifies that datas : "known_allergies" values : "Fast food" message : "false"
@@ -34,7 +24,6 @@ Feature: DB_Testing
 
 
   Scenario: DB_US08
-
     Given User sets the database connection
     Then Creates query with "SELECT name FROM heallife_hospitaltraining.bed where bed_group_id=4 and is_active ='no';"
     Then Verifies that datas : "name" values : "105"
@@ -42,23 +31,17 @@ Feature: DB_Testing
 
 
   Scenario: DB_US18
-
     Given User sets the database connection
     Then  Creates query with "SELECT created_at FROM discharge_card WHERE opd_details_id > 11 AND opd_details_id < 31;"
     Then Verifies that datas : "created_at" values : "2021-10-28 04:48:56"
     Then Database connection is closed
 
   @abd
- Scenario: DB_28
-   Given User sets the database connection
-   Then  Creates query with "SELECT * FROM vehicles WHERE driver_name = 'bayram erguven' AND driver_licence = 'b' ORDER BY manufacture_year ASC LIMIT 1;"
-   Then Verifies that datas : "driver_name" values : "bayram erguven"
-   Then Database connection is closed
-
-
-
-
-
+  Scenario: DB_28
+    Given User sets the database connection
+    Then  Creates query with "SELECT * FROM vehicles WHERE driver_name = 'bayram erguven' AND driver_licence = 'b' ORDER BY manufacture_year ASC LIMIT 1;"
+    Then Verifies that datas : "driver_name" values : "bayram erguven"
+    Then Database connection is closed
 
 
   Scenario: ??
@@ -86,38 +69,6 @@ Feature: DB_Testing
     * Verifies that datas : "name" values : "Jhon" message : "false"
     * Database connection is closed
 
-
-  Scenario:
-    * User sets the database connection
-    * Creates query with "SELECT * FROM heallife_hospitaltraining.birth_report WHERE weight >= 2.5;"
-    * Verifies that the result number of query is 6
-    * Database connection is closed
-
-  @ay
-  Scenario:
-    * User sets the database connection
-    * Creates query with "select * from heallife_hospitaltraining.department"
-    * Verifies that datas belowed
-      | Admin,2021-10-25 00:52:21              |
-      | BURN CARE,2021-10-25 00:55:11          |
-      | Blood Bank,2021-10-25 00:53:07         |
-      | Cardiology,2021-10-25 00:54:54         |
-      | Doctor,2021-10-25 00:51:22             |
-      | Emergency,2021-10-25 00:54:42          |
-      | Finance,2021-10-25 00:54:22            |
-      | Gynecology,2021-10-25 00:54:10         |
-      | Human Resource,2021-10-25 00:53:59     |
-      | ICU,2021-10-25 00:52:55                |
-      | IPD,2021-10-25 00:52:34                |
-      | NICU,2021-10-25 00:56:13               |
-      | Nursing Department,2021-10-25 03:02:57 |
-      | OPD,2021-10-25 00:52:38                |
-      | OT,2021-10-25 00:50:49                 |
-      | Pathology,2021-10-25 00:53:20          |
-      | Pharmacy,2021-10-25 00:53:33           |
-      | Radiology,2021-10-25 00:53:27          |
-      | Reception,021-10-25 00:53:46           |
-    * Database connection is closed
 
   Scenario: DB_US04 In the appointment table on the database, verify that the appointments made for the morning are less than the appointments for the afternoon.
     * User sets the database connection
@@ -159,26 +110,6 @@ Feature: DB_Testing
     * Creates query with "SELECT account_title FROM heallife_hospitaltraining.staff where qualification='MS' and specialization='Neurology'group by account_title order by account_title asc;"
     * Database connection is closed
 
-  @DB06 @dg
-  Scenario: DB_US06
-    * User sets the database connection
-    * Creates query with "SELECT date FROM heallife_hospitaltraining.appointment_queue WHERE YEAR(date) = 2023 AND MONTH(date) = 5;"
-    * Verifies that it CONTAINS datas : "date" values : "2023-05" message : "false"
-    * Database connection is closed
-
-  @DB16 @dg
-  Scenario: DB_US16
-    * User sets the database connection
-    * Creates query with "SELECT guardian_name FROM heallife_hospitaltraining.death_report WHERE death_date =( SELECT MAX(death_date)  FROM heallife_hospitaltraining.death_report );"
-    * Verifies that datas : "guardian_name" values : "Kane Stark" message : "false"
-    * Database connection is closed
-
-  @DB26 @dg
-  Scenario: DB_US26
-    * User sets the database connection
-    * Creates query with "SELECT known_allergies FROM heallife_hospitaltraining.patients WHERE created_at =( SELECT MIN(created_at) FROM heallife_hospitaltraining.patients );"
-    * Verifies that datas : "known_allergies" values : "Fast food" message : "false"
-    * Database connection is closed
 
   @jdbc
   Scenario: DB_US09
@@ -208,10 +139,15 @@ Feature: DB_Testing
     * Verifies that datas : "child_name#child_name#child_name" values : "Rohit#Reyana#child" message : "Was not siblings"
     * Database connection is closed
 
+  @deleteDB
   Scenario: DB_US20 Verify that data can be deleted from the events table via the database.
     * User sets the database connection
-    * Creates query with ""
-    * Verifies that datas : "" values : "" message : ""
+    * Creates update query with "INSERT INTO heallife_hospitaltraining.events values (769, 'For delete','kass','2023-05-20 05:43:13','2023-05-20 05:43:13','privat','abc','500','59','yes','2023-06-01 05:43:13')"
+    * Creates query with "SELECT * FROM heallife_hospitaltraining.events where id=769;"
+    * Verifies that datas : "id" values : "769" message : "Unsuccessful creation"
+    * Creates update query with "DELETE FROM heallife_hospitaltraining.events where id=769;"
+    * Creates query with "SELECT * FROM heallife_hospitaltraining.events where id=769;"
+    * Verifies that the result number of query is 0
     * Database connection is closed
 
   Scenario: DB_US30 Verify that the name of the visitor who came to visit Maria Fernandis from the data in the visitors_book table on the database is Jhon.
@@ -220,38 +156,7 @@ Feature: DB_Testing
     * Verifies that datas : "name" values : "Jhon" message : "false"
     * Database connection is closed
 
-@ays
-  Scenario:
-    * User sets the database connection
-    * Creates query with "SELECT * FROM heallife_hospitaltraining.birth_report WHERE weight >= 2.5;"
-    * Verifies that the result number of query is 6
-    * Database connection is closed
 
-  @ay
-  Scenario:
-    * User sets the database connection
-    * Creates query with "select * from heallife_hospitaltraining.department"
-    * Verifies that datas belowed
-      | Admin,2021-10-25 00:52:21              |
-      | BURN CARE,2021-10-25 00:55:11          |
-      | Blood Bank,2021-10-25 00:53:07         |
-      | Cardiology,2021-10-25 00:54:54         |
-      | Doctor,2021-10-25 00:51:22             |
-      | Emergency,2021-10-25 00:54:42          |
-      | Finance,2021-10-25 00:54:22            |
-      | Gynecology,2021-10-25 00:54:10         |
-      | Human Resource,2021-10-25 00:53:59     |
-      | ICU,2021-10-25 00:52:55                |
-      | IPD,2021-10-25 00:52:34                |
-      | NICU,2021-10-25 00:56:13               |
-      | Nursing Department,2021-10-25 03:02:57 |
-      | OPD,2021-10-25 00:52:38                |
-      | OT,2021-10-25 00:50:49                 |
-      | Pathology,2021-10-25 00:53:20          |
-      | Pharmacy,2021-10-25 00:53:33           |
-      | Radiology,2021-10-25 00:53:27          |
-      | Reception,021-10-25 00:53:46           |
-    * Database connection is closed
 
   Scenario: DB_US04 In the appointment table on the database, verify that the appointments made for the morning are less than the appointments for the afternoon.
     * User sets the database connection
@@ -301,13 +206,13 @@ Feature: DB_Testing
     * Database connection is closed
 
 
- Scenario: DB_US02 Verify that an appointment can be made by entering the necessary information into the hospital system via the database.
+  Scenario: DB_US02 Verify that an appointment can be made by entering the necessary information into the hospital system via the database.
 
-   * User sets the database connection
-   * Creates update query with "INSERT INTO heallife_hospitaltraining.appointment (id , patient_id , date , doctor , message) VALUES ('987', '98', '2023-05-01 13:00', '38' , 'migren');"
-   * Creates query with "SELECT * FROM heallife_hospitaltraining.appointment;"
-   * Verifies that datas : "id#patient_id#date#doctor#message" values : "987#98#'2023-05-01 13:00'#38#'migren'" message : "false"
-   * Database connection is closed
+    * User sets the database connection
+    * Creates update query with "INSERT INTO heallife_hospitaltraining.appointment (id , patient_id , date , doctor , message) VALUES ('987', '98', '2023-05-01 13:00', '38' , 'migren');"
+    * Creates query with "SELECT * FROM heallife_hospitaltraining.appointment;"
+    * Verifies that datas : "id#patient_id#date#doctor#message" values : "987#98#'2023-05-01 13:00'#38#'migren'" message : "false"
+    * Database connection is closed
 
   Scenario: DB_US01 Verify that the patient with patient_id = 1 in the ambulance call table on the database has been dispatched 2 times by the ambulance whose driver is Smith.
     * User sets the database connection
