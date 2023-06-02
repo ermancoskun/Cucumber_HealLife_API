@@ -15,7 +15,7 @@ import org.junit.runner.RunWith;
         },
         features = "src/test/resources/features",
         glue = {"stepDefinitions", "hooks"},
-        tags = "@DELETE" ,
+        tags = "@Get or @Post or @Patch or @Delete" ,
         dryRun = false
 
 
