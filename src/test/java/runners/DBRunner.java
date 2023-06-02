@@ -14,7 +14,7 @@ import org.junit.runner.RunWith;
         },
         features = "src/test/resources/features",
         glue = {"stepDefinitions"},
-        tags = "@nes2",
+         tags = "@Select or @Insert or @InsertDelete",
         dryRun = false
 
 

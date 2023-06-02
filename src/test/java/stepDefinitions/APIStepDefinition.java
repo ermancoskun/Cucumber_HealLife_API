@@ -21,7 +21,6 @@ import static org.junit.Assert.assertEquals;
 public class APIStepDefinition {
     SoftAssert softAssert = new SoftAssert();
     public static String fullPath;
-
     public static JSONObject reqBodyJson;
     public static JSONObject expBodyJson;
     public static Response response;
@@ -49,7 +48,6 @@ public class APIStepDefinition {
 
         fullPath = tempPath.toString();
     }
-
 
 
     @Given("Verifies the newly created blood group record via APi.")
@@ -221,8 +219,7 @@ public class APIStepDefinition {
 
 
     @Given("Verify that the datas are contained in the response body as {string},{string},{string}")
-    public void verify_that_the_datas_are_contained_in_the_response_body_as(String rspnBody, String
-            data, String dataValue) {
+    public void verify_that_the_datas_are_contained_in_the_response_body_as(String rspnBody, String data, String dataValue) {
         String[] datasArr = data.split("#");
         String[] dataValuesArr = dataValue.split("#");
 
@@ -238,13 +235,12 @@ public class APIStepDefinition {
 
 
     @And("Verifies in the response body with id {string}, is visitors_purpose  {string}, description {string}, created_at {string}  must be verified .")
-    public void verifiesInTheResponseBodyWithIdIsVisitors_purposeDescriptionCreated_atMustBeVerified(String
-                                                                                                             id, String visitors_purpose, String description, String created_at) {
+    public void verifiesInTheResponseBodyWithIdIsVisitors_purposeDescriptionCreated_atMustBeVerified(String id, String visitors_purpose, String description, String created_at) {
         JsonPath resJp = response.jsonPath();
-        assertEquals(id, resJp.get("lists[6].id"));
-        assertEquals(visitors_purpose, resJp.get("lists[6].visitors_purpose"));
-        assertEquals(description, resJp.get("lists[6].description"));
-        assertEquals(created_at, resJp.get("lists[6].created_at"));
+        assertEquals(id, resJp.get("lists[5].id"));
+        assertEquals(visitors_purpose, resJp.get("lists[5].visitors_purpose"));
+        assertEquals(description, resJp.get("lists[5].description"));
+        assertEquals(created_at, resJp.get("lists[5].created_at"));
 
 
     }
@@ -253,10 +249,10 @@ public class APIStepDefinition {
     public void verifiesInTheResponseeBodyWithIdIsVisitors_PurposeDescriptionCreated_atMustBeVerified
             (String id, String visitors_purpose, String description, String created_at) {
         JsonPath resJp = response.jsonPath();
-        assertEquals(id, resJp.get("lists[14].id"));
-        assertEquals(visitors_purpose, resJp.get("lists[14].visitors_purpose"));
-        assertEquals(description, resJp.get("lists[14].description"));
-        assertEquals(created_at, resJp.get("lists[14].created_at"));
+        assertEquals(id, resJp.get("lists[13].id"));
+        assertEquals(visitors_purpose, resJp.get("lists[13].visitors_purpose"));
+        assertEquals(description, resJp.get("lists[13].description"));
+        assertEquals(created_at, resJp.get("lists[13].created_at"));
     }
 
     @And("Request body is:")
@@ -288,8 +284,6 @@ public class APIStepDefinition {
     public void verifiesInTheResponseBodyWithId(String id) {
         JsonPath resJp = response.jsonPath();
         assertEquals(id, resJp.get("lists.id"));
-
-
     }
 
 
@@ -405,7 +399,7 @@ public class APIStepDefinition {
     public void hasBeenVerifiedThatTheSentAddIdAndRepliedDataAreTheSame(String changedData) {
         JsonPath resJP = response.jsonPath();
         String actualID = resJP.getString(changedData);
-        assertEquals("Unsuccessful change", actualID, addId);
+        assertEquals("Unsuccessful change", actualID, API_Utils.addId);
     }
 
 

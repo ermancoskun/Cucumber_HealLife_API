@@ -20,11 +20,22 @@
     <last-used-providers />
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
-    <open-files />
+    <open-files>
+      <object connection-id="d46f01e4-b3be-4bb2-b041-6feb26cfbab3" object-ref="schemas/heallife_hospitaltraining/tables/appointment" />
+    </open-files>
   </component>
   <component name="DBNavigator.Project.DatasetFilterManager">
-    <filter-actions connection-id="d46f01e4-b3be-4bb2-b041-6feb26cfbab3" dataset="heallife_hospitaltraining.appointment" active-filter-id="2b197bb0-f806-4359-b5be-1698ab119f76">
-      <filter id="2b197bb0-f806-4359-b5be-1698ab119f76" name="Filter 1" temporary="false" custom-name="false" type="basic" join-type="AND" />
+    <filter-actions connection-id="d46f01e4-b3be-4bb2-b041-6feb26cfbab3" dataset="heallife_hospitaltraining.blood_issue" active-filter-id="EMPTY_FILTER" />
+    <filter-actions connection-id="d46f01e4-b3be-4bb2-b041-6feb26cfbab3" dataset="heallife_hospitaltraining.blood_donor_cycle" active-filter-id="EMPTY_FILTER" />
+    <filter-actions connection-id="d46f01e4-b3be-4bb2-b041-6feb26cfbab3" dataset="heallife_hospitaltraining.blood_donor" active-filter-id="e351edda-b098-4c0f-b571-864e3a60ad20">
+      <filter id="e351edda-b098-4c0f-b571-864e3a60ad20" name="7" temporary="false" custom-name="false" type="basic" join-type="AND">
+        <condition column="id" operator="=" value="7" active="true" />
+      </filter>
+    </filter-actions>
+    <filter-actions connection-id="d46f01e4-b3be-4bb2-b041-6feb26cfbab3" dataset="heallife_hospitaltraining.appointment" active-filter-id="EMPTY_FILTER">
+      <filter id="2b197bb0-f806-4359-b5be-1698ab119f76" name="911" temporary="false" custom-name="false" type="basic" join-type="AND">
+        <condition column="id" operator="=" value="911" active="true" />
+      </filter>
     </filter-actions>
     <filter-actions connection-id="d46f01e4-b3be-4bb2-b041-6feb26cfbab3" dataset="heallife_hospitaltraining.department" active-filter-id="97a44ab7-f089-4d37-9b95-ad3bb04fa96f">
       <filter id="97a44ab7-f089-4d37-9b95-ad3bb04fa96f" name="Filter" temporary="false" custom-name="false" type="basic" join-type="AND" />

@@ -15,18 +15,14 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.*;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static utilities.DB_Utils.*;
 
 public class DBStepDefinition {
 
     public static ResultSet resultset;
-    Statement statement;
-    Connection connection;
+
     String query;
-    SoftAssert softAssert = new SoftAssert();
-    List<Object> UserEmailList = new ArrayList<>();
 
 
     @Then("Database connection is closed")
@@ -84,7 +80,6 @@ public class DBStepDefinition {
         int actualRowNumber = DB_Utils.getRowCount();
         Assert.assertEquals("Wrong number", sayi, actualRowNumber);
     }
-
 
 
     @And("Verify that the appointments made for the morning are less than the appointments for the afternoon")
